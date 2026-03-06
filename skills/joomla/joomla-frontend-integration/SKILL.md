@@ -1,7 +1,6 @@
 ---
 name: joomla-frontend-integration
 description: Domina integración frontend (CSS/JS) en Joomla 5/6 con Helix Framework. WebAssetManager, Bootstrap 5, módulos custom, SP Page Builder, responsive design, Web Components. Triggers: css joomla, javascript joomla, WebAssetManager, cargar css joomla, assets joomla, bootstrap helix, frontend joomla, joomla.asset.json, helix custom code, componentes responsive
-level: intermediate-advanced
 ---
 
 # Integración Frontend en Joomla 5/6 con Helix Framework
@@ -480,29 +479,4 @@ Más detalles en `references/09-checklist-desarrollo.md`.
 
 ## 14. Referencias Rápidas y Recursos
 
-**Documentación oficial:**
-- [Joomla 5 Web Asset Manager Manual](https://manual.joomla.org/docs/5.0/general-concepts/web-asset-manager/)
-- [Helix Framework Docs](https://www.joomshaper.com/documentation/helix-framework/)
-- [Bootstrap 5 Docs](https://getbootstrap.com/docs/5.0/)
-- [SP Page Builder Docs](https://www.joomshaper.com/documentation/sp-page-builder/how-to-tips)
-
-**Guías comunitarias:**
-- [Kevin's Guides - Web Asset Manager](https://kevinsguides.com/guides/webdev/joomla/ref/webassetmanager/)
-- [Dionysopoulos - Web Asset Management](https://www.dionysopoulos.me/component/docimport/article/concepts-webassetmanager.html)
-
-**Repositorios:**
-- [Joomla Custom Elements](https://github.com/joomla-projects/custom-elements)
-- [Joomla CMS GitHub](https://github.com/joomla/joomla-cms)
-
-**Performance:**
-- [Google PageSpeed Insights](https://pagespeed.web.dev/)
-- [WebPageTest](https://www.webpagetest.org/)
-
----
-
-**Version:** 1.0
-**Última actualización:** Marzo 2026
-**Autor:** Claude
-**Joomla:** 5.6+
-**Framework:** Helix Ultimate 2.x+
-**Bootstrap:** 5.2.3+
+Ver `references/09-checklist-desarrollo.md` y `references/10-ejemplos-codigo-rapido.md` para guías detalladas y ejemplos adicionales.
