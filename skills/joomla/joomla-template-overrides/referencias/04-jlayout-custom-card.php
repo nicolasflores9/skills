@@ -1,32 +1,32 @@
 <?php
 /**
- * EJEMPLO COMPLETO: JLayout Personalizado - Article Card
+ * COMPLETE EXAMPLE: Custom JLayout - Article Card
  *
- * Ubicación en template: /templates/cassiopeia/html/layouts/joomla/custom/article-card.php
+ * Template location: /templates/cassiopeia/html/layouts/joomla/custom/article-card.php
  *
- * Este layout es REUTILIZABLE y puede usarse en múltiples vistas:
+ * This layout is REUSABLE and can be used in multiple views:
  * - blog_item.php
  * - featured.php
- * - layouts alternativos
- * - módulos personalizados
+ * - alternative layouts
+ * - custom modules
  *
- * VARIABLES PASADAS:
- * @var  string  $displayData['title']      Título del artículo
- * @var  string  $displayData['content']    Contenido/intro
- * @var  string  $displayData['image']      URL de imagen
- * @var  string  $displayData['link']       URL del artículo
- * @var  string  $displayData['category']   Nombre categoría
- * @var  string  $displayData['author']     Nombre autor
- * @var  string  $displayData['date']       Fecha publicación
- * @var  string  $displayData['cssClass']   Clases CSS adicionales
+ * PASSED VARIABLES:
+ * @var  string  $displayData['title']      Article title
+ * @var  string  $displayData['content']    Content/intro
+ * @var  string  $displayData['image']      Image URL
+ * @var  string  $displayData['link']       Article URL
+ * @var  string  $displayData['category']   Category name
+ * @var  string  $displayData['author']     Author name
+ * @var  string  $displayData['date']       Publication date
+ * @var  string  $displayData['cssClass']   Additional CSS classes
  *
  * JOOMLA: 5.x, 6.x
- * FECHA: 2024-03-06
+ * DATE: 2024-03-06
  */
 
 defined('_JEXEC') or die;
 
-// Extraer variables de displayData con valores por defecto
+// Extract variables from displayData with default values
 $title = $displayData['title'] ?? '';
 $content = $displayData['content'] ?? '';
 $image = $displayData['image'] ?? '';
@@ -36,7 +36,7 @@ $author = $displayData['author'] ?? '';
 $date = $displayData['date'] ?? '';
 $cssClass = $displayData['cssClass'] ?? 'card-default';
 
-// Validaciones
+// Validations
 if (empty($title)):
     return;
 endif;
@@ -44,7 +44,7 @@ endif;
 
 <article class="article-card <?php echo htmlspecialchars($cssClass); ?>">
 
-    <!-- IMAGEN -->
+    <!-- IMAGE -->
     <?php if ($image): ?>
         <div class="card-image-wrapper">
             <figure class="card-image">
@@ -57,7 +57,7 @@ endif;
                          loading="lazy">
                 </a>
 
-                <!-- BADGE CATEGORÍA (OPCIONAL) -->
+                <!-- CATEGORY BADGE (OPTIONAL) -->
                 <?php if ($category): ?>
                     <span class="card-category-badge">
                         <?php echo htmlspecialchars($category); ?>
@@ -67,10 +67,10 @@ endif;
         </div>
     <?php endif; ?>
 
-    <!-- CONTENIDO -->
+    <!-- CONTENT -->
     <div class="card-body">
 
-        <!-- TÍTULO -->
+        <!-- TITLE -->
         <h3 class="card-title">
             <a href="<?php echo htmlspecialchars($link); ?>"
                title="<?php echo htmlspecialchars($title); ?>"
@@ -79,7 +79,7 @@ endif;
             </a>
         </h3>
 
-        <!-- METADATOS COMPACTOS -->
+        <!-- COMPACT METADATA -->
         <div class="card-meta">
             <?php if ($author): ?>
                 <span class="meta-author">
@@ -96,7 +96,7 @@ endif;
             <?php endif; ?>
         </div>
 
-        <!-- CONTENIDO/INTRO -->
+        <!-- CONTENT/INTRO -->
         <?php if ($content): ?>
             <div class="card-content">
                 <?php echo $content; ?>
@@ -105,12 +105,12 @@ endif;
 
     </div>
 
-    <!-- PIE -->
+    <!-- FOOTER -->
     <footer class="card-footer">
         <a href="<?php echo htmlspecialchars($link); ?>"
            class="btn btn-sm btn-primary card-link"
-           title="Leer <?php echo htmlspecialchars($title); ?>">
-            Leer más
+           title="Read <?php echo htmlspecialchars($title); ?>">
+            Read more
             <i class="fas fa-arrow-right"></i>
         </a>
     </footer>
@@ -120,10 +120,10 @@ endif;
 <?php
 /**
  * ============================================
- * CÓMO USAR ESTE LAYOUT
+ * HOW TO USE THIS LAYOUT
  * ============================================
  *
- * En blog_item.php o cualquier otra vista:
+ * In blog_item.php or any other view:
  *
  * <?php
  * echo JLayoutHelper::render('joomla.custom.article-card', [
@@ -141,42 +141,42 @@ endif;
  * ?>
  *
  * ============================================
- * VENTAJAS DE USAR JLAYOUT
+ * ADVANTAGES OF USING JLAYOUT
  * ============================================
  *
- * 1. REUTILIZACIÓN: Usar en múltiples vistas sin duplicar código
- * 2. MANTENIMIENTO: Cambiar diseño en un solo lugar
- * 3. CONSISTENCIA: Misma estructura en todas las vistas
- * 4. MODULARIDAD: Separación clara de responsabilidades
- * 5. TESTEO: Más fácil de probar aisladamente
+ * 1. REUSE: Use in multiple views without duplicating code
+ * 2. MAINTENANCE: Change design in one place
+ * 3. CONSISTENCY: Same structure across all views
+ * 4. MODULARITY: Clear separation of responsibilities
+ * 5. TESTING: Easier to test in isolation
  *
  * ============================================
- * ALTERNATIVAS DE USO
+ * USAGE ALTERNATIVES
  * ============================================
  *
- * Usar en diferentes contextos:
+ * Use in different contexts:
  *
- * // En category/blog_item.php
+ * // In category/blog_item.php
  * echo JLayoutHelper::render('joomla.custom.article-card', [
- *     // datos del artículo
+ *     // article data
  * ]);
  *
- * // En featured/default.php
+ * // In featured/default.php
  * foreach ($this->items as $item):
  *     echo JLayoutHelper::render('joomla.custom.article-card', [
- *         // datos del artículo
+ *         // article data
  *     ]);
  * endforeach;
  *
- * // En módulo personalizado
+ * // In custom module
  * foreach ($items as $item):
  *     echo JLayoutHelper::render('joomla.custom.article-card', [
- *         // datos del artículo
+ *         // article data
  *     ]);
  * endforeach;
  *
  * ============================================
- * CSS RECOMENDADO
+ * RECOMMENDED CSS
  * ============================================
  *
  * .article-card {

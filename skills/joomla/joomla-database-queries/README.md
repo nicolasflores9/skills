@@ -1,126 +1,126 @@
-# Skill: Joomla 5/6 - Sistema de Consultas a Base de Datos
+# Skill: Joomla 5/6 - Database Query System
 
-## Descripción
+## Description
 
-Guía técnica completa y práctica sobre el sistema de consultas a base de datos en Joomla 5/6, con enfoque en seguridad, buenas prácticas y patrones de código.
+Complete and practical technical guide on the database query system in Joomla 5/6, focusing on security, best practices and code patterns.
 
-## Contenido Incluido
+## Included Content
 
-### SKILL.md (19 KB, 753 líneas)
-Documento principal que cubre:
+### SKILL.md (19 KB, 753 lines)
+Main document covering:
 
-1. **Introducción** - Contexto y cambios principales en Joomla 5/6
-2. **Conceptos Fundamentales** - Obtención de instancias, nomenclatura, quoteName()
-3. **Consultas SELECT** - Estructura básica, métodos principales, carga de resultados
-4. **Prepared Statements** - Obligatorios en Joomla 5+, sintaxis de placeholders
-5. **JOINs entre Tablas** - INNER, LEFT, RIGHT, OUTER, ejemplos complejos
-6. **Filtrado Avanzado** - Por categoría, estado, fechas, búsqueda, campos personalizados
-7. **Ordenamiento y Paginación** - ORDER BY, LIMIT, OFFSET, ejemplos completos
-8. **Operaciones INSERT** - Query chaining, insertObject(), inserts múltiples
-9. **Operaciones UPDATE** - UPDATE básico, updateObject(), condicionales
-10. **Operaciones DELETE** - DELETE simple, condicional, en cascada
-11. **Seguridad en Consultas** - Prevención de inyección SQL, validación de entrada
+1. **Introduction** - Context and main changes in Joomla 5/6
+2. **Fundamental Concepts** - Getting instances, naming, quoteName()
+3. **SELECT Queries** - Basic structure, main methods, loading results
+4. **Prepared Statements** - Mandatory in Joomla 5+, placeholder syntax
+5. **JOINs Between Tables** - INNER, LEFT, RIGHT, OUTER, complex examples
+6. **Advanced Filtering** - By category, state, dates, search, custom fields
+7. **Sorting and Pagination** - ORDER BY, LIMIT, OFFSET, complete examples
+8. **INSERT Operations** - Query chaining, insertObject(), multiple inserts
+9. **UPDATE Operations** - Basic UPDATE, updateObject(), conditionals
+10. **DELETE Operations** - Simple DELETE, conditional, cascade
+11. **Query Security** - SQL injection prevention, input validation
 
-**Características:**
-- 40+ ejemplos de código PHP funcionales
-- Tablas comparativas de métodos
-- Casos de uso completos
-- Código 100% en español
-- Formato imperativo y directo
+**Features:**
+- 40+ functional PHP code examples
+- Comparative method tables
+- Complete use cases
+- Code 100% in English
+- Imperative and direct format
 
 ### references.md (11 KB)
-Contenido extendido:
+Extended content:
 
-- **APIs Completas** - Métodos disponibles en DatabaseInterface y QueryInterface
-- **Patrones Recomendados** - Repository Pattern, Query Builder Pattern
-- **Debugging** - Logging de queries, análisis de rendimiento
-- **Diferencias de Versiones** - Comparativa Joomla 3.x vs 4.x vs 5.x y guía de migración
-- **Troubleshooting** - Errores comunes y soluciones
-- **Checklist de Seguridad** - Verificación antes de producción
-- **Recursos Oficiales** - Links a documentación oficial
+- **Complete APIs** - Methods available in DatabaseInterface and QueryInterface
+- **Recommended Patterns** - Repository Pattern, Query Builder Pattern
+- **Debugging** - Query logging, performance analysis
+- **Version Differences** - Joomla 3.x vs 4.x vs 5.x comparison and migration guide
+- **Troubleshooting** - Common errors and solutions
+- **Security Checklist** - Pre-production verification
+- **Official Resources** - Links to official documentation
 
-## Triggers de Búsqueda
+## Search Triggers
 
-La skill se activa cuando buscas:
-- "consulta joomla"
+The skill is activated when you search for:
+- "joomla query"
 - "database joomla"
-- "query artículos"
+- "query articles"
 - "DatabaseDriver"
 - "prepared statement joomla"
 - "select joomla"
-- "join tablas joomla"
-- "filtrado joomla"
-- "paginación joomla"
-- "inyección sql joomla"
+- "join tables joomla"
+- "joomla filtering"
+- "joomla pagination"
+- "sql injection joomla"
 - "ParameterType"
 - "quoteName"
 - "bind joomla"
 
-## Requisitos Previos
+## Prerequisites
 
-- Conocimiento básico de PHP
-- Conceptos OOP (clases, métodos)
-- SQL básico (SELECT, WHERE, JOIN)
-- Experiencia con Joomla (recomendado)
+- Basic PHP knowledge
+- OOP concepts (classes, methods)
+- Basic SQL (SELECT, WHERE, JOIN)
+- Joomla experience (recommended)
 
-## Nivel
+## Level
 
-**Intermedio-Avanzado** (~6-8 horas de estudio)
+**Intermediate-Advanced** (~6-8 hours of study)
 
-## Estructura de Archivos
+## File Structure
 
 ```
 joomla-database-queries/
-├── SKILL.md          # Documento principal (753 líneas)
-├── references.md     # Contenido extendido
-└── README.md         # Este archivo
+├── SKILL.md          # Main document (753 lines)
+├── references.md     # Extended content
+└── README.md         # This file
 ```
 
-## Temas Cubiertos
+## Topics Covered
 
 ### SELECT
-- Estructura básica con query chaining
-- Métodos: select(), from(), where(), order(), setLimit()
-- Carga de resultados: loadObjectList(), loadObject(), loadAssoc(), loadColumn(), loadResult()
-- Múltiples condiciones WHERE
-- Ejemplos progresivos (básico → complejo)
+- Basic structure with query chaining
+- Methods: select(), from(), where(), order(), setLimit()
+- Loading results: loadObjectList(), loadObject(), loadAssoc(), loadColumn(), loadResult()
+- Multiple WHERE conditions
+- Progressive examples (basic -> complex)
 
 ### Prepared Statements
-- Placeholders nombrados (`:param`)
-- Método bind() - sintaxis completa
+- Named placeholders (`:param`)
+- bind() method - complete syntax
 - ParameterType enum (STRING, INTEGER, FLOAT, BOOLEAN, NULL)
-- Vinculación de arrays
-- Ejemplos de seguridad
+- Array binding
+- Security examples
 
 ### JOINs
 - INNER JOIN, LEFT JOIN, RIGHT JOIN, OUTER JOIN
-- Alias de tablas
+- Table aliases
 - Triple JOIN (content + categories + users)
-- JOIN con campos personalizados (#__fields_values)
+- JOIN with custom fields (#__fields_values)
 
-### Filtrado
-- Por categoría
-- Por estado de publicación (published, unpublished, trash)
-- Por rango de fechas
-- Por búsqueda de texto (LIKE)
-- Por campos personalizados
-- Combinación de múltiples filtros
+### Filtering
+- By category
+- By publication state (published, unpublished, trash)
+- By date range
+- By text search (LIKE)
+- By custom fields
+- Combining multiple filters
 
-### Operaciones CRUD
-- **INSERT**: Query chaining, insertObject(), múltiples filas
-- **UPDATE**: UPDATE básico, updateObject(), condicionales
-- **DELETE**: Simple, condicional, en cascada
+### CRUD Operations
+- **INSERT**: Query chaining, insertObject(), multiple rows
+- **UPDATE**: Basic UPDATE, updateObject(), conditionals
+- **DELETE**: Simple, conditional, cascade
 
-### Seguridad
-- quoteName() para identificadores
-- bind() para valores
-- ParameterType para especificar tipos
-- Validación de entrada
-- Prevención de inyección SQL
+### Security
+- quoteName() for identifiers
+- bind() for values
+- ParameterType for specifying types
+- Input validation
+- SQL injection prevention
 
-## Ejemplos Destacados
+## Featured Examples
 
-### Ejemplo 1: SELECT Simple con Prepared Statement
+### Example 1: Simple SELECT with Prepared Statement
 ```php
 $query = $db->getQuery(true)
   ->select($db->quoteName(['id', 'title', 'created']))
@@ -133,7 +133,7 @@ $db->setQuery($query);
 $results = $db->loadObjectList();
 ```
 
-### Ejemplo 2: JOIN con Múltiples Tablas
+### Example 2: JOIN with Multiple Tables
 ```php
 $query = $db->getQuery(true)
   ->select(['c.id', 'c.title', 'cat.title AS category', 'u.name AS author'])
@@ -146,13 +146,13 @@ $query = $db->getQuery(true)
   ->bind(':state', 1, ParameterType::INTEGER);
 ```
 
-### Ejemplo 3: INSERT Seguro
+### Example 3: Secure INSERT
 ```php
 $query = $db->getQuery(true)
   ->insert($db->quoteName('#__content'))
   ->columns(['title', 'introtext', 'state', 'catid'])
   ->values(':title, :introtext, :state, :catid')
-  ->bind(':title', 'Mi Artículo', ParameterType::STRING)
+  ->bind(':title', 'My Article', ParameterType::STRING)
   ->bind(':introtext', 'Intro', ParameterType::STRING)
   ->bind(':state', 1, ParameterType::INTEGER)
   ->bind(':catid', 5, ParameterType::INTEGER);
@@ -161,31 +161,31 @@ $db->setQuery($query);
 $db->execute();
 ```
 
-## Patrones Incluidos
+## Included Patterns
 
-1. **Repository Pattern** - Separar lógica de acceso a datos
-2. **Query Builder Pattern** - Construir queries dinámicas con métodos encadenables
-3. **Service Layer** - Entre controlador y repositorio
+1. **Repository Pattern** - Separate data access logic
+2. **Query Builder Pattern** - Build dynamic queries with chainable methods
+3. **Service Layer** - Between controller and repository
 
-## Diferencias con Joomla 4
+## Differences from Joomla 4
 
-| Característica | Joomla 4.x | Joomla 5.x/6.x |
+| Feature | Joomla 4.x | Joomla 5.x/6.x |
 |---|---|---|
-| Factory::getDbo() | Disponible | **Deprecated** |
-| Prepared Statements | Recomendado | **Obligatorio** |
-| quoteName() | Disponible | Estándar |
-| bind() | Disponible | Estándar |
-| ParameterType | Disponible | Recomendado |
-| Query Chaining | Estándar | Estándar |
+| Factory::getDbo() | Available | **Deprecated** |
+| Prepared Statements | Recommended | **Mandatory** |
+| quoteName() | Available | Standard |
+| bind() | Available | Standard |
+| ParameterType | Available | Recommended |
+| Query Chaining | Standard | Standard |
 
-## Comandos Útiles
+## Useful Commands
 
-Ver SQL ejecutado:
+View executed SQL:
 ```php
 error_log("SQL: " . $query->__toString());
 ```
 
-Contar total de resultados:
+Count total results:
 ```php
 $countQuery = $db->getQuery(true)
   ->select('COUNT(*)')
@@ -197,57 +197,57 @@ $db->setQuery($countQuery);
 $total = $db->loadResult();
 ```
 
-Logging en Joomla:
+Joomla logging:
 ```php
 use Joomla\CMS\Log\Log;
-Log::add('Mensaje', Log::INFO, 'joomla');
+Log::add('Message', Log::INFO, 'joomla');
 ```
 
-## Buenas Prácticas Clave
+## Key Best Practices
 
-1. ✓ Siempre usa `quoteName()` para identificadores
-2. ✓ Siempre usa `bind()` con prepared statements
-3. ✓ Especifica `ParameterType` en cada bind()
-4. ✓ Valida entrada antes de usar en queries
-5. ✓ Maneja excepciones con try-catch
-6. ✓ Usa `getQuery(true)` para nueva query limpia
-7. ✓ Evita `Factory::getDbo()` (deprecated)
-8. ✓ Documenta queries complejas
+1. Always use `quoteName()` for identifiers
+2. Always use `bind()` with prepared statements
+3. Specify `ParameterType` in every bind()
+4. Validate input before using in queries
+5. Handle exceptions with try-catch
+6. Use `getQuery(true)` for a new clean query
+7. Avoid `Factory::getDbo()` (deprecated)
+8. Document complex queries
 
-## Casos de Uso Reales Cubiertos
+## Real Use Cases Covered
 
-1. Listar artículos de categoría con paginación
-2. Sistema de búsqueda avanzada
-3. Gestión de campos personalizados
-4. Reportes y estadísticas
-5. Sincronización de datos
+1. List category articles with pagination
+2. Advanced search system
+3. Custom field management
+4. Reports and statistics
+5. Data synchronization
 
-## Validación
+## Validation
 
-Todos los ejemplos han sido validados para:
-- ✓ Sintaxis PHP correcta
-- ✓ Seguridad contra inyección SQL
-- ✓ Compatibilidad con Joomla 5.x y 6.x
-- ✓ Mejor rendimiento
-- ✓ Buenas prácticas
+All examples have been validated for:
+- Correct PHP syntax
+- SQL injection security
+- Joomla 5.x and 6.x compatibility
+- Best performance
+- Best practices
 
-## Recursos Adicionales
+## Additional Resources
 
-- **Documentación oficial**: https://docs.joomla.org/
-- **API Joomla**: https://api.joomla.org/
+- **Official documentation**: https://docs.joomla.org/
+- **Joomla API**: https://api.joomla.org/
 - **GitHub Manual**: https://github.com/joomla/Manual
-- **Seguridad**: https://manual.joomla.org/docs/5.0/security/
+- **Security**: https://manual.joomla.org/docs/5.0/security/
 
-## Autor
+## Author
 
 Claude Code - 2024
 
-## Licencia
+## License
 
-Contenido educativo para desarrolladores Joomla
+Educational content for Joomla developers
 
 ---
 
-**Última actualización:** Marzo 2024
-**Versión compatible:** Joomla 5.x, 6.x
-**Tema:** Backend Development, Database
+**Last updated:** March 2024
+**Compatible version:** Joomla 5.x, 6.x
+**Topic:** Backend Development, Database

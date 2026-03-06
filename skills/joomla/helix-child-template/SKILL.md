@@ -1,64 +1,64 @@
 ---
 name: helix-child-template
-description: Crea y personaliza templates hijo con Helix Ultimate para Joomla 5/6. Domina overrides protegidos, custom CSS/JS, posiciones de módulos, megamenús y actualizaciones seguras. Triggers - template hijo helix, child template joomla, helix ultimate, helix override, custom.css helix, template helix personalizar, helix framework
+description: Create and customize child templates with Helix Ultimate for Joomla 5/6. Master protected overrides, custom CSS/JS, module positions, megamenus, and safe updates. Triggers - helix child template, child template joomla, helix ultimate, helix override, custom.css helix, helix template customize, helix framework
 ---
 
-# Templates Hijo con Helix Ultimate para Joomla 5/6
+# Child Templates with Helix Ultimate for Joomla 5/6
 
-## 1. Introducción Rápida
+## 1. Quick Introduction
 
-Helix Ultimate 2.x es el framework moderno para Joomla 4.4+, 5.x y 6.x. Los child templates permiten personalizar sin perder cambios en actualizaciones. Estructura mínima, máxima protección.
+Helix Ultimate 2.x is the modern framework for Joomla 4.4+, 5.x, and 6.x. Child templates allow customization without losing changes during updates. Minimal structure, maximum protection.
 
-**Ventajas Clave:**
-- Cambios separados de la plantilla padre
-- Actualizaciones NO sobrescriben personalizaciones
-- Sistema de overrides mejorado (v2.0.3+)
-- Custom CSS/JS automaticamente cargados
-- Herencia automática del padre
+**Key Advantages:**
+- Changes separated from the parent template
+- Updates do NOT overwrite customizations
+- Improved override system (v2.0.3+)
+- Custom CSS/JS automatically loaded
+- Automatic inheritance from parent
 
-## 2. Estructura de Carpetas del Child Template
+## 2. Child Template Folder Structure
 
-Crear estructura mínima:
+Create minimal structure:
 
 ```
-templates/tu_child_template/
-├── templateDetails.xml          (Obligatorio)
-├── index.php                    (Opcional - solo si modificas)
+templates/your_child_template/
+├── templateDetails.xml          (Required)
+├── index.php                    (Optional - only if you modify it)
 ├── css/
-│   └── custom.css              (Crear manualmente)
+│   └── custom.css              (Create manually)
 ├── js/
-│   └── custom.js               (Crear manualmente)
+│   └── custom.js               (Create manually)
 ├── html/
 │   └── com_content/
 │       └── article/
-│           └── default.php     (Cargar override)
+│           └── default.php     (Load override)
 └── overrides/
     └── com_content/
         └── article/
-            └── default.php     (Tu código personalizado)
+            └── default.php     (Your custom code)
 ```
 
-**Solo incluye archivos que modificas.** El resto se hereda automáticamente del padre.
+**Only include files you modify.** Everything else is automatically inherited from the parent.
 
-## 3. Archivo templateDetails.xml
+## 3. templateDetails.xml File
 
-Identificar la plantilla padre y registrar carpetas:
+Identify the parent template and register folders:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="template" client="site">
-    <name>Mi Sitio Child</name>
+    <name>My Site Child</name>
     <version>1.0.0</version>
     <creationDate>2025-01-01</creationDate>
-    <author>Tu Nombre</author>
-    <copyright>Tu Copyright</copyright>
+    <author>Your Name</author>
+    <copyright>Your Copyright</copyright>
     <license>GNU General Public License v2.0 or later</license>
-    <description>Child template personalizado para tu sitio</description>
+    <description>Custom child template for your site</description>
 
-    <!-- CRUCIAL: Especificar plantilla padre -->
+    <!-- CRUCIAL: Specify parent template -->
     <inherits>shaper_helixultimate</inherits>
 
-    <!-- Archivos a incluir en el paquete -->
+    <!-- Files to include in the package -->
     <files>
         <filename>index.php</filename>
         <filename>offline.php</filename>
@@ -71,21 +71,21 @@ Identificar la plantilla padre y registrar carpetas:
 </extension>
 ```
 
-## 4. Sistema de Overrides (Nuevo v2.0.3+)
+## 4. Override System (New in v2.0.3+)
 
-**Antiguo (< v2.0.3):** `/templates/template/html/` - Sobrescribible en updates
-**Nuevo (v2.0.3+):** `/templates/template/overrides/` - PROTEGIDO en updates
+**Old (< v2.0.3):** `/templates/template/html/` - Overwritten on updates
+**New (v2.0.3+):** `/templates/template/overrides/` - PROTECTED on updates
 
-Implementar nuevo sistema:
+Implement the new system:
 
 ```php
-// Archivo: /templates/tu_child_template/html/com_content/article/default.php
+// File: /templates/your_child_template/html/com_content/article/default.php
 <?php
 defined('_JEXEC') or die;
 require HelixUltimate\Framework\Platform\HTMLOverride::loadTemplate();
 ?>
 
-// Archivo: /templates/tu_child_template/overrides/com_content/article/default.php
+// File: /templates/your_child_template/overrides/com_content/article/default.php
 <?php
 defined('_JEXEC') or die;
 $article = $this->item;
@@ -95,7 +95,7 @@ $article = $this->item;
     <h1><?php echo htmlspecialchars($article->title); ?></h1>
 
     <div class="metadata">
-        Por: <?php echo $article->author; ?> |
+        By: <?php echo $article->author; ?> |
         <?php echo JHtml::_('date', $article->publish_up, 'd/m/Y'); ?>
     </div>
 
@@ -106,9 +106,9 @@ $article = $this->item;
 </article>
 ```
 
-## 5. Personalización: Custom CSS
+## 5. Customization: Custom CSS
 
-Crear `/templates/tu_child_template/css/custom.css` con tus estilos:
+Create `/templates/your_child_template/css/custom.css` with your styles:
 
 ```css
 :root {
@@ -142,11 +142,11 @@ h1, h2, h3 {
 }
 ```
 
-Se carga automáticamente DESPUÉS de template.css - tus estilos sobrescriben padres.
+Loads automatically AFTER template.css - your styles override the parent's.
 
-## 6. Personalización: Custom JavaScript
+## 6. Customization: Custom JavaScript
 
-Crear `/templates/tu_child_template/js/custom.js`:
+Create `/templates/your_child_template/js/custom.js`:
 
 ```javascript
 (function() {
@@ -154,7 +154,7 @@ Crear `/templates/tu_child_template/js/custom.js`:
 
     const MyTemplate = {
         init: function() {
-            console.log('[MyTemplate] Inicializando');
+            console.log('[MyTemplate] Initializing');
             this.setupMenus();
             this.setupForms();
         },
@@ -196,22 +196,22 @@ Crear `/templates/tu_child_template/js/custom.js`:
 })();
 ```
 
-Carga DESPUÉS de todos los otros scripts - seguro para sobrescribir comportamientos.
+Loads AFTER all other scripts - safe to override behaviors.
 
-## 7. Template Options: Inyección de Código
+## 7. Template Options: Code Injection
 
-Panel Administrativo > System > Templates > Tu Template > Custom Code tab:
+Admin Panel > System > Templates > Your Template > Custom Code tab:
 
-- **Before </head>:** Meta tags, link tags, CSS inline
+- **Before </head>:** Meta tags, link tags, inline CSS
 - **Before </body>:** Google Analytics, tracking code
-- **Custom CSS:** Estilos CSS inline (< 30 líneas)
-- **Custom Javascript:** Scripts inline (ejecutan al final)
+- **Custom CSS:** Inline CSS styles (< 30 lines)
+- **Custom Javascript:** Inline scripts (execute at the end)
 
-Usar para cambios pequeños. Para cambios medianos/grandes usar custom.css/js files.
+Use for small changes. For medium/large changes use custom.css/js files.
 
-## 8. Posiciones de Módulos
+## 8. Module Positions
 
-Helix include 30+ posiciones predeterminadas:
+Helix includes 30+ predefined positions:
 
 ```
 logo, logo-title, logo-tagline
@@ -224,99 +224,99 @@ footer1, footer2, bottom1, bottom2, bottom3, bottom4
 offcanvas, pagebuilder, 404, debug
 ```
 
-**Agregar nueva posición en index.php:**
+**Add a new position in index.php:**
 
 ```php
 <?php
-if ($this->countModules('mi-posicion-custom')) {
+if ($this->countModules('my-custom-position')) {
     echo '<div class="custom-section">';
-    echo $this->getBuffer('module', 'mi-posicion-custom');
+    echo $this->getBuffer('module', 'my-custom-position');
     echo '</div>';
 }
 ?>
 ```
 
-**Registrar en templateDetails.xml:**
+**Register in templateDetails.xml:**
 
 ```xml
 <positions>
-    <position>mi-posicion-custom</position>
+    <position>my-custom-position</position>
 </positions>
 ```
 
-## 9. Configuración de Opciones Helix
+## 9. Helix Options Configuration
 
-Panel Template Options en admin:
+Template Options panel in admin:
 
-**Tipografía:** 950+ Google Fonts disponibles - configurar Body, H1-H6, Navigation
+**Typography:** 950+ Google Fonts available - configure Body, H1-H6, Navigation
 
-**Colores:** 8 presets visuales + Custom Style para colores personalizados
+**Colors:** 8 visual presets + Custom Style for custom colors
 
-**Layout Builder:** Agregar/remover posiciones, ajustar ancho de columnas por dispositivo
+**Layout Builder:** Add/remove positions, adjust column widths per device
 
-**Megamenú:** Tipo (Standard/Grid/Accordion), ancho dropdown, animación, menu builder integrado
+**Megamenu:** Type (Standard/Grid/Accordion), dropdown width, animation, built-in menu builder
 
-**Blog Settings:** Layout, items por página, mostrar/ocultar elementos
+**Blog Settings:** Layout, items per page, show/hide elements
 
-**Custom Code:** CSS y Javascript inline para cambios pequeños
+**Custom Code:** Inline CSS and Javascript for small changes
 
-## 10. Mantener Actualizaciones Sin Perder Cambios
+## 10. Maintaining Updates Without Losing Changes
 
-**Qué se sobrescribe:**
-- index.php (archivo padre)
+**What gets overwritten:**
+- index.php (parent file)
 - css/template.css
 - js/template.js
-- html/ (sistema antiguo - NO usar)
+- html/ (old system - DO NOT use)
 
-**Qué NO se sobrescribe:**
-- overrides/ (NUEVO sistema protegido)
+**What does NOT get overwritten:**
+- overrides/ (NEW protected system)
 - css/custom.css
 - js/custom.js
 - scss/custom.scss
-- Template parameters guardados
+- Saved template parameters
 - Child templates
 
-**Checklist de actualización:**
+**Update checklist:**
 
 ```
-ANTES:
-☐ Backup del template actual
-☐ Documentar overrides en /overrides/
-☐ Verificar custom.css/js existen
-☐ Anotar cambios con git diff
+BEFORE:
+☐ Backup the current template
+☐ Document overrides in /overrides/
+☐ Verify custom.css/js exist
+☐ Note changes with git diff
 
-ACTUALIZAR:
-☐ Admin > Templates > actualizar template
-☐ Revisar qué archivos cambiaron
-☐ Verificar /overrides/ intacto
-☐ Probar en navegadores múltiples
+UPDATE:
+☐ Admin > Templates > update template
+☐ Review which files changed
+☐ Verify /overrides/ is intact
+☐ Test in multiple browsers
 
-DESPUÉS:
-☐ Revisar error_log de PHP
-☐ Probar todos los overrides
-☐ Probar módulos y componentes
-☐ Guardar en control versiones
+AFTER:
+☐ Review PHP error_log
+☐ Test all overrides
+☐ Test modules and components
+☐ Save to version control
 ```
 
-## 11. Compatibilidad Joomla 6
+## 11. Joomla 6 Compatibility
 
-Helix Ultimate 2.2.x+ es compatible con Joomla 6.
+Helix Ultimate 2.2.x+ is compatible with Joomla 6.
 
-**Requisitos:**
-- PHP 8.1+ (recomendado 8.3+)
-- Deshabilitar plugin "Behaviour - Backward Compatibility"
-- Actualizar extensiones que usan APIs deprecadas
+**Requirements:**
+- PHP 8.1+ (recommended 8.3+)
+- Disable "Behaviour - Backward Compatibility" plugin
+- Update extensions that use deprecated APIs
 
-**Verificar:**
-- Todas las posiciones de módulos funcionan
-- Overrides personalizados se cargan correctamente
-- No hay errores en console de navegador
-- No hay errores en error_log de PHP
+**Verify:**
+- All module positions work
+- Custom overrides load correctly
+- No errors in browser console
+- No errors in PHP error_log
 
-## 12. Estructura Completa de Ejemplo
+## 12. Complete Example Structure
 
 ```
-templates/mi_tienda_child/
+templates/my_store_child/
 ├── templateDetails.xml
 ├── css/
 │   ├── custom.css
@@ -343,63 +343,63 @@ templates/mi_tienda_child/
 │   └── mod_menu/
 │       └── default.php
 └── images/
-    └── [imágenes custom]
+    └── [custom images]
 ```
 
-## 13. Troubleshooting Común
+## 13. Common Troubleshooting
 
-**Overrides no aparecen:**
-- Verificar ruta exacta `/overrides/com_nombre/vista/default.php`
-- Revisar que /html/ carga correctamente con `loadTemplate()`
-- Verificar permisos de archivo (644 típico)
-- Limpiar caché Joomla > System > Clear Cache
+**Overrides not showing:**
+- Verify exact path `/overrides/com_name/view/default.php`
+- Check that /html/ loads correctly with `loadTemplate()`
+- Verify file permissions (644 typical)
+- Clear cache Joomla > System > Clear Cache
 
-**CSS no aplica:**
-- Verificar custom.css está en `/css/custom.css`
-- CSS debe estar DESPUÉS de template.css (especificidad)
-- Usar `!important` solo si necesario
-- Verificar no hay minificación conflictiva
+**CSS not applying:**
+- Verify custom.css is at `/css/custom.css`
+- CSS must be AFTER template.css (specificity)
+- Use `!important` only if necessary
+- Check for conflicting minification
 
-**JavaScript no ejecuta:**
-- Custom.js carga ÚLTIMO - seguro para jQuery/plugins
-- Usar IIFE `(function() {...})()` para evitar conflictos globales
-- Verificar `DOMContentLoaded` antes de acceder a elementos
-- Revisar console del navegador por errores
+**JavaScript not executing:**
+- Custom.js loads LAST - safe for jQuery/plugins
+- Use IIFE `(function() {...})()` to avoid global conflicts
+- Verify `DOMContentLoaded` before accessing elements
+- Check browser console for errors
 
-**Posiciones no visibles:**
-- Usar `<?php if ($this->countModules('nombre')) ?>` para verificar
-- Módulos deben estar asignados a menú item
-- Verificar nombre exacto de posición
-- Revisar HTML generado con inspector
+**Positions not visible:**
+- Use `<?php if ($this->countModules('name')) ?>` to verify
+- Modules must be assigned to a menu item
+- Verify exact position name
+- Inspect generated HTML with browser inspector
 
 ## 14. Best Practices
 
-1. **Versionado Git:** Trackea cambios en `/css/custom.css`, `/js/custom.js`, `/overrides/`
-2. **Documentación:** Comenta código complejo con autor y fecha
-3. **Modularidad:** Separar CSS/JS por función (menu.css, footer.js)
-4. **Testing:** Probar en Chrome, Firefox, Safari, móvil
-5. **Seguridad:** Sanitizar outputs con `htmlspecialchars()`, validar inputs
-6. **Performance:** Minificar CSS/JS en producción, lazy loading para imágenes
-7. **Accesibilidad:** ARIA labels, keyboard navigation, contrast ratios WCAG 2.1
-8. **Naming:** Usar kebab-case para clases CSS, camelCase para JavaScript
+1. **Git Versioning:** Track changes in `/css/custom.css`, `/js/custom.js`, `/overrides/`
+2. **Documentation:** Comment complex code with author and date
+3. **Modularity:** Separate CSS/JS by function (menu.css, footer.js)
+4. **Testing:** Test in Chrome, Firefox, Safari, mobile
+5. **Security:** Sanitize outputs with `htmlspecialchars()`, validate inputs
+6. **Performance:** Minify CSS/JS in production, lazy loading for images
+7. **Accessibility:** ARIA labels, keyboard navigation, contrast ratios WCAG 2.1
+8. **Naming:** Use kebab-case for CSS classes, camelCase for JavaScript
 
-## 15. Recursos & Documentación
+## 15. Resources & Documentation
 
-**Oficial:**
+**Official:**
 - https://www.joomshaper.com/documentation
 - https://docs.joomla.org (Joomla Core)
 
-**Comunidad:**
+**Community:**
 - JoomShaper Forum: helix-ultimate support
 - Joomla Forum: Template discussions
 - GitHub: JoomShaper/helix-ultimate
 
-**Tools Útiles:**
+**Useful Tools:**
 - Browser DevTools (F12) - debugging
-- XAMPP/Local Joomla - testing local
-- Git - control de versiones
-- VS Code/Sublime - editor código
+- XAMPP/Local Joomla - local testing
+- Git - version control
+- VS Code/Sublime - code editor
 
 ---
 
-**Actualizado:** Marzo 2025 | Helix Ultimate 2.x | Joomla 5/6
+**Updated:** March 2025 | Helix Ultimate 2.x | Joomla 5/6

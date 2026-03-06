@@ -1,66 +1,66 @@
-# Guía Rápida - Template Overrides en Joomla 5/6
+# Quick Guide - Template Overrides in Joomla 5/6
 
-## Pasos Básicos para Crear un Override
+## Basic Steps to Create an Override
 
-### 1. Ubicar el Archivo Original
+### 1. Locate the Original File
 ```bash
-# Ejemplo: Artículo individual
+# Example: Single article
 /components/com_content/views/article/tmpl/default.php
 ```
 
-### 2. Crear Estructura en Template
+### 2. Create Structure in Template
 ```
 /templates/cassiopeia/html/
 └── com_content/
     └── article/
-        └── default.php  (copia aquí)
+        └── default.php  (copy here)
 ```
 
-### 3. Copiar y Modificar
-- Copiar archivo original a la ruta override
-- Hacer cambios necesarios
-- Escapar outputs correctamente
-- Documentar cambios en cabecera
+### 3. Copy and Modify
+- Copy original file to the override path
+- Make necessary changes
+- Escape outputs correctly
+- Document changes in header
 
-### 4. Probar
+### 4. Test
 ```bash
-# Limpiar caché en backend: System > Clear Cache
-# O por línea de comando:
+# Clear cache in backend: System > Clear Cache
+# Or via command line:
 php -r "JFactory::getCache()->clean();"
 ```
 
 ---
 
-## Rutas Comunes
+## Common Paths
 
-### Componentes
+### Components
 
 ```
-ARTÍCULO INDIVIDUAL
+SINGLE ARTICLE
 Original:  /components/com_content/views/article/tmpl/default.php
 Override:  /templates/[t]/html/com_content/article/default.php
 
-CATEGORÍA - BLOG
+CATEGORY - BLOG
 Original:  /components/com_content/views/category/tmpl/blog.php
 Override:  /templates/[t]/html/com_content/category/blog.php
 
-CATEGORÍA - BLOG ITEM
+CATEGORY - BLOG ITEM
 Original:  /components/com_content/views/category/tmpl/blog_item.php
 Override:  /templates/[t]/html/com_content/category/blog_item.php
 
-CATEGORÍA - LISTA
+CATEGORY - LIST
 Original:  /components/com_content/views/category/tmpl/default.php
 Override:  /templates/[t]/html/com_content/category/default.php
 ```
 
-### Módulos
+### Modules
 
 ```
 LOGIN
 Original:  /modules/mod_login/tmpl/default.php
 Override:  /templates/[t]/html/mod_login/default.php
 
-MENÚ
+MENU
 Original:  /modules/mod_menu/tmpl/default.php
 Override:  /templates/[t]/html/mod_menu/default.php
 
@@ -72,7 +72,7 @@ Override:  /templates/[t]/html/mod_custom/default.php
 ### JLayout
 
 ```
-IMAGEN DESTACADA
+FEATURED IMAGE
 Original:  /layouts/joomla/content/intro_image.php
 Override:  /templates/[t]/html/layouts/joomla/content/intro_image.php
 
@@ -83,50 +83,50 @@ Override:  /templates/[t]/html/layouts/joomla/content/info_block.php
 
 ---
 
-## Variables Útiles
+## Useful Variables
 
-### Artículos ($this->item)
+### Articles ($this->item)
 
 ```php
-$this->item->id                    // ID del artículo
-$this->item->title                 // Título
+$this->item->id                    // Article ID
+$this->item->title                 // Title
 $this->item->slug                  // URL slug
-$this->item->introtext             // Texto introductorio
-$this->item->text                  // Contenido principal
-$this->item->images                // JSON con imágenes
-$this->item->publish_up            // Fecha publicación
-$this->item->author                // Nombre del autor
-$this->item->author_email          // Email del autor
-$this->item->category_title        // Categoría
-$this->item->jcfields              // Campos personalizados (array)
-$this->item->tags->itemTags        // Tags/etiquetas
-$this->item->link                  // URL del artículo
-$this->item->hits                  // Número de visitas
+$this->item->introtext             // Introductory text
+$this->item->text                  // Main content
+$this->item->images                // JSON with images
+$this->item->publish_up            // Publication date
+$this->item->author                // Author name
+$this->item->author_email          // Author email
+$this->item->category_title        // Category
+$this->item->jcfields              // Custom fields (array)
+$this->item->tags->itemTags        // Tags/labels
+$this->item->link                  // Article URL
+$this->item->hits                  // Number of views
 ```
 
-### Parámetros ($this->params)
+### Parameters ($this->params)
 
 ```php
-$this->params->get('show_author')          // Mostrar autor
-$this->params->get('show_category')        // Mostrar categoría
-$this->params->get('show_publish_date')    // Mostrar fecha
-$this->params->get('show_hits')            // Mostrar visitas
-$this->params->get('show_tags')            // Mostrar tags
+$this->params->get('show_author')          // Show author
+$this->params->get('show_category')        // Show category
+$this->params->get('show_publish_date')    // Show date
+$this->params->get('show_hits')            // Show views
+$this->params->get('show_tags')            // Show tags
 ```
 
-### Módulos ($this->module, $this->params)
+### Modules ($this->module, $this->params)
 
 ```php
-$this->module->id                  // ID del módulo
-$this->module->title               // Título del módulo
-$this->params->get('key')          // Parámetro específico
+$this->module->id                  // Module ID
+$this->module->title               // Module title
+$this->params->get('key')          // Specific parameter
 ```
 
 ---
 
-## Seguridad - Escapado
+## Security - Escaping
 
-### BUENO ✓
+### GOOD
 ```php
 <?php echo htmlspecialchars($item->title, ENT_QUOTES, 'UTF-8'); ?>
 <?php echo JHtml::_('string.truncate', $item->text, 100); ?>
@@ -134,7 +134,7 @@ $this->params->get('key')          // Parámetro específico
 <?php echo JText::_('COM_CONTENT_READ_MORE'); ?>
 ```
 
-### MALO ✗
+### BAD
 ```php
 <?php echo $item->title; ?>
 <?php echo $item->introtext; ?>
@@ -143,26 +143,26 @@ $this->params->get('key')          // Parámetro específico
 
 ---
 
-## Layouts Alternativos
+## Alternative Layouts
 
-### Crear Alternativa
+### Creating an Alternative
 ```
 /templates/cassiopeia/html/mod_login/
-├── default.php     (layout original)
-└── grid.php        (layout alternativo)
+├── default.php     (original layout)
+└── grid.php        (alternative layout)
 ```
 
-### Seleccionar en Backend
-1. Ir a Extensions > Modules
-2. Editar módulo
+### Selecting in Backend
+1. Go to Extensions > Modules
+2. Edit module
 3. Tab "Advanced"
-4. Layout: seleccionar "grid"
+4. Layout: select "grid"
 
 ---
 
-## JLayout - Reutilizable
+## JLayout - Reusable
 
-### Crear
+### Create
 ```php
 // /templates/cassiopeia/html/layouts/joomla/custom/article-card.php
 <?php defined('_JEXEC') or die;
@@ -175,7 +175,7 @@ $content = $displayData['content'] ?? '';
 </article>
 ```
 
-### Usar
+### Use
 ```php
 <?php
 echo JLayoutHelper::render('joomla.custom.article-card', [
@@ -189,26 +189,26 @@ echo JLayoutHelper::render('joomla.custom.article-card', [
 
 ## Troubleshooting
 
-### Override No Funciona
-1. Verificar ruta exacta en `/templates/[activo]/html/`
-2. Limpiar caché: System > Clear Cache
-3. Verificar permisos: `chmod 755 /templates/cassiopeia/html/`
-4. Verificar sintaxis: `php -l archivo.php`
-5. Revisar logs: `/logs/error.log`
+### Override Not Working
+1. Verify exact path in `/templates/[active]/html/`
+2. Clear cache: System > Clear Cache
+3. Verify permissions: `chmod 755 /templates/cassiopeia/html/`
+4. Verify syntax: `php -l file.php`
+5. Check logs: `/logs/error.log`
 
-### Permisos de Archivo
+### File Permissions
 ```bash
-# Carpetas
+# Folders
 chmod 755 /templates/cassiopeia/html/
 
-# Archivos
+# Files
 chmod 644 /templates/cassiopeia/html/com_content/article/default.php
 ```
 
-### Limpiar Caché
+### Clear Cache
 ```bash
 # Backend: System > Clear Cache
-# O línea de comando:
+# Or command line:
 rm -rf cache/*
 ```
 
@@ -216,7 +216,7 @@ rm -rf cache/*
 
 ## Child Template
 
-### Estructura Mínima
+### Minimum Structure
 ```
 /templates/cassiopeia-child/
 ├── html/
@@ -239,7 +239,7 @@ rm -rf cache/*
 
 ---
 
-## Campos Personalizados
+## Custom Fields
 
 ### Override Layout
 ```php
@@ -257,7 +257,7 @@ if (!$field || !$value) return;
 </div>
 ```
 
-### Usar en Artículo
+### Using in an Article
 ```php
 <?php if (!empty($item->jcfields)): ?>
     <?php foreach ($item->jcfields as $field): ?>
@@ -269,25 +269,25 @@ if (!$field || !$value) return;
 
 ---
 
-## Documentar Override
+## Documenting an Override
 
-Siempre incluir cabecera:
+Always include a header:
 
 ```php
 <?php
 /**
- * Override: Nombre descriptivo
+ * Override: Descriptive name
  *
- * Vista original: ruta/original.php
- * Componente: com_content
+ * Original view: path/original.php
+ * Component: com_content
  *
- * CAMBIOS:
- * - Cambio 1
- * - Cambio 2
+ * CHANGES:
+ * - Change 1
+ * - Change 2
  *
- * DEPENDENCIAS: campo personalizado 'autor-bio'
+ * DEPENDENCIES: custom field 'author-bio'
  * JOOMLA: 5.0+
- * FECHA: 2024-03-06
+ * DATE: 2024-03-06
  */
 defined('_JEXEC') or die;
 ```
@@ -296,46 +296,46 @@ defined('_JEXEC') or die;
 
 ## Checklist
 
-- [ ] Ubicar archivo original
-- [ ] Crear estructura `/html/` correcta
-- [ ] Copiar archivo
-- [ ] Realizar modificaciones
-- [ ] Escapar outputs
-- [ ] Documentar cambios
-- [ ] Probar en navegador
-- [ ] Limpiar caché
-- [ ] Verificar en móvil
-- [ ] Usar git/versionado
+- [ ] Locate original file
+- [ ] Create correct `/html/` structure
+- [ ] Copy file
+- [ ] Make modifications
+- [ ] Escape outputs
+- [ ] Document changes
+- [ ] Test in browser
+- [ ] Clear cache
+- [ ] Verify on mobile
+- [ ] Use git/versioning
 
 ---
 
-## Recursos Útiles
+## Useful Resources
 
 - [Joomla Docs - Template Overrides](https://docs.joomla.org/Understanding_Output_Overrides)
 - Backend: Extensions > Templates > [Template] > Create Overrides
-- Debugging: enable debug en configuration.php
+- Debugging: enable debug in configuration.php
 - Logs: /logs/error.log
 
 ---
 
-## Errores Comunes
+## Common Errors
 
-**"Override no aparece"**
-- Verificar ruta exacta
-- Limpiar caché
-- Revisar nombre de template activo
+**"Override not showing"**
+- Verify exact path
+- Clear cache
+- Check active template name
 
-**"Variables vacías"**
-- Verificar $this->item existe
-- Validar antes de usar: `if (!empty($item->field))`
-- Debug con `var_dump($item)`
+**"Empty variables"**
+- Verify $this->item exists
+- Validate before using: `if (!empty($item->field))`
+- Debug with `var_dump($item)`
 
-**"Diseño roto"**
-- Verificar CSS se carga
-- Revisar etiquetas HTML cerradas
-- Validar JavaScript no rompe
+**"Broken layout"**
+- Verify CSS is loading
+- Check closed HTML tags
+- Validate JavaScript is not breaking
 
-**"Permisos"**
+**"Permissions"**
 ```bash
 chmod -R 755 /templates/cassiopeia/html/
 chmod -R 644 /templates/cassiopeia/html/*.php
@@ -343,29 +343,29 @@ chmod -R 644 /templates/cassiopeia/html/*.php
 
 ---
 
-## Comandos Útiles
+## Useful Commands
 
 ```bash
-# Validar sintaxis PHP
+# Validate PHP syntax
 php -l /templates/cassiopeia/html/com_content/article/default.php
 
-# Buscar archivos originales
+# Find original files
 find /components -name "*.php" -path "*/tmpl/*"
 
-# Comparar override con original
+# Compare override with original
 diff /components/com_content/views/article/tmpl/default.php \
      /templates/cassiopeia/html/com_content/article/default.php
 
-# Permisos correctos
+# Correct permissions
 chmod 755 /templates/cassiopeia/html/
 find /templates/cassiopeia/html -type f -exec chmod 644 {} \;
 ```
 
 ---
 
-## Versiones Soportadas
+## Supported Versions
 
 - Joomla 5.0.x
 - Joomla 6.0.x
 
-(Completamente compatible con Joomla 4.x también)
+(Fully compatible with Joomla 4.x as well)

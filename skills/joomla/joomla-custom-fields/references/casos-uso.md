@@ -1,46 +1,46 @@
-# Casos de Uso Prácticos: Custom Fields en Joomla 5/6
+# Practical Use Cases: Custom Fields in Joomla 5/6
 
-## Caso 1: Galería de Imágenes para Artículos
+## Case 1: Image Gallery for Articles
 
-**Objetivo:** Permitir autores agregar múltiples imágenes a cada artículo con descripción.
+**Objective:** Allow authors to add multiple images to each article with descriptions.
 
-### Campos Necesarios
+### Required Fields
 
-**Campo 1: Imágenes** (Tipo: List of images)
+**Field 1: Images** (Type: List of images)
 ```
-Nombre: articulo_galeria
-Etiqueta: Galería de Imágenes
-Directorio: images/galeria
-Múltiple: Sí
-Requerido: No
+Name: articulo_galeria
+Label: Image Gallery
+Directory: images/galeria
+Multiple: Yes
+Required: No
 Access: Public
 ```
 
-**Campo 2: Descripciones** (Tipo: Repeatable)
+**Field 2: Descriptions** (Type: Repeatable)
 ```
-Nombre: galeria_descripciones
-Etiqueta: Descripciones de Imágenes
-Campo interno: Textarea
-Máximo items: 10
-Requerido: No
+Name: galeria_descripciones
+Label: Image Descriptions
+Internal field: Textarea
+Max items: 10
+Required: No
 ```
 
-### Implementación en Template
+### Template Implementation
 
 ```php
 <?php
-// Archivo: templates/mytemplate/html/com_content/article/default.php
+// File: templates/mytemplate/html/com_content/article/default.php
 
-// Crear índice de campos
+// Create field index
 $fields = [];
 foreach ($this->item->jcfields as $field) {
     $fields[$field->name] = $field;
 }
 
-// Mostrar galería
+// Display gallery
 if (isset($fields['articulo_galeria']) && !empty($fields['articulo_galeria']->value)) {
     echo '<div class="article-gallery">';
-    echo '<h3>Galería</h3>';
+    echo '<h3>Gallery</h3>';
 
     $images = json_decode($fields['articulo_galeria']->value);
     $descriptions = [];
@@ -65,21 +65,21 @@ if (isset($fields['articulo_galeria']) && !empty($fields['articulo_galeria']->va
 ?>
 ```
 
-## Caso 2: SEO Personalizado por Artículo
+## Case 2: Custom SEO per Article
 
-**Objetivo:** Agregar campos SEO específicos más allá de los estándar de Joomla.
+**Objective:** Add specific SEO fields beyond Joomla's standard ones.
 
-### Campos Necesarios
+### Required Fields
 
 ```
-1. meta_description - Text (140-160 caracteres)
+1. meta_description - Text (140-160 characters)
 2. keywords_seo - Textarea
 3. canonical_url - URL Field
 4. index_page - Radio (Index/Noindex)
 5. follow_links - Radio (Follow/Nofollow)
 ```
 
-### Plugin que Inyecta Meta Tags
+### Plugin that Injects Meta Tags
 
 ```php
 <?php
@@ -105,7 +105,7 @@ class SystemSEO extends CMSPlugin {
             return;
         }
 
-        // Obtén el artículo actual
+        // Get the current article
         $view = $app->input->getCmd('view');
         $id = $app->input->getInt('id');
 
@@ -113,7 +113,7 @@ class SystemSEO extends CMSPlugin {
             return;
         }
 
-        // Carga artículo con campos
+        // Load article with fields
         $model = $app->bootComponent('com_content')
             ->getMVCFactory()
             ->createModel('Article', 'Administrator');
@@ -122,7 +122,7 @@ class SystemSEO extends CMSPlugin {
         JLoader::register('FieldsHelper', JPATH_ADMINISTRATOR . '/components/com_fields/helpers/fields.php');
         $fields = FieldsHelper::getFields('com_content.article', $article, true);
 
-        // Indexa campos
+        // Index fields
         $fieldMap = [];
         foreach ($fields as $field) {
             $fieldMap[$field->name] = $field;
@@ -158,22 +158,22 @@ class SystemSEO extends CMSPlugin {
 ?>
 ```
 
-## Caso 3: Información Adicional en Registro de Usuario
+## Case 3: Additional Information in User Registration
 
-**Objetivo:** Recopilar información personalizada en el registro frontend.
+**Objective:** Collect custom information during frontend registration.
 
-### Campos para Usuarios
+### User Fields
 
 ```
 1. empresa - Text
 2. puesto_laboral - Text
-3. numero_telefono - Text (validación numérica)
-4. sector_industria - List (Seleccionar sector)
+3. numero_telefono - Text (numeric validation)
+4. sector_industria - List (Select sector)
 5. politica_privacidad - Checkbox
 6. interes_newsletter - Checkbox
 ```
 
-### Plugin para Validación Frontend
+### Frontend Validation Plugin
 
 ```php
 <?php
@@ -182,21 +182,21 @@ class PlgUserCustomFields extends CMSPlugin {
     public function onUserBeforeSave($user, $isnew, &$error) {
         $app = Factory::getApplication();
 
-        // Validar campos personalizados
+        // Validate custom fields
         if (!isset($user['numero_telefono']) || empty($user['numero_telefono'])) {
-            $error[] = 'Teléfono es requerido';
+            $error[] = 'Phone number is required';
             return false;
         }
 
-        // Validar teléfono
+        // Validate phone
         if (!preg_match('/^[0-9]{10,}$/', $user['numero_telefono'])) {
-            $error[] = 'Teléfono inválido';
+            $error[] = 'Invalid phone number';
             return false;
         }
 
-        // Validar política privacidad
+        // Validate privacy policy
         if (!isset($user['politica_privacidad']) || $user['politica_privacidad'] !== '1') {
-            $error[] = 'Debes aceptar la política de privacidad';
+            $error[] = 'You must accept the privacy policy';
             return false;
         }
 
@@ -208,7 +208,7 @@ class PlgUserCustomFields extends CMSPlugin {
             return false;
         }
 
-        // Guardar campos personalizados
+        // Save custom fields
         $db = Factory::getContainer()->get(DatabaseInterface::class);
 
         $customFields = [
@@ -217,7 +217,7 @@ class PlgUserCustomFields extends CMSPlugin {
         ];
 
         foreach ($customFields as $fieldName => $value) {
-            // Obtén field_id
+            // Get field_id
             $query = $db->getQuery(true)
                 ->select('id')
                 ->from($db->quoteName('#__fields'))
@@ -228,7 +228,7 @@ class PlgUserCustomFields extends CMSPlugin {
             $fieldId = $db->loadResult();
 
             if ($fieldId) {
-                // Guarda valor
+                // Save value
                 $this->saveFieldValue($fieldId, $user['id'], $value);
             }
         }
@@ -239,7 +239,7 @@ class PlgUserCustomFields extends CMSPlugin {
     private function saveFieldValue($fieldId, $userId, $value) {
         $db = Factory::getContainer()->get(DatabaseInterface::class);
 
-        // Busca existente
+        // Check for existing value
         $query = $db->getQuery(true)
             ->select('id')
             ->from($db->quoteName('#__fields_values'))
@@ -267,21 +267,21 @@ class PlgUserCustomFields extends CMSPlugin {
 ?>
 ```
 
-## Caso 4: Tipología de Contenido por Categoría
+## Case 4: Content Typology by Category
 
-**Objetivo:** Diferentes tipos de campos según la categoría del artículo.
+**Objective:** Different field types depending on the article category.
 
-### Configuración
+### Configuration
 
-- **Categoría "Recetas":** Campos para Ingredientes, Tiempo Preparación, Dificultad
-- **Categoría "Noticias":** Campos para Fuente, Verificado, Editor
-- **Categoría "Productos":** Campos para Precio, Stock, Proveedor
+- **"Recipes" Category:** Fields for Ingredients, Preparation Time, Difficulty
+- **"News" Category:** Fields for Source, Verified, Editor
+- **"Products" Category:** Fields for Price, Stock, Supplier
 
-### Template Dinámico
+### Dynamic Template
 
 ```php
 <?php
-// Archivo: templates/mytemplate/html/com_content/article/default.php
+// File: templates/mytemplate/html/com_content/article/default.php
 
 $categoryId = $this->item->catid;
 $fields = [];
@@ -291,15 +291,15 @@ foreach ($this->item->jcfields as $field) {
 }
 
 switch ($categoryId) {
-    case 5: // Recetas
+    case 5: // Recipes
         echo $this->renderRecipe($fields);
         break;
 
-    case 3: // Noticias
+    case 3: // News
         echo $this->renderNews($fields);
         break;
 
-    case 7: // Productos
+    case 7: // Products
         echo $this->renderProduct($fields);
         break;
 
@@ -311,12 +311,12 @@ private function renderRecipe($fields) {
     $html = '<div class="recipe-content">';
 
     if (isset($fields['ingredientes'])) {
-        $html .= '<h3>Ingredientes</h3>';
+        $html .= '<h3>Ingredients</h3>';
         $html .= '<ul>' . nl2br($fields['ingredientes']->value) . '</ul>';
     }
 
     if (isset($fields['tiempo_preparacion'])) {
-        $html .= '<p class="time">' . htmlspecialchars($fields['tiempo_preparacion']->value) . ' minutos</p>';
+        $html .= '<p class="time">' . htmlspecialchars($fields['tiempo_preparacion']->value) . ' minutes</p>';
     }
 
     if (isset($fields['dificultad'])) {
@@ -336,7 +336,7 @@ private function renderProduct($fields) {
 
     if (isset($fields['stock'])) {
         $stock = (int)$fields['stock']->rawvalue;
-        $status = $stock > 0 ? '<span class="in-stock">Disponible</span>' : '<span class="out-stock">Agotado</span>';
+        $status = $stock > 0 ? '<span class="in-stock">Available</span>' : '<span class="out-stock">Out of Stock</span>';
         $html .= '<p>' . $status . '</p>';
     }
 
@@ -346,23 +346,23 @@ private function renderProduct($fields) {
 ?>
 ```
 
-## Caso 5: Contactos con Información Extendida
+## Case 5: Contacts with Extended Information
 
-**Objetivo:** Extender contactos con redes sociales, especialidades, etc.
+**Objective:** Extend contacts with social media, specialties, etc.
 
-### Campos para Contactos
+### Contact Fields
 
 ```
 1. especialidad - List
 2. experiencia_anos - Integer
 3. certificaciones - Repeatable (name, url)
 4. linkedin - URL
-5. twitter - Text (@usuario)
+5. twitter - Text (@username)
 6. foto_perfil - Media
 7. bio_extendida - Editor
 ```
 
-### Módulo que Muestra Contacto
+### Module that Displays Contact
 
 ```php
 <?php
@@ -373,7 +373,7 @@ class ModContactExtendedHelper {
     public static function getContactWithFields($contactId) {
         $app = Factory::getApplication();
 
-        // Obtén contacto
+        // Get contact
         $model = $app->bootComponent('com_contact')
             ->getMVCFactory()
             ->createModel('Contact', 'Administrator');
@@ -384,7 +384,7 @@ class ModContactExtendedHelper {
             return null;
         }
 
-        // Carga campos
+        // Load fields
         JLoader::register('FieldsHelper', JPATH_ADMINISTRATOR . '/components/com_fields/helpers/fields.php');
         $contact->jcfields = FieldsHelper::getFields('com_contact.contact', $contact, true);
 
@@ -419,13 +419,13 @@ foreach ($this->contact->jcfields as $field) {
 
     <?php if (isset($fields['especialidad'])): ?>
         <p class="specialty">
-            <strong>Especialidad:</strong> <?php echo htmlspecialchars($fields['especialidad']->value); ?>
+            <strong>Specialty:</strong> <?php echo htmlspecialchars($fields['especialidad']->value); ?>
         </p>
     <?php endif; ?>
 
     <?php if (isset($fields['experiencia_anos'])): ?>
         <p class="experience">
-            <strong>Años de Experiencia:</strong> <?php echo htmlspecialchars($fields['experiencia_anos']->value); ?>
+            <strong>Years of Experience:</strong> <?php echo htmlspecialchars($fields['experiencia_anos']->value); ?>
         </p>
     <?php endif; ?>
 
@@ -447,20 +447,20 @@ foreach ($this->contact->jcfields as $field) {
 </div>
 ```
 
-## Caso 6: Dashboard de Usuario con Campos Personalizados
+## Case 6: User Dashboard with Custom Fields
 
-**Objetivo:** Mostrar información personalizada en el perfil del usuario.
+**Objective:** Display custom information in the user profile.
 
-### Acceso a Campos en Perfil Frontend
+### Frontend Profile Field Access
 
 ```php
 <?php
-// En template de usuario
+// In user template
 
 $user = Factory::getUser();
 
 if (!$user->id) {
-    echo 'No autenticado';
+    echo 'Not authenticated';
     return;
 }
 
@@ -474,39 +474,39 @@ foreach ($fields as $field) {
 ?>
 
 <div class="user-dashboard">
-    <h1>Mi Perfil</h1>
+    <h1>My Profile</h1>
 
     <div class="user-info">
-        <p><strong>Nombre:</strong> <?php echo htmlspecialchars($user->name); ?></p>
+        <p><strong>Name:</strong> <?php echo htmlspecialchars($user->name); ?></p>
         <p><strong>Email:</strong> <?php echo htmlspecialchars($user->email); ?></p>
 
         <?php if (isset($fieldMap['empresa'])): ?>
-            <p><strong>Empresa:</strong> <?php echo htmlspecialchars($fieldMap['empresa']->value); ?></p>
+            <p><strong>Company:</strong> <?php echo htmlspecialchars($fieldMap['empresa']->value); ?></p>
         <?php endif; ?>
 
         <?php if (isset($fieldMap['puesto_laboral'])): ?>
-            <p><strong>Puesto:</strong> <?php echo htmlspecialchars($fieldMap['puesto_laboral']->value); ?></p>
+            <p><strong>Position:</strong> <?php echo htmlspecialchars($fieldMap['puesto_laboral']->value); ?></p>
         <?php endif; ?>
     </div>
 </div>
 ```
 
-## Caso 7: REST API con Custom Fields
+## Case 7: REST API with Custom Fields
 
-**Objetivo:** Exponer campos personalizados a través de REST API.
+**Objective:** Expose custom fields through the REST API.
 
-### Extensión de Component JSON Response
+### Extending Component JSON Response
 
 ```php
 <?php
-// En tu componente, al cargar elemento para JSON
+// In your component, when loading an element for JSON
 
 $article = $this->model->getItem($id);
 
 JLoader::register('FieldsHelper', JPATH_ADMINISTRATOR . '/components/com_fields/helpers/fields.php');
 $fields = FieldsHelper::getFields('com_content.article', $article, false);
 
-// Agrega campos al response
+// Add fields to the response
 $response = [];
 foreach ($fields as $field) {
     $response['custom_fields'][$field->name] = $field->rawvalue;
@@ -515,11 +515,11 @@ foreach ($fields as $field) {
 return json_encode($response);
 ```
 
-## Mejores Prácticas en Casos de Uso
+## Best Practices for Use Cases
 
-1. **Validación:** Siempre valida server-side, no confíes solo en validación frontend
-2. **Permisos:** Usa niveles de acceso apropiados para campos sensibles
-3. **Performance:** Cachea resultados de getFields() si se llama múltiples veces
-4. **JSON:** Para datos complejos, usa JSON y json_decode en PHP
-5. **Documentación:** Documenta qué campos requiere cada componente/módulo
-6. **Testing:** Prueba campos con diferentes tipos de datos y permisos
+1. **Validation:** Always validate server-side, do not rely solely on frontend validation
+2. **Permissions:** Use appropriate access levels for sensitive fields
+3. **Performance:** Cache getFields() results if called multiple times
+4. **JSON:** For complex data, use JSON and json_decode in PHP
+5. **Documentation:** Document which fields each component/module requires
+6. **Testing:** Test fields with different data types and permissions

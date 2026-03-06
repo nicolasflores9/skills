@@ -1,105 +1,105 @@
-# Archivos de Referencias: Plugins Joomla 5/6
+# Reference Files: Joomla 5/6 Plugins
 
-Esta carpeta contiene documentación de referencia y ejemplos adicionales para complementar el contenido principal de la skill.
+This folder contains reference documentation and additional examples to complement the main skill content.
 
-## Archivos Disponibles
+## Available Files
 
 ### 1. REFERENCIA_RAPIDA.md
-**Propósito:** Consulta rápida durante el desarrollo
-**Contenido:**
-- Checklist de creación de plugins
-- Estructura mínima copiable
-- Tabla de eventos principales
-- Servicios comunes (DB, User, App, etc.)
-- Ejemplos de parámetros
-- Validación y filtrado
-- Queries SQL
-- Debugging rápido
-- Errores comunes y soluciones
-- Tablas de referencia
+**Purpose:** Quick reference during development
+**Contents:**
+- Plugin creation checklist
+- Minimal copyable structure
+- Main events table
+- Common services (DB, User, App, etc.)
+- Parameter examples
+- Validation and filtering
+- SQL queries
+- Quick debugging
+- Common errors and solutions
+- Reference tables
 
-**Ideal para:** Buscar rápidamente cómo hacer algo específico
+**Ideal for:** Quickly finding how to do something specific
 
 ### 2. SNIPPETS.md
-**Propósito:** Código listo para copiar y pegar
-**Contenido:**
-- Template mínimo de plugin (manifest + provider + Extension)
-- Acceso a servicios comunes (BD, usuario, aplicación, cache)
-- Patrones de eventos comunes
-- Validación y filtrado de entrada
-- Manejo de errores
-- Internacionalización
-- Configuración de plugin
-- Queries avanzadas
-- Inyección de dependencias
-- Checklist de implementación
+**Purpose:** Ready-to-copy-and-paste code
+**Contents:**
+- Minimal plugin template (manifest + provider + Extension)
+- Accessing common services (DB, user, application, cache)
+- Common event patterns
+- Input validation and filtering
+- Error handling
+- Internationalization
+- Plugin configuration
+- Advanced queries
+- Dependency injection
+- Implementation checklist
 
-**Ideal para:** Copiar código base rápidamente y adaptarlo
+**Ideal for:** Quickly copying base code and adapting it
 
 ### 3. EJEMPLOS_AVANZADOS.md
-**Propósito:** Ejemplos completos de plugins reales
-**Contenido:**
-- Plugin Sistema con Logger
-- Plugin Usuario con Email
-- Plugin con DI avanzada
-- Plugin Contenido con Event Classes tipadas
-- Plugin con Validación
-- Plugin Sistema con Múltiples Eventos
+**Purpose:** Complete examples of real plugins
+**Contents:**
+- System Plugin with Logger
+- User Plugin with Email
+- Plugin with advanced DI
+- Content Plugin with typed Event Classes
+- Plugin with Validation
+- System Plugin with Multiple Events
 
-**Ideal para:** Aprender patrones avanzados con ejemplos funcionales
+**Ideal for:** Learning advanced patterns with functional examples
 
 ### 4. TROUBLESHOOTING.md
-**Propósito:** Resolución de problemas
-**Contenido:**
-- Problemas de instalación
-- Errores de clase/namespace
-- Problemas de eventos
-- Configuración y traducciones
-- Rendimiento
-- Seguridad
-- Compatibilidad
-- Debugging efectivo
+**Purpose:** Problem resolution
+**Contents:**
+- Installation problems
+- Class/namespace errors
+- Event problems
+- Configuration and translations
+- Performance
+- Security
+- Compatibility
+- Effective debugging
 
-**Ideal para:** Cuando algo no funciona y necesitas soluciones
+**Ideal for:** When something is not working and you need solutions
 
-## Flujo de Uso Recomendado
+## Recommended Usage Flow
 
-### Nuevo en plugins Joomla?
-1. Lee SKILL.md (contenido principal)
-2. Consulta REFERENCIA_RAPIDA.md para estructura
-3. Copia un template de SNIPPETS.md
-4. Adapta según tu caso de uso
+### New to Joomla plugins?
+1. Read SKILL.md (main content)
+2. Consult REFERENCIA_RAPIDA.md for structure
+3. Copy a template from SNIPPETS.md
+4. Adapt according to your use case
 
-### Necesitas crear algo específico?
-1. Abre REFERENCIA_RAPIDA.md para la tabla de eventos
-2. Busca patrón similar en SNIPPETS.md
-3. Si necesitas algo más avanzado, revisa EJEMPLOS_AVANZADOS.md
+### Need to create something specific?
+1. Open REFERENCIA_RAPIDA.md for the events table
+2. Look for a similar pattern in SNIPPETS.md
+3. If you need something more advanced, check EJEMPLOS_AVANZADOS.md
 
-### Tienes un problema?
-1. Abre TROUBLESHOOTING.md
-2. Encuentra tu síntoma
-3. Aplica las soluciones sugeridas
-4. Revisa en SNIPPETS.md si necesitas código correcto
+### Having a problem?
+1. Open TROUBLESHOOTING.md
+2. Find your symptom
+3. Apply the suggested solutions
+4. Check SNIPPETS.md if you need correct code
 
-### Quieres aprender patrones avanzados?
-1. Lee secciones relevantes en SKILL.md
-2. Estudia EJEMPLOS_AVANZADOS.md
-3. Adapta al tu caso de uso
+### Want to learn advanced patterns?
+1. Read relevant sections in SKILL.md
+2. Study EJEMPLOS_AVANZADOS.md
+3. Adapt to your use case
 
-## Convenciones de Nomenclatura
+## Naming Conventions
 
-### Grupos de Plugins
-- **system** - Eventos del sistema
-- **content** - Eventos de contenido/artículos
-- **user** - Eventos de usuario
-- **editor** - Eventos del editor
-- **installer** - Eventos de instalación
+### Plugin Groups
+- **system** - System events
+- **content** - Content/article events
+- **user** - User events
+- **editor** - Editor events
+- **installer** - Installation events
 
 ### Naming
 ```
-plg_[grupo]_[nombre]
+plg_[group]_[name]
 
-Ejemplos:
+Examples:
 - plg_system_helloworld
 - plg_content_shortcodes
 - plg_user_email
@@ -107,94 +107,94 @@ Ejemplos:
 
 ### Namespaces
 ```
-MyCompany\Plugin\[Grupo]\[Nombre]
+MyCompany\Plugin\[Group]\[Name]
 
-Ejemplos:
+Examples:
 - MyCompany\Plugin\System\Helloworld
 - MyCompany\Plugin\Content\Shortcodes
 - MyCompany\Plugin\User\Email
 ```
 
-## Eventos por Categoría
+## Events by Category
 
-### Eventos del Sistema (onXxx)
+### System Events (onXxx)
 onAfterInitialise, onAfterRoute, onAfterDispatch, onBeforeRender, onBeforeCompileHead, onAfterRender
 
-### Eventos de Contenido (onXxx)
+### Content Events (onXxx)
 onContentPrepare, onContentAfterTitle, onContentBeforeSave, onContentAfterSave, onContentBeforeDelete, onContentAfterDelete, onContentChangeState
 
-### Eventos de Usuario (onXxx)
+### User Events (onXxx)
 onUserBeforeSave, onUserAfterSave, onUserBeforeDelete, onUserAfterDelete, onUserLogin, onUserLogout
 
-## Estructura Recomendada
+## Recommended Structure
 
 ```
-plg_grupo_nombre/
-├── manifest.xml              # Configuración e instalación
+plg_group_name/
+├── manifest.xml              # Configuration and installation
 ├── services/
-│   └── provider.php          # Inyección de dependencias
+│   └── provider.php          # Dependency injection
 ├── src/
 │   ├── Extension/
-│   │   └── Nombre.php       # Clase principal
-│   ├── Event/               # Opcional: Event classes personalizadas
-│   └── Helper/              # Opcional: Clases auxiliares
+│   │   └── Name.php         # Main class
+│   ├── Event/               # Optional: Custom event classes
+│   └── Helper/              # Optional: Helper classes
 └── language/
     ├── en-GB/
-    │   ├── plg_grupo_nombre.ini
-    │   └── plg_grupo_nombre.sys.ini
+    │   ├── plg_group_name.ini
+    │   └── plg_group_name.sys.ini
     └── es-ES/
-        ├── plg_grupo_nombre.ini
-        └── plg_grupo_nombre.sys.ini
+        ├── plg_group_name.ini
+        └── plg_group_name.sys.ini
 ```
 
-## Checklist Rápido
+## Quick Checklist
 
-Para crear un plugin nuevoen 5 minutos:
+To create a new plugin in 5 minutes:
 
-1. [ ] Crear carpeta: `plugins/[grupo]/[nombre]/`
-2. [ ] Copiar template de manifest.xml de SNIPPETS.md
-3. [ ] Copiar template de services/provider.php
-4. [ ] Copiar template de Extension class
-5. [ ] Crear archivos .ini en language/en-GB/
-6. [ ] Cambiar namespace en 3 archivos (manifest, provider, Extension)
-7. [ ] Panel Control > Extensiones > Plugins > Habilitar
-8. [ ] Verificar en logs/joomla.log
+1. [ ] Create folder: `plugins/[group]/[name]/`
+2. [ ] Copy manifest.xml template from SNIPPETS.md
+3. [ ] Copy services/provider.php template
+4. [ ] Copy Extension class template
+5. [ ] Create .ini files in language/en-GB/
+6. [ ] Change namespace in 3 files (manifest, provider, Extension)
+7. [ ] Control Panel > Extensions > Plugins > Enable
+8. [ ] Verify in logs/joomla.log
 
-## Recursos Externos
+## External Resources
 
-- [Joomla Manual Oficial](https://manual.joomla.org/)
-- [Documentación de Plugins](https://docs.joomla.org/Plugin)
+- [Official Joomla Manual](https://manual.joomla.org/)
+- [Plugin Documentation](https://docs.joomla.org/Plugin)
 - [Joomla API Documentation](https://api.joomla.org/)
-- [Forum de la Comunidad](https://forum.joomla.org/)
+- [Community Forum](https://forum.joomla.org/)
 
-## Versiones Soportadas
+## Supported Versions
 
-Esta documentación cubre:
+This documentation covers:
 - Joomla 5.0+
-- Joomla 6.0+ (cuando esté disponible)
+- Joomla 6.0+ (when available)
 
-Características específicas:
+Specific features:
 - SubscriberInterface: Joomla 4.4+
 - Event Classes: Joomla 5.2+
 - PSR-4 Namespaces: Joomla 4.0+
 
-## Historial de Versiones
+## Version History
 
-**v1.0.0** - 6 Marzo 2025
-- Documentación inicial completa
-- 5 archivos de referencias
-- Cubrimiento de Joomla 5/6
-- 80+ ejemplos de código
+**v1.0.0** - March 6, 2025
+- Complete initial documentation
+- 5 reference files
+- Joomla 5/6 coverage
+- 80+ code examples
 
-## Contribuciones
+## Contributions
 
-Si encuentras errores o tienes sugerencias, por favor:
-1. Reporta el problema
-2. Proporciona ejemplos de código
-3. Sugiere mejoras
+If you find errors or have suggestions, please:
+1. Report the issue
+2. Provide code examples
+3. Suggest improvements
 
 ---
 
-**Última actualización:** 6 de Marzo 2025
-**Versión de documentación:** 1.0.0
-**Enfoque:** Joomla 5/6 - Patrones Modernos
+**Last updated:** March 6, 2025
+**Documentation version:** 1.0.0
+**Focus:** Joomla 5/6 - Modern Patterns

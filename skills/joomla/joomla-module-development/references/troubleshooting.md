@@ -1,76 +1,76 @@
-# Troubleshooting y Casos Comunes
+# Troubleshooting and Common Cases
 
-## Problemas de Instalación
+## Installation Problems
 
-### Error: "Class not found" al instalar
+### Error: "Class not found" during installation
 
-**Causa**: El namespace en manifest.xml no coincide con la estructura de carpetas.
+**Cause**: The namespace in manifest.xml does not match the folder structure.
 
-**Solución**:
-- Verificar que `namespace path="src"` esté en manifest.xml
-- Confirmar que `Joomla\Module\[ModuleName]` coincida con las clases en src/
-- La ruta debe ser: `src/Dispatcher/Dispatcher.php` → `Joomla\Module\[ModuleName]\Dispatcher\Dispatcher`
+**Solution**:
+- Verify that `namespace path="src"` is in manifest.xml
+- Confirm that `Joomla\Module\[ModuleName]` matches the classes in src/
+- The path should be: `src/Dispatcher/Dispatcher.php` → `Joomla\Module\[ModuleName]\Dispatcher\Dispatcher`
 
 ```xml
-<!-- Correcto -->
+<!-- Correct -->
 <namespace path="src">Joomla\Module\MiModulo</namespace>
 
-<!-- Incorrecto - falta path -->
+<!-- Incorrect - missing path -->
 <namespace>Joomla\Module\MiModulo</namespace>
 ```
 
 ### Error: "Module file not found"
 
-**Causa**: El archivo principal `mod_[nombre].php` no existe o no está registrado.
+**Cause**: The main file `mod_[name].php` does not exist or is not registered.
 
-**Solución**:
+**Solution**:
 ```xml
-<!-- En manifest.xml debe estar: -->
+<!-- In manifest.xml it must be: -->
 <files>
     <filename module="mod_mimodulo">mod_mimodulo.php</filename>
 </files>
 
-<!-- El archivo debe existir en raíz del módulo -->
+<!-- The file must exist in the module root -->
 mod_mimodulo/
-├── mod_mimodulo.php    ← AQUÍ
+├── mod_mimodulo.php    ← HERE
 ├── manifest.xml
 └── ...
 ```
 
-### Error: "Invalid manifest" durante instalación
+### Error: "Invalid manifest" during installation
 
-**Causa**: Errores de sintaxis en XML.
+**Cause**: XML syntax errors.
 
-**Solución**:
-- Validar XML con validador online (xmlvalidation.com)
-- Verificar caracteres especiales: `&` debe ser `&amp;`
-- Cerrar todas las etiquetas
-- UTF-8 encoding declarado: `<?xml version="1.0" encoding="UTF-8"?>`
+**Solution**:
+- Validate XML with an online validator (xmlvalidation.com)
+- Check special characters: `&` must be `&amp;`
+- Close all tags
+- UTF-8 encoding declared: `<?xml version="1.0" encoding="UTF-8"?>`
 
-## Problemas de Renderizado
+## Rendering Problems
 
-### El módulo no aparece en el frontend
+### The module does not appear on the frontend
 
 **Checklist**:
-1. ¿Está el módulo publicado? (Extensiones → Módulos)
-2. ¿Está asignado a una posición? (editar módulo)
-3. ¿Está la posición en el template? (System Templates)
-4. ¿Está habilitado para el menú actual?
+1. Is the module published? (Extensions → Modules)
+2. Is it assigned to a position? (edit module)
+3. Is the position in the template? (System Templates)
+4. Is it enabled for the current menu?
 
 **Debug**:
 ```php
 <?php
-// En tmpl/default.php
-echo '<!-- Módulo cargado -->';
+// In tmpl/default.php
+echo '<!-- Module loaded -->';
 var_dump($displayData);
 ?>
 ```
 
-### El template no se renderiza
+### The template does not render
 
-**Causa**: Dispatcher no prepara datos para el template.
+**Cause**: Dispatcher does not prepare data for the template.
 
-**Solución**:
+**Solution**:
 ```php
 <?php
 namespace Joomla\Module\Mimodulo\Dispatcher;
@@ -80,35 +80,35 @@ class Dispatcher extends AbstractModuleDispatcher
     protected function getLayoutData(): array
     {
         $data = parent::getLayoutData();
-        // IMPORTANTE: agregar datos aquí
+        // IMPORTANT: add data here
         $data['items'] = $this->helper->getItems();
         return $data;
     }
 }
 ```
 
-### Error: "Undefined variable" en template
+### Error: "Undefined variable" in template
 
-**Causa**: Variable no viene desde getLayoutData().
+**Cause**: Variable does not come from getLayoutData().
 
-**Solución**:
-- Todas las variables deben estar en `$displayData`
-- Acceder como: `$displayData['key']`
-- NO usar `$variable` directamente
+**Solution**:
+- All variables must be in `$displayData`
+- Access as: `$displayData['key']`
+- Do NOT use `$variable` directly
 
 ```php
 <?php
-// INCORRECTO
+// INCORRECT
 echo $items;  // undefined
 
-// CORRECTO
+// CORRECT
 echo $displayData['items'];
 ?>
 ```
 
-## Problemas de Base de Datos
+## Database Problems
 
-### Query no devuelve resultados
+### Query returns no results
 
 **Debug**:
 ```php
@@ -121,7 +121,7 @@ public function getItems($limit = 10)
         ->where($this->db->quoteName('state') . ' = 1')
         ->setLimit($limit);
 
-    // Log de la query
+    // Log the query
     \Joomla\CMS\Log\Log::add(
         'SQL: ' . $query->__toString(),
         \Joomla\CMS\Log\Log::DEBUG,
@@ -133,55 +133,55 @@ public function getItems($limit = 10)
 ?>
 ```
 
-### Error SQL con caracteres especiales
+### SQL error with special characters
 
-**Causa**: No usar `quoteName()` en identificadores.
+**Cause**: Not using `quoteName()` on identifiers.
 
-**Solución**:
+**Solution**:
 ```php
 <?php
-// INCORRECTO - falla con caracteres especiales
+// INCORRECT - fails with special characters
 ->where('state = 1')
 
-// CORRECTO
+// CORRECT
 ->where($this->db->quoteName('state') . ' = 1')
 
-// Con variables
+// With variables
 ->where($this->db->quoteName('title') . ' = ' . $this->db->quote($value))
 ?>
 ```
 
-### La tabla personalizada no existe
+### Custom table does not exist
 
-**Causa**: Falta el prefijo `#__` de Joomla.
+**Cause**: Missing the Joomla `#__` prefix.
 
-**Solución**:
+**Solution**:
 ```php
 <?php
-// INCORRECTO
+// INCORRECT
 ->from('mi_tabla')
 
-// CORRECTO - usa prefijo dinámico
+// CORRECT - uses dynamic prefix
 ->from($this->db->quoteName('#__mi_tabla'))
 ?>
 ```
 
-## Problemas de Parámetros
+## Parameter Problems
 
-### Los parámetros no se guardan
+### Parameters are not saving
 
-**Causa**: Los campos en manifest.xml no tienen el fieldset correcto.
+**Cause**: Fields in manifest.xml do not have the correct fieldset.
 
-**Solución**:
+**Solution**:
 ```xml
-<!-- INCORRECTO - fieldset vacío -->
+<!-- INCORRECT - empty fieldset -->
 <config>
     <fields>
         <field name="titulo" type="text" />
     </fields>
 </config>
 
-<!-- CORRECTO -->
+<!-- CORRECT -->
 <config>
     <fields name="params">
         <fieldset name="basic">
@@ -191,11 +191,11 @@ public function getItems($limit = 10)
 </config>
 ```
 
-### El parámetro siempre devuelve el default
+### Parameter always returns the default
 
-**Causa**: El nombre en manifest.xml no coincide con como se accede.
+**Cause**: The name in manifest.xml does not match how it is accessed.
 
-**Solución**:
+**Solution**:
 ```xml
 <!-- manifest.xml -->
 <field name="miparametro" type="text" default="valor" />
@@ -203,40 +203,40 @@ public function getItems($limit = 10)
 
 ```php
 <?php
-// En Dispatcher o Helper
+// In Dispatcher or Helper
 $params = $this->module->params;
-$valor = $params->get('miparametro', 'default');  // Nombre debe coincidir
+$valor = $params->get('miparametro', 'default');  // Name must match
 ?>
 ```
 
-## Problemas de Seguridad
+## Security Problems
 
-### XSS en el template
+### XSS in the template
 
-**Síntoma**: JavaScript se ejecuta desde los datos del módulo.
+**Symptom**: JavaScript executes from the module data.
 
-**Causa**: No escapar variables en HTML.
+**Cause**: Not escaping variables in HTML.
 
-**Solución**:
+**Solution**:
 ```php
 <?php
-// INCORRECTO - XSS vulnerable
+// INCORRECT - XSS vulnerable
 echo $item->title;
 
-// CORRECTO
+// CORRECT
 echo htmlspecialchars($item->title, ENT_QUOTES, 'UTF-8');
 
-// O con HTMLHelper
+// Or with HTMLHelper
 use Joomla\CMS\HTML\HTMLHelper;
 echo HTMLHelper::_('string.truncate', $item->title, 50);
 ?>
 ```
 
-### Acceso a datos privados de otros usuarios
+### Access to private data from other users
 
-**Causa**: No validar estado del artículo o permissions.
+**Cause**: Not validating article state or permissions.
 
-**Solución**:
+**Solution**:
 ```php
 <?php
 public function getItems($category = null)
@@ -244,9 +244,9 @@ public function getItems($category = null)
     $query = $this->db->getQuery(true)
         ->select('*')
         ->from($this->db->quoteName('#__articles'))
-        // IMPORTANTE: filtrar por estado
+        // IMPORTANT: filter by state
         ->where($this->db->quoteName('state') . ' = 1')
-        // Y por fecha de publicación
+        // And by publication date
         ->where('NOW() >= ' . $this->db->quoteName('publish_up'))
         ->where('(NOW() <= ' . $this->db->quoteName('publish_down') .
                 ' OR ' . $this->db->quoteName('publish_down') . ' = ' .
@@ -261,24 +261,24 @@ public function getItems($category = null)
 ?>
 ```
 
-## Problemas de Compatibilidad
+## Compatibility Problems
 
-### Módulo funciona en Joomla 5 pero no en 6
+### Module works in Joomla 5 but not in 6
 
-**Causa**: Cambios en APIs deprecadas.
+**Cause**: Changes in deprecated APIs.
 
-**Solución**:
-- Evitar `JFactory::*` - usar inyección de dependencias
-- Evitar métodos deprecated - revisar logs de debug
-- Actualizar namespace paths
+**Solution**:
+- Avoid `JFactory::*` - use dependency injection
+- Avoid deprecated methods - check debug logs
+- Update namespace paths
 
 ```php
 <?php
-// DEPRECATED en J6
+// DEPRECATED in J6
 use Joomla\CMS\Factory;
 $db = Factory::getDbo();
 
-// CORRECTO - inyectar
+// CORRECT - inject
 use Joomla\Database\DatabaseInterface;
 public function __construct(DatabaseInterface $db) {
     $this->db = $db;
@@ -286,42 +286,42 @@ public function __construct(DatabaseInterface $db) {
 ?>
 ```
 
-### El módulo no aparece en listado de instalación
+### The module does not appear in the installation listing
 
-**Causa**: Manifest.xml inválido o carpeta con nombre incorrecto.
+**Cause**: Invalid manifest.xml or incorrectly named folder.
 
-**Solución**:
-- Carpeta debe ser `mod_[nombre]`
-- Verificar manifest.xml con validador XML
-- El atributo type debe ser "module"
+**Solution**:
+- Folder must be `mod_[name]`
+- Validate manifest.xml with XML validator
+- The type attribute must be "module"
 
 ```xml
-<!-- CORRECTO -->
+<!-- CORRECT -->
 <extension type="module" client="site" method="upgrade">
 ```
 
 ## Performance
 
-### El módulo es lento
+### The module is slow
 
-**Soluciones**:
-1. Habilitar cache en manifest.xml:
+**Solutions**:
+1. Enable cache in manifest.xml:
 ```xml
 <field name="cache" type="list" default="1">
     <option value="0">No</option>
-    <option value="1">Sí</option>
+    <option value="1">Yes</option>
 </field>
 ```
 
-2. Limitar queries:
+2. Limit queries:
 ```php
 <?php
-->setLimit(10)  // No cargar 1000 registros
-->select('id, title')  // Solo campos necesarios
+->setLimit(10)  // Do not load 1000 records
+->select('id, title')  // Only necessary fields
 ?>
 ```
 
-3. Usar indexes en BD:
+3. Use DB indexes:
 ```sql
 CREATE INDEX idx_state ON jos_articles (state);
 CREATE INDEX idx_catid ON jos_articles (catid);
@@ -329,11 +329,11 @@ CREATE INDEX idx_catid ON jos_articles (catid);
 
 ## Testing
 
-### Testear sin instalar
+### Test without installing
 
 ```php
 <?php
-// Crear archivo test.php en raíz del módulo
+// Create a test.php file in the module root
 use Joomla\CMS\Factory;
 use Joomla\Module\Mimodulo\Helper\MiHelper;
 
@@ -345,21 +345,21 @@ var_dump($items);
 ?>
 ```
 
-### Logs detallados
+### Detailed logs
 
 ```php
 <?php
-// Agregar a config.php
+// Add to config.php
 public $log_path = '/var/www/html/joomla/logs';
 public $log_everything = true;
 
-// Ver en /logs/joomla.log
+// View in /logs/joomla.log
 ?>
 ```
 
 ---
 
-**Más ayuda**:
+**More help**:
 - Forum: https://forum.joomla.org/
 - Stack Exchange: https://joomla.stackexchange.com/
 - Docs: https://docs.joomla.org/

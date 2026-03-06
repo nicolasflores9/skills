@@ -1,12 +1,12 @@
-# Ejemplos Avanzados de Plugins Joomla 5/6
+# Advanced Examples of Joomla 5/6 Plugins
 
-## 1. Plugin Sistema con Logger y Persistencia
+## 1. System Plugin with Logger and Persistence
 
-### Caso: Plugin de Logging de Eventos
+### Case: Event Logging Plugin
 
-Este plugin registra todos los eventos de usuario que ocurren en el sitio.
+This plugin logs all user events that occur on the site.
 
-**Estructura:**
+**Structure:**
 ```
 plg_system_eventlogger/
 ├── manifest.xml
@@ -28,7 +28,7 @@ plg_system_eventlogger/
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="plugin" group="system">
     <name>PLG_SYSTEM_EVENTLOGGER</name>
-    <author>Tu Nombre</author>
+    <author>Your Name</author>
     <creationDate>2025-03-06</creationDate>
     <copyright>Copyright 2025</copyright>
     <license>GNU General Public License version 2 or later</license>
@@ -109,7 +109,7 @@ class Extension extends CMSPlugin implements SubscriberInterface
 
         $logger->write(
             'USER_LOGIN',
-            'El usuario ' . $response['username'] . ' inició sesión'
+            'User ' . $response['username'] . ' logged in'
         );
     }
 
@@ -120,7 +120,7 @@ class Extension extends CMSPlugin implements SubscriberInterface
         }
 
         $logger = new LoggerHelper();
-        $logger->write('USER_LOGOUT', 'Un usuario cerró sesión');
+        $logger->write('USER_LOGOUT', 'A user logged out');
     }
 
     public function onContentAfterSave(ContentAfterSaveEvent $event)
@@ -134,11 +134,11 @@ class Extension extends CMSPlugin implements SubscriberInterface
         $isNew = $event->getArgument('2');
 
         $logger = new LoggerHelper();
-        $action = $isNew ? 'CREÓ' : 'MODIFICÓ';
+        $action = $isNew ? 'CREATED' : 'MODIFIED';
 
         $logger->write(
             'CONTENT_SAVE',
-            'Un usuario ' . $action . ' artículo: ' . $article->title
+            'A user ' . $action . ' article: ' . $article->title
         );
     }
 }
@@ -154,7 +154,7 @@ use Joomla\CMS\Factory;
 class LoggerHelper
 {
     /**
-     * Escribir en el archivo de log del evento
+     * Write to the event log file
      */
     public function write($eventType, $message)
     {
@@ -178,7 +178,7 @@ class LoggerHelper
 }
 ```
 
-## 2. Plugin de Usuario con Envío de Email
+## 2. User Plugin with Email Sending
 
 **src/Extension/Useremail.php:**
 ```php
@@ -212,7 +212,7 @@ class Extension extends CMSPlugin implements SubscriberInterface
             return;
         }
 
-        // Enviar email al nuevo usuario
+        // Send email to the new user
         $this->sendWelcomeEmail($user);
     }
 
@@ -223,13 +223,13 @@ class Extension extends CMSPlugin implements SubscriberInterface
             $config = Factory::getConfig();
 
             $mail = new Mail();
-            $mail->setSubject($this->params->get('welcome_subject', 'Bienvenido'));
+            $mail->setSubject($this->params->get('welcome_subject', 'Welcome'));
             $mail->addRecipient($user->email);
             $mail->setFrom([
                 $config->get('mailfrom') => $config->get('fromname')
             ]);
 
-            $body = $this->params->get('welcome_message', 'Hola {NAME}');
+            $body = $this->params->get('welcome_message', 'Hello {NAME}');
             $body = str_replace('{NAME}', $user->name, $body);
 
             $mail->setBody($body);
@@ -238,7 +238,7 @@ class Extension extends CMSPlugin implements SubscriberInterface
 
         } catch (\Exception $e) {
             $app->enqueueMessage(
-                'Error enviando email de bienvenida: ' . $e->getMessage(),
+                'Error sending welcome email: ' . $e->getMessage(),
                 'error'
             );
         }
@@ -246,7 +246,7 @@ class Extension extends CMSPlugin implements SubscriberInterface
 }
 ```
 
-## 3. Plugin con Inyección de Dependencias Avanzada
+## 3. Plugin with Advanced Dependency Injection
 
 **services/provider.php:**
 ```php
@@ -263,7 +263,7 @@ class ServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container)
     {
-        // Registrar servicio personalizado
+        // Register custom service
         $container->set(
             'plugin.content.advanced.cache',
             function (Container $c) {
@@ -273,7 +273,7 @@ class ServiceProvider implements ServiceProviderInterface
             }
         );
 
-        // Registrar el plugin con servicios inyectados
+        // Register the plugin with injected services
         $container->set(
             PluginInterface::class,
             function (Container $c) {
@@ -282,7 +282,7 @@ class ServiceProvider implements ServiceProviderInterface
                     (array) PluginHelper::getPlugin('content', 'advanced')
                 );
 
-                // Inyectar el contenedor completo
+                // Inject the full container
                 $plugin->setContainer($c);
 
                 return $plugin;
@@ -321,11 +321,11 @@ class Extension extends CMSPlugin implements SubscriberInterface
     {
         $article = $event->getArgument('0');
 
-        // Acceder a servicios del contenedor
+        // Access services from the container
         $db = $this->getContainer()->get(DatabaseInterface::class);
         $cache = $this->getContainer()->get('plugin.content.advanced.cache');
 
-        // Usar servicios
+        // Use services
         $query = $db->getQuery(true)
             ->select('COUNT(*)')
             ->from($db->quoteName('#__articles'));
@@ -333,13 +333,13 @@ class Extension extends CMSPlugin implements SubscriberInterface
         $db->setQuery($query);
         $count = $db->loadResult();
 
-        // Procesar
+        // Process
         $article->text = '<!-- Articles: ' . $count . ' -->' . $article->text;
     }
 }
 ```
 
-## 4. Plugin de Contenido con Event Classes Tipadas
+## 4. Content Plugin with Typed Event Classes
 
 **src/Extension/ContentprocessorPlus.php:**
 ```php
@@ -365,7 +365,7 @@ class Extension extends CMSPlugin implements SubscriberInterface
     }
 
     /**
-     * Procesar contenido principal
+     * Process main content
      */
     public function onContentPrepare(ContentPrepareEvent $event): void
     {
@@ -375,28 +375,28 @@ class Extension extends CMSPlugin implements SubscriberInterface
             return;
         }
 
-        // Aplicar filtros de seguridad
+        // Apply security filters
         $article->text = $this->sanitizeContent($article->text);
 
-        // Actualizar el evento con el contenido procesado
+        // Update the event with processed content
         $event->setArgument('0', $article);
     }
 
     /**
-     * Agregar contenido después del título
+     * Add content after the title
      */
     public function onContentAfterTitle(ContentAfterTitleEvent $event): void
     {
         $context = $event->getArgument('0');
         $article = $event->getArgument('1');
 
-        // Solo para artículos publicados
+        // Only for published articles
         if ($article->state != 1) {
             return;
         }
 
         $output = '<div class="article-meta">';
-        $output .= 'Por: <span class="author">' . $article->author . '</span>';
+        $output .= 'By: <span class="author">' . $article->author . '</span>';
         $output .= '</div>';
 
         $event->setArgument('2', $output);
@@ -404,14 +404,14 @@ class Extension extends CMSPlugin implements SubscriberInterface
 
     private function sanitizeContent($content)
     {
-        // Aplicar sanitización personalizada
+        // Apply custom sanitization
         $content = strip_tags($content, '<p><br><strong><em><a><ul><li>');
         return $content;
     }
 }
 ```
 
-## 5. Plugin con Validación y Manejo de Errores
+## 5. Plugin with Validation and Error Handling
 
 **src/Extension/Validating.php:**
 ```php
@@ -441,27 +441,27 @@ class Extension extends CMSPlugin implements SubscriberInterface
         $article = $event->getArgument('1');
         $isNew = $event->getArgument('2');
 
-        // Validar que el título no esté vacío
+        // Validate that the title is not empty
         if (empty($article->title)) {
             $app = Factory::getApplication();
             $app->enqueueMessage(
-                'El título del artículo es obligatorio',
+                'The article title is required',
                 'error'
             );
             return false;
         }
 
-        // Validar longitud mínima de contenido
+        // Validate minimum content length
         if (strlen($article->text) < 50) {
             $app = Factory::getApplication();
             $app->enqueueMessage(
-                'El contenido debe tener al menos 50 caracteres',
+                'The content must be at least 50 characters long',
                 'error'
             );
             return false;
         }
 
-        // Agregar metadatos automáticos
+        // Add automatic metadata
         if ($isNew) {
             $user = Factory::getUser();
             $article->created_by = $user->id;
@@ -473,7 +473,7 @@ class Extension extends CMSPlugin implements SubscriberInterface
 }
 ```
 
-## 6. Plugin Sistema con Múltiples Eventos y Prioridades
+## 6. System Plugin with Multiple Events and Priorities
 
 **src/Extension/Multihandler.php:**
 ```php
@@ -494,9 +494,9 @@ class Extension extends CMSPlugin implements SubscriberInterface
     protected $allowLegacyListeners = false;
 
     /**
-     * Eventos con diferentes prioridades
-     * Prioridad baja (0) = ejecuta primero
-     * Prioridad alta (10) = ejecuta último
+     * Events with different priorities
+     * Low priority (0) = executes first
+     * High priority (10) = executes last
      */
     public static function getSubscribedEvents(): array
     {
@@ -511,30 +511,30 @@ class Extension extends CMSPlugin implements SubscriberInterface
 
     public function onAfterInitialise(AfterInitialiseEvent $event): void
     {
-        // Prioridad 0: ejecuta primero
-        // Inicializar configuración global
+        // Priority 0: executes first
+        // Initialize global configuration
     }
 
     public function onAfterRoute(AfterRouteEvent $event): void
     {
-        // Prioridad 5: ejecuta en medio
-        // Procesar ruta resuelta
+        // Priority 5: executes in the middle
+        // Process resolved route
     }
 
     public function onAfterDispatch(AfterDispatchEvent $event): void
     {
-        // Prioridad 10: ejecuta último
-        // Post-procesar despacho
+        // Priority 10: executes last
+        // Post-process dispatch
     }
 
     public function onBeforeRender(BeforeRenderEvent $event): void
     {
-        // Sin prioridad especificada = normal
+        // No priority specified = normal
     }
 
     public function onAfterRender(AfterRenderEvent $event): void
     {
-        // Sin prioridad especificada = normal
+        // No priority specified = normal
     }
 }
 ```

@@ -1,16 +1,16 @@
-# Custom Fields en Joomla 5/6 - Skill Completo
+# Custom Fields in Joomla 5/6 - Complete Skill
 
-Domina los campos personalizados en Joomla. Guía técnica completa con ejemplos, referencia de BD y casos de uso reales.
+Master custom fields in Joomla. Complete technical guide with examples, database reference, and real-world use cases.
 
-## Contenido
+## Contents
 
-- **SKILL.md** - Guía principal (325 líneas, bajo 500 como requerido)
-- **INDEX.md** - Índice de recursos y guía de navegación
-- **references/** - 4 documentos de referencia complementarios
+- **SKILL.md** - Main guide (325 lines, under 500 as required)
+- **INDEX.md** - Resource index and navigation guide
+- **references/** - 4 complementary reference documents
 
-## Inicio Rápido
+## Quick Start
 
-Carga campos personalizados en tu código:
+Load custom fields in your code:
 
 ```php
 JLoader::register('FieldsHelper', JPATH_ADMINISTRATOR . '/components/com_fields/helpers/fields.php');
@@ -21,80 +21,80 @@ foreach ($fields as $field) {
 }
 ```
 
-## Archivos
+## Files
 
-### SKILL.md (Guía Principal)
-- 15 secciones temáticas
-- Código PHP comentado
-- Inicio rápido incluido
-- Mejores prácticas
+### SKILL.md (Main Guide)
+- 15 thematic sections
+- Commented PHP code
+- Quick start included
+- Best practices
 
-### Archivos de Referencia
+### Reference Files
 
-1. **ejemplos-practicos.php** (420 líneas)
-   - 8 ejemplos listos para usar
-   - Componentes, módulos, plugins
-   - Código comentado
+1. **ejemplos-practicos.php** (420 lines)
+   - 8 ready-to-use examples
+   - Components, modules, plugins
+   - Commented code
 
-2. **base-datos.md** (383 líneas)
-   - Estructura de tablas
-   - Consultas SQL comunes
-   - Clase PHP de repositorio
+2. **base-datos.md** (383 lines)
+   - Table structure
+   - Common SQL queries
+   - PHP repository class
    - Performance tips
 
-3. **casos-uso.md** (525 líneas)
-   - 7 casos del mundo real
-   - Galerías, SEO, usuarios, etc.
-   - Implementación completa
+3. **casos-uso.md** (525 lines)
+   - 7 real-world cases
+   - Galleries, SEO, users, etc.
+   - Complete implementation
 
-4. **faq-troubleshooting.md** (402 líneas)
-   - 11 preguntas frecuentes
-   - 13 problemas comunes
-   - Soluciones paso a paso
-   - Checklist de deployment
+4. **faq-troubleshooting.md** (402 lines)
+   - 11 frequently asked questions
+   - 13 common problems
+   - Step-by-step solutions
+   - Deployment checklist
 
-## Cómo Usar
+## How to Use
 
-1. Lee **SKILL.md** para entender conceptos
-2. Consulta **INDEX.md** para navegación rápida
-3. Copia ejemplos de **referencias/**
-4. Busca tu caso en **casos-uso.md**
-5. Resuelve problemas en **faq-troubleshooting.md**
+1. Read **SKILL.md** to understand concepts
+2. Check **INDEX.md** for quick navigation
+3. Copy examples from **references/**
+4. Find your case in **casos-uso.md**
+5. Solve problems in **faq-troubleshooting.md**
 
-## Requisitos
+## Requirements
 
 - Joomla 5/6
 - PHP 8.0+
 - MySQL 5.7+
 
-## Topics Cubiertos
+## Topics Covered
 
-✓ Tipos de campos (16 total)
-✓ API FieldsHelper
-✓ Crear campos desde admin
-✓ Base de datos (#__fields, #__fields_values)
-✓ Renderizado en templates
-✓ Uso en módulos y componentes
-✓ Field Groups (grupos)
-✓ Validación y filtros
-✓ Eventos del sistema
-✓ Acceso directo a BD
-✓ REST API
-✓ Troubleshooting
+- Field types (16 total)
+- FieldsHelper API
+- Creating fields from admin
+- Database (#__fields, #__fields_values)
+- Rendering in templates
+- Usage in modules and components
+- Field Groups
+- Validation and filters
+- System events
+- Direct database access
+- REST API
+- Troubleshooting
 
-## Contextos Soportados
+## Supported Contexts
 
-- com_content.article (Artículos)
-- com_content.categories (Categorías)
-- com_users.user (Usuarios)
-- com_contact.contact (Contactos)
-- Componentes personalizados
+- com_content.article (Articles)
+- com_content.categories (Categories)
+- com_users.user (Users)
+- com_contact.contact (Contacts)
+- Custom components
 
-## Código Ejemplo
+## Example Code
 
 ```php
-// Módulo con Custom Fields
-$article = ModMiModuloHelper::getArticleWithFields(123);
+// Module with Custom Fields
+$article = ModMyModuleHelper::getArticleWithFields(123);
 foreach ($article->jcfields as $field) {
     echo $field->label . ': ' . $field->value;
 }
@@ -106,7 +106,7 @@ foreach ($article->jcfields as $field) {
     </div>
 <?php endforeach; ?>
 
-// Consulta directa
+// Direct query
 $db = Factory::getContainer()->get(DatabaseInterface::class);
 $query = $db->getQuery(true)
     ->select(['fv.*', 'f.label'])
@@ -117,13 +117,13 @@ $db->setQuery($query);
 $values = $db->loadObjectList();
 ```
 
-## Estructura
+## Structure
 
 ```
 /joomla-custom-fields/
-├── SKILL.md                 (Guía principal)
-├── INDEX.md                 (Índice)
-├── README.md                (Este archivo)
+├── SKILL.md                 (Main guide)
+├── INDEX.md                 (Index)
+├── README.md                (This file)
 └── references/
     ├── ejemplos-practicos.php
     ├── base-datos.md
@@ -131,24 +131,24 @@ $values = $db->loadObjectList();
     └── faq-troubleshooting.md
 ```
 
-## Estadísticas
+## Statistics
 
-- **SKILL.md:** 325 líneas
-- **References:** 1,730 líneas de contenido
-- **Ejemplos de código:** 40+ ejemplos
-- **Casos de uso:** 7 implementaciones completas
-- **FAQ:** 11 preguntas + 13 problemas
+- **SKILL.md:** 325 lines
+- **References:** 1,730 lines of content
+- **Code examples:** 40+ examples
+- **Use cases:** 7 complete implementations
+- **FAQ:** 11 questions + 13 problems
 
-## Nivel de Experiencia
+## Experience Level
 
-- Principiante: Lee SKILL.md completo
-- Intermedio: Sigue casos de referencias/
-- Avanzado: Trabaja con ejemplos-practicos.php
+- Beginner: Read full SKILL.md
+- Intermediate: Follow reference cases
+- Advanced: Work with ejemplos-practicos.php
 
-## Triggers del Skill
+## Skill Triggers
 
-`campo personalizado joomla`, `custom field`, `FieldsHelper`, `#__fields`, `campos artículos joomla`, `field group joomla`
+`joomla custom field`, `custom field`, `FieldsHelper`, `#__fields`, `joomla article fields`, `field group joomla`
 
 ---
 
-Marzo 2026 - Joomla 5/6
+March 2026 - Joomla 5/6

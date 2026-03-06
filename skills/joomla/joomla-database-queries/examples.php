@@ -1,10 +1,10 @@
 <?php
 /**
- * Ejemplos Funcionales Completos
- * Joomla 5/6 - Consultas a Base de Datos
+ * Complete Functional Examples
+ * Joomla 5/6 - Database Queries
  *
- * Archivo con ejemplos de código listo para usar
- * Copia y pega directo en tu proyecto
+ * File with ready-to-use code examples
+ * Copy and paste directly into your project
  */
 
 use Joomla\CMS\Factory;
@@ -12,27 +12,27 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 
 // ============================================================================
-// EJEMPLO 1: Obtener la Instancia de Base de Datos
+// EXAMPLE 1: Getting the Database Instance
 // ============================================================================
 
 class MyModel
 {
-    // En modelos - usar getDatabase()
+    // In models - use getDatabase()
     public function getArticles()
     {
-        $db = $this->getDatabase(); // En un modelo de Joomla
+        $db = $this->getDatabase(); // In a Joomla model
         // ... rest of code
     }
 }
 
-// En otros contextos - usar Container
+// In other contexts - use Container
 function getDatabase()
 {
     return Factory::getContainer()->get(DatabaseInterface::class);
 }
 
 // ============================================================================
-// EJEMPLO 2: SELECT Simple - Artículos Publicados
+// EXAMPLE 2: Simple SELECT - Published Articles
 // ============================================================================
 
 function getPublishedArticles()
@@ -51,7 +51,7 @@ function getPublishedArticles()
 }
 
 // ============================================================================
-// EJEMPLO 3: SELECT con WHERE Múltiple
+// EXAMPLE 3: SELECT with Multiple WHERE
 // ============================================================================
 
 function getArticlesByCategory($categoryId, $state = 1)
@@ -72,7 +72,7 @@ function getArticlesByCategory($categoryId, $state = 1)
 }
 
 // ============================================================================
-// EJEMPLO 4: JOIN - Content + Categories + Users
+// EXAMPLE 4: JOIN - Content + Categories + Users
 // ============================================================================
 
 function getArticlesWithMetadata()
@@ -106,7 +106,7 @@ function getArticlesWithMetadata()
 }
 
 // ============================================================================
-// EJEMPLO 5: Búsqueda Avanzada con LIKE
+// EXAMPLE 5: Advanced Search with LIKE
 // ============================================================================
 
 function searchArticles($searchTerm, $categoryId = null)
@@ -136,7 +136,7 @@ function searchArticles($searchTerm, $categoryId = null)
 }
 
 // ============================================================================
-// EJEMPLO 6: Paginación Completa
+// EXAMPLE 6: Complete Pagination
 // ============================================================================
 
 function getPaginatedArticles($page = 1, $limit = 10)
@@ -144,7 +144,7 @@ function getPaginatedArticles($page = 1, $limit = 10)
     $db = Factory::getContainer()->get(DatabaseInterface::class);
     $offset = ($page - 1) * $limit;
 
-    // Query para obtener artículos
+    // Query to get articles
     $query = $db->getQuery(true)
         ->select('*')
         ->from($db->quoteName('#__content'))
@@ -156,7 +156,7 @@ function getPaginatedArticles($page = 1, $limit = 10)
     $db->setQuery($query);
     $articles = $db->loadObjectList();
 
-    // Query para obtener total
+    // Query to get total count
     $countQuery = $db->getQuery(true)
         ->select('COUNT(*)')
         ->from($db->quoteName('#__content'))
@@ -176,7 +176,7 @@ function getPaginatedArticles($page = 1, $limit = 10)
 }
 
 // ============================================================================
-// EJEMPLO 7: JOIN con Campos Personalizados
+// EXAMPLE 7: JOIN with Custom Fields
 // ============================================================================
 
 function getArticleWithCustomFields($articleId, $fieldId = 5)
@@ -206,7 +206,7 @@ function getArticleWithCustomFields($articleId, $fieldId = 5)
 }
 
 // ============================================================================
-// EJEMPLO 8: INSERT - Crear Nuevo Artículo
+// EXAMPLE 8: INSERT - Create New Article
 // ============================================================================
 
 function createArticle($title, $introtext, $categoryId, $userId)
@@ -245,7 +245,7 @@ function createArticle($title, $introtext, $categoryId, $userId)
 }
 
 // ============================================================================
-// EJEMPLO 9: UPDATE - Actualizar Artículo
+// EXAMPLE 9: UPDATE - Update Article
 // ============================================================================
 
 function updateArticle($articleId, $title, $introtext, $state)
@@ -278,14 +278,14 @@ function updateArticle($articleId, $title, $introtext, $state)
 }
 
 // ============================================================================
-// EJEMPLO 10: DELETE - Eliminar Artículo
+// EXAMPLE 10: DELETE - Delete Article
 // ============================================================================
 
 function deleteArticle($articleId)
 {
     $db = Factory::getContainer()->get(DatabaseInterface::class);
 
-    // Primero eliminar campos personalizados
+    // First delete custom fields
     $query1 = $db->getQuery(true)
         ->delete($db->quoteName('#__fields_values'))
         ->where($db->quoteName('item_id') . ' = :item_id')
@@ -299,7 +299,7 @@ function deleteArticle($articleId)
         error_log('Error deleting custom fields: ' . $e->getMessage());
     }
 
-    // Luego eliminar el artículo
+    // Then delete the article
     $query2 = $db->getQuery(true)
         ->delete($db->quoteName('#__content'))
         ->where($db->quoteName('id') . ' = :id')
@@ -316,7 +316,7 @@ function deleteArticle($articleId)
 }
 
 // ============================================================================
-// EJEMPLO 11: Filtrado por Rango de Fechas
+// EXAMPLE 11: Filtering by Date Range
 // ============================================================================
 
 function getArticlesByDateRange($startDate, $endDate)
@@ -341,7 +341,7 @@ function getArticlesByDateRange($startDate, $endDate)
 }
 
 // ============================================================================
-// EJEMPLO 12: Búsqueda en Array IN
+// EXAMPLE 12: Array IN Search
 // ============================================================================
 
 function getArticlesByIds($ids)
@@ -352,7 +352,7 @@ function getArticlesByIds($ids)
         ->select(['id', 'title', 'state'])
         ->from($db->quoteName('#__content'));
 
-    // Usar bindArray para valores IN
+    // Use bindArray for IN values
     $placeholders = $query->bindArray($ids);
     $query->where($db->quoteName('id') . ' IN (' . implode(',', $placeholders) . ')');
 
@@ -361,7 +361,7 @@ function getArticlesByIds($ids)
 }
 
 // ============================================================================
-// EJEMPLO 13: Conteo y Estadísticas
+// EXAMPLE 13: Counts and Statistics
 // ============================================================================
 
 function getArticleStats()
@@ -390,7 +390,7 @@ function getArticleStats()
 }
 
 // ============================================================================
-// EJEMPLO 14: INSERT Múltiple
+// EXAMPLE 14: Multiple INSERT
 // ============================================================================
 
 function createMultipleArticles($articles)
@@ -425,7 +425,7 @@ function createMultipleArticles($articles)
 }
 
 // ============================================================================
-// EJEMPLO 15: Usar insertObject() para Mayor Simplicidad
+// EXAMPLE 15: Using insertObject() for Greater Simplicity
 // ============================================================================
 
 function createArticleSimple($data)
@@ -452,32 +452,32 @@ function createArticleSimple($data)
 }
 
 // ============================================================================
-// NOTAS DE SEGURIDAD
+// SECURITY NOTES
 // ============================================================================
 
 /**
- * IMPORTANTE - REGLAS DE ORO:
+ * IMPORTANT - GOLDEN RULES:
  *
- * 1. SIEMPRE usa quoteName() para identificadores:
+ * 1. ALWAYS use quoteName() for identifiers:
  *    - $db->quoteName('title')
  *    - $db->quoteName('#__content')
  *
- * 2. SIEMPRE usa bind() para valores:
+ * 2. ALWAYS use bind() for values:
  *    ->bind(':param', $value, ParameterType::TYPE)
  *
- * 3. NUNCA concatenes valores directamente:
- *    - MAL: ->where("title = '$title'")
- *    - BIEN: ->where($db->quoteName('title') . ' = :title')
+ * 3. NEVER concatenate values directly:
+ *    - BAD: ->where("title = '$title'")
+ *    - GOOD: ->where($db->quoteName('title') . ' = :title')
  *           ->bind(':title', $title, ParameterType::STRING)
  *
- * 4. Especifica ParameterType:
+ * 4. Specify ParameterType:
  *    - STRING, INTEGER, FLOAT, BOOLEAN, NULL
  *
- * 5. Valida entrada antes de usar:
+ * 5. Validate input before using:
  *    $id = (int) $_GET['id'];
  *    $search = htmlspecialchars($search);
  *
- * 6. Maneja errores con try-catch
+ * 6. Handle errors with try-catch
  */
 
 ?>

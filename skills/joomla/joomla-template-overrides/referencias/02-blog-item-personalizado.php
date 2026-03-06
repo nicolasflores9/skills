@@ -1,27 +1,27 @@
 <?php
 /**
- * EJEMPLO COMPLETO: Override - Blog Item Personalizado
+ * COMPLETE EXAMPLE: Override - Custom Blog Item
  *
- * Ubicación en template: /templates/cassiopeia/html/com_content/category/blog_item.php
+ * Template location: /templates/cassiopeia/html/com_content/category/blog_item.php
  *
- * Este archivo se renderiza para CADA ARTÍCULO en el blog de categoría.
- * Se incluye desde blog.php dentro de un loop.
+ * This file is rendered for EACH ARTICLE in the category blog.
+ * It is included from blog.php within a loop.
  *
- * CAMBIOS REALIZADOS:
- * - Estructura mejorada con HTML semántico
- * - Imagen destacada responsiva
- * - Metadatos en card
- * - Link "Leer más" personalizado
- * - Campos personalizados mostrados
- * - Autor bio personalizado
- * - Categoría breadcrumb
+ * CHANGES MADE:
+ * - Improved structure with semantic HTML
+ * - Responsive featured image
+ * - Card-style metadata
+ * - Custom "Read more" link
+ * - Custom fields displayed
+ * - Custom author bio
+ * - Category breadcrumb
  *
- * VARIABLES DISPONIBLES:
- * @var  object  $this->item          Objeto del artículo actual
- * @var  object  $this->params        Parámetros de la vista
+ * AVAILABLE VARIABLES:
+ * @var  object  $this->item          Current article object
+ * @var  object  $this->params        View parameters
  *
  * JOOMLA: 5.x, 6.x
- * FECHA: 2024-03-06
+ * DATE: 2024-03-06
  */
 
 defined('_JEXEC') or die;
@@ -33,7 +33,7 @@ $images = !empty($item->images) ? json_decode($item->images) : null;
 
 <article class="blog-item article-card">
 
-    <!-- CONTENEDOR DE IMAGEN -->
+    <!-- IMAGE CONTAINER -->
     <?php if (!empty($images) && !empty($images->image_intro)): ?>
         <div class="blog-item-image">
             <figure class="article-figure">
@@ -47,13 +47,13 @@ $images = !empty($item->images) ? json_decode($item->images) : null;
         </div>
     <?php endif; ?>
 
-    <!-- CONTENEDOR DE CONTENIDO -->
+    <!-- CONTENT CONTAINER -->
     <div class="blog-item-content">
 
-        <!-- ENCABEZADO DEL ARTÍCULO -->
+        <!-- ARTICLE HEADER -->
         <header class="blog-item-header">
 
-            <!-- CATEGORÍA (BREADCRUMB) -->
+            <!-- CATEGORY (BREADCRUMB) -->
             <?php if ($params->get('show_category_title', 1) && !empty($item->catslug)): ?>
                 <div class="article-category">
                     <a href="<?php echo JRoute::_('index.php?option=com_content&view=category&id=' . $item->catid); ?>"
@@ -63,7 +63,7 @@ $images = !empty($item->images) ? json_decode($item->images) : null;
                 </div>
             <?php endif; ?>
 
-            <!-- TÍTULO DEL ARTÍCULO -->
+            <!-- ARTICLE TITLE -->
             <h2 class="blog-item-title">
                 <a href="<?php echo JRoute::_($item->link); ?>"
                    title="<?php echo htmlspecialchars($item->title); ?>">
@@ -71,7 +71,7 @@ $images = !empty($item->images) ? json_decode($item->images) : null;
                 </a>
             </h2>
 
-            <!-- METADATOS (FILA COMPACTA) -->
+            <!-- METADATA (COMPACT ROW) -->
             <div class="blog-item-meta">
 
                 <?php if ($params->get('show_author', 1)): ?>
@@ -93,7 +93,7 @@ $images = !empty($item->images) ? json_decode($item->images) : null;
                 <?php if ($params->get('show_hits', 0)): ?>
                     <span class="meta-item meta-hits">
                         <i class="fas fa-eye"></i>
-                        <?php echo $item->hits; ?> vistas
+                        <?php echo $item->hits; ?> views
                     </span>
                 <?php endif; ?>
 
@@ -101,12 +101,12 @@ $images = !empty($item->images) ? json_decode($item->images) : null;
 
         </header>
 
-        <!-- CONTENIDO INTRODUCTORIO -->
+        <!-- INTRODUCTORY CONTENT -->
         <div class="blog-item-intro-text">
             <?php echo $item->introtext; ?>
         </div>
 
-        <!-- CAMPOS PERSONALIZADOS (RESUMIDO) -->
+        <!-- CUSTOM FIELDS (SUMMARIZED) -->
         <?php if (!empty($item->jcfields) && is_array($item->jcfields)): ?>
             <div class="blog-item-custom-fields">
                 <?php foreach (array_slice($item->jcfields, 0, 2) as $field): ?>
@@ -120,18 +120,18 @@ $images = !empty($item->images) ? json_decode($item->images) : null;
             </div>
         <?php endif; ?>
 
-        <!-- PIE DEL ARTÍCULO -->
+        <!-- ARTICLE FOOTER -->
         <footer class="blog-item-footer">
 
-            <!-- BOTÓN LEER MÁS -->
+            <!-- READ MORE BUTTON -->
             <a href="<?php echo JRoute::_($item->link); ?>"
                class="btn btn-primary btn-sm read-more-btn"
-               title="Leer <?php echo htmlspecialchars($item->title); ?>">
-                Leer más
+               title="Read <?php echo htmlspecialchars($item->title); ?>">
+                Read more
                 <i class="fas fa-arrow-right"></i>
             </a>
 
-            <!-- TAGS (RESUMIDO) -->
+            <!-- TAGS (SUMMARIZED) -->
             <?php if (!empty($item->tags->itemTags)): ?>
                 <div class="blog-item-tags">
                     <?php foreach (array_slice($item->tags->itemTags, 0, 3) as $tag): ?>
@@ -151,25 +151,25 @@ $images = !empty($item->images) ? json_decode($item->images) : null;
 
 <?php
 /**
- * NOTAS DE IMPLEMENTACIÓN:
+ * IMPLEMENTATION NOTES:
  *
- * 1. ESTRUCTURA: Cada artículo es independiente
- * 2. IMAGEN: Mostrar solo intro_image (responsivo)
- * 3. METADATOS: Compactos en una línea
- * 4. CAMPOS: Mostrar solo primeros 2 (resumido)
- * 5. TAGS: Mostrar solo primeros 3 (resumido)
- * 6. LINK: Usar $item->link en lugar de construir URL
- * 7. CATEGORÍA: Usar $item->catid para link
- * 8. ROUTING: Usar JRoute::_() para URLs compatibles
- * 9. FECHA: Usar JHtml::_('date') para formato local
+ * 1. STRUCTURE: Each article is independent
+ * 2. IMAGE: Show only intro_image (responsive)
+ * 3. METADATA: Compact in a single line
+ * 4. FIELDS: Show only first 2 (summarized)
+ * 5. TAGS: Show only first 3 (summarized)
+ * 6. LINK: Use $item->link instead of building URL
+ * 7. CATEGORY: Use $item->catid for link
+ * 8. ROUTING: Use JRoute::_() for compatible URLs
+ * 9. DATE: Use JHtml::_('date') for local format
  *
- * CSS ESPERADO:
- * - .blog-item: contenedor principal
- * - .blog-item-image: área de imagen
- * - .blog-item-content: área de contenido
- * - .blog-item-title: título H2
- * - .blog-item-meta: metadatos compactos
- * - .blog-item-intro-text: texto introductorio
- * - .blog-item-footer: pie con botones
+ * EXPECTED CSS:
+ * - .blog-item: main container
+ * - .blog-item-image: image area
+ * - .blog-item-content: content area
+ * - .blog-item-title: H2 title
+ * - .blog-item-meta: compact metadata
+ * - .blog-item-intro-text: introductory text
+ * - .blog-item-footer: footer with buttons
  */
 ?>

@@ -1,27 +1,27 @@
-# Snippets de Código Rápido - Joomla Frontend
+# Quick Code Snippets - Joomla Frontend
 
-## Snippets PHP
+## PHP Snippets
 
-### Obtener WebAssetManager
+### Get WebAssetManager
 ```php
 $wa = \Joomla\CMS\Factory::getApplication()
       ->getDocument()
       ->getWebAssetManager();
 ```
 
-### Cargar Script
+### Load Script
 ```php
 $wa->useScript('jquery');
 $wa->useScript('my-custom-script');
 ```
 
-### Cargar Style
+### Load Style
 ```php
 $wa->useStyle('bootstrap');
 $wa->useStyle('my-custom-style');
 ```
 
-### Registrar y usar Script dinámicamente
+### Register and Use Script Dynamically
 ```php
 $wa->registerAndUseScript(
     'my-dynamic-script',
@@ -31,17 +31,17 @@ $wa->registerAndUseScript(
 );
 ```
 
-### Agregar Inline Script
+### Add Inline Script
 ```php
 $wa->addInlineScript('
   console.log("Inline script");
 ');
 ```
 
-### Agregar Inline Style
+### Add Inline Style
 ```php
 $wa->addInlineStyle('
-  .mi-clase { color: red; }
+  .my-class { color: red; }
 ');
 ```
 
@@ -49,7 +49,7 @@ $wa->addInlineStyle('
 
 ## JSON Assets
 
-### Asset Simple
+### Simple Asset
 ```json
 {
   "name": "my-script",
@@ -74,7 +74,7 @@ $wa->addInlineStyle('
 }
 ```
 
-### Script con CDN
+### Script with CDN
 ```json
 {
   "name": "cdnjs-lib",
@@ -87,7 +87,7 @@ $wa->addInlineStyle('
 }
 ```
 
-### Preset (Grupo de Assets)
+### Preset (Asset Group)
 ```json
 {
   "name": "my-preset",
@@ -107,15 +107,15 @@ $wa->addInlineStyle('
 
 ### Mobile First Base
 ```css
-/* Mobile first - estilos base para mobile */
-.elemento {
+/* Mobile first - base styles for mobile */
+.element {
   padding: 1rem;
   font-size: 14px;
 }
 
 /* Tablet (768px) */
 @media (min-width: 768px) {
-  .elemento {
+  .element {
     padding: 2rem;
     font-size: 16px;
   }
@@ -123,14 +123,14 @@ $wa->addInlineStyle('
 
 /* Desktop (992px) */
 @media (min-width: 992px) {
-  .elemento {
+  .element {
     padding: 3rem;
     font-size: 18px;
   }
 }
 ```
 
-### Flexbox Responsivo
+### Responsive Flexbox
 ```css
 .flex-container {
   display: flex;
@@ -146,7 +146,7 @@ $wa->addInlineStyle('
 }
 ```
 
-### Grid Responsivo
+### Responsive Grid
 ```css
 .grid {
   display: grid;
@@ -167,7 +167,7 @@ $wa->addInlineStyle('
 }
 ```
 
-### Botón Personalizado
+### Custom Button
 ```css
 .btn-custom {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -189,7 +189,7 @@ $wa->addInlineStyle('
 }
 ```
 
-### Card Bootstrap Mejorada
+### Enhanced Bootstrap Card
 ```css
 .card-custom {
   border: none;
@@ -210,7 +210,7 @@ $wa->addInlineStyle('
 }
 ```
 
-### Imagen Responsiva
+### Responsive Image
 ```css
 .img-responsive {
   max-width: 100%;
@@ -226,7 +226,7 @@ $wa->addInlineStyle('
 }
 ```
 
-### Tema Oscuro
+### Dark Theme
 ```css
 @media (prefers-color-scheme: dark) {
   body {
@@ -241,7 +241,7 @@ $wa->addInlineStyle('
 }
 ```
 
-### Accesibilidad - Reducir Movimiento
+### Accessibility - Reduce Motion
 ```css
 @media (prefers-reduced-motion: reduce) {
   * {
@@ -259,27 +259,27 @@ $wa->addInlineStyle('
 ### DOM Ready
 ```javascript
 document.addEventListener('DOMContentLoaded', function() {
-  // Tu código aquí
-  console.log('DOM listo');
+  // Your code here
+  console.log('DOM ready');
 });
 ```
 
-### Seleccionar Elementos
+### Select Elements
 ```javascript
-// Un elemento
-const elemento = document.querySelector('.mi-clase');
+// Single element
+const element = document.querySelector('.my-class');
 
-// Múltiples elementos
-const elementos = document.querySelectorAll('.items');
+// Multiple elements
+const elements = document.querySelectorAll('.items');
 
-// Por ID
-const elemento2 = document.getElementById('mi-id');
+// By ID
+const element2 = document.getElementById('my-id');
 ```
 
 ### Event Listeners
 ```javascript
 // Click
-elemento.addEventListener('click', function() {
+element.addEventListener('click', function() {
   console.log('Clicked');
 });
 
@@ -287,49 +287,49 @@ elemento.addEventListener('click', function() {
 const form = document.querySelector('form');
 form.addEventListener('submit', function(e) {
   e.preventDefault();
-  console.log('Form enviado');
+  console.log('Form submitted');
 });
 
 // Keyboard
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Enter') {
-    console.log('Enter presionado');
+    console.log('Enter pressed');
   }
 });
 ```
 
-### Manipular Clases
+### Manipulate Classes
 ```javascript
-const elemento = document.querySelector('.elemento');
+const element = document.querySelector('.element');
 
-// Agregar clase
-elemento.classList.add('activo');
+// Add class
+element.classList.add('active');
 
-// Quitar clase
-elemento.classList.remove('oculto');
+// Remove class
+element.classList.remove('hidden');
 
-// Toggle clase
-elemento.classList.toggle('visible');
+// Toggle class
+element.classList.toggle('visible');
 
-// Verificar si tiene clase
-if (elemento.classList.contains('activo')) {
-  console.log('Tiene clase activo');
+// Check if has class
+if (element.classList.contains('active')) {
+  console.log('Has active class');
 }
 ```
 
-### Modificar Atributos
+### Modify Attributes
 ```javascript
-const elemento = document.querySelector('.elemento');
+const element = document.querySelector('.element');
 
-// Obtener atributo
-const valor = elemento.getAttribute('data-id');
+// Get attribute
+const value = element.getAttribute('data-id');
 
-// Setear atributo
-elemento.setAttribute('data-id', '123');
+// Set attribute
+element.setAttribute('data-id', '123');
 
-// Verificar atributo
-if (elemento.hasAttribute('data-toggle')) {
-  console.log('Tiene atributo');
+// Check attribute
+if (element.hasAttribute('data-toggle')) {
+  console.log('Has attribute');
 }
 ```
 
@@ -350,8 +350,8 @@ fetch('/api/submit', {
     'Content-Type': 'application/json'
   },
   body: JSON.stringify({
-    name: 'Juan',
-    email: 'juan@example.com'
+    name: 'John',
+    email: 'john@example.com'
   })
 })
 .then(response => response.json())
@@ -360,19 +360,19 @@ fetch('/api/submit', {
 
 ### Custom Event
 ```javascript
-// Crear evento custom
-const evento = new CustomEvent('mi-evento', {
-  detail: { mensaje: 'Hola' },
+// Create custom event
+const event = new CustomEvent('my-event', {
+  detail: { message: 'Hello' },
   bubbles: true,
   composed: true
 });
 
-// Disparar evento
-elemento.dispatchEvent(evento);
+// Dispatch event
+element.dispatchEvent(event);
 
-// Escuchar evento custom
-documento.addEventListener('mi-evento', function(e) {
-  console.log(e.detail.mensaje);
+// Listen for custom event
+document.addEventListener('my-event', function(e) {
+  console.log(e.detail.message);
 });
 ```
 
@@ -394,20 +394,20 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
 
 ### LocalStorage
 ```javascript
-// Guardar dato
-localStorage.setItem('miDato', 'valor');
+// Save data
+localStorage.setItem('myData', 'value');
 
-// Obtener dato
-const valor = localStorage.getItem('miDato');
+// Get data
+const value = localStorage.getItem('myData');
 
-// Remover dato
-localStorage.removeItem('miDato');
+// Remove data
+localStorage.removeItem('myData');
 
-// Limpiar todo
+// Clear all
 localStorage.clear();
 ```
 
-### Validar Formulario
+### Validate Form
 ```javascript
 const form = document.querySelector('form');
 
@@ -417,14 +417,14 @@ form.addEventListener('submit', function(e) {
   if (!email.value.includes('@')) {
     e.preventDefault();
     email.classList.add('is-invalid');
-    console.log('Email inválido');
+    console.log('Invalid email');
   }
 });
 ```
 
 ### Throttle/Debounce
 ```javascript
-// Debounce - ejecutar después de dejar de escribir
+// Debounce - execute after user stops typing
 function debounce(func, wait) {
   let timeout;
   return function(...args) {
@@ -433,11 +433,11 @@ function debounce(func, wait) {
   };
 }
 
-const buscar = debounce(function(query) {
-  console.log('Buscando:', query);
+const search = debounce(function(query) {
+  console.log('Searching:', query);
 }, 300);
 
-// Throttle - ejecutar máximo cada X tiempo
+// Throttle - execute at most every X time
 function throttle(func, limit) {
   let inThrottle;
   return function(...args) {
@@ -456,34 +456,34 @@ const onScroll = throttle(function() {
 
 ---
 
-## jQuery (si estás usando)
+## jQuery (if you are using it)
 
 ### DOM Ready
 ```javascript
 jQuery(document).ready(function($) {
-  // Tu código con jQuery
+  // Your jQuery code
 });
 ```
 
-### Seleccionar Elementos
+### Select Elements
 ```javascript
-const elemento = $('.mi-clase');
-const elementos = $('.items');
-const elemento2 = $('#mi-id');
+const element = $('.my-class');
+const elements = $('.items');
+const element2 = $('#my-id');
 ```
 
 ### Event Listeners
 ```javascript
-$('.elemento').on('click', function() {
+$('.element').on('click', function() {
   console.log('Clicked');
 });
 ```
 
-### Modificar Clases
+### Modify Classes
 ```javascript
-$('.elemento').addClass('activo');
-$('.elemento').removeClass('oculto');
-$('.elemento').toggleClass('visible');
+$('.element').addClass('active');
+$('.element').removeClass('hidden');
+$('.element').toggleClass('visible');
 ```
 
 ### AJAX jQuery
@@ -505,44 +505,44 @@ $.ajax({
 
 ## Web Components
 
-### Usar Web Component
+### Use Web Component
 ```html
-<mi-componente
-  titulo="Mi Componente"
-  descripcion="Descripción"
+<my-component
+  title="My Component"
+  description="Description"
   clickable="true">
-</mi-componente>
+</my-component>
 ```
 
-### Escuchar Evento Custom
+### Listen for Custom Event
 ```javascript
-document.addEventListener('mi-evento', function(e) {
+document.addEventListener('my-event', function(e) {
   console.log(e.detail);
 });
 ```
 
-### Crear Web Component Simple
+### Create Simple Web Component
 ```javascript
-class MiComponente extends HTMLElement {
+class MyComponent extends HTMLElement {
   connectedCallback() {
     this.innerHTML = `
-      <div class="mi-componente">
-        <h2>${this.getAttribute('titulo')}</h2>
+      <div class="my-component">
+        <h2>${this.getAttribute('title')}</h2>
       </div>
     `;
   }
 }
 
-customElements.define('mi-componente', MiComponente);
+customElements.define('my-component', MyComponent);
 ```
 
 ---
 
 ## Helix Custom Code
 
-### CSS en Helix
+### CSS in Helix
 ```css
-/* Template Options → Custom Code → Custom CSS */
+/* Template Options > Custom Code > Custom CSS */
 .my-navbar {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
@@ -554,9 +554,9 @@ customElements.define('mi-componente', MiComponente);
 }
 ```
 
-### JavaScript en Helix
+### JavaScript in Helix
 ```javascript
-/* Template Options → Custom Code → Custom JavaScript */
+/* Template Options > Custom Code > Custom JavaScript */
 document.addEventListener('DOMContentLoaded', function() {
   console.log('Helix Custom JS');
 
@@ -577,24 +577,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
 ### Console
 ```javascript
-console.log('Mensaje');          // Información
-console.warn('Advertencia');     // Advertencia
-console.error('Error');          // Error
-console.table(datos);            // Tabla
-console.time('nombre');          // Iniciar timer
-console.timeEnd('nombre');       // Fin timer
+console.log('Message');              // Information
+console.warn('Warning');             // Warning
+console.error('Error');              // Error
+console.table(data);                 // Table
+console.time('name');                // Start timer
+console.timeEnd('name');             // End timer
 ```
 
 ### Breakpoints
 ```javascript
-debugger; // El código se pausa aquí en DevTools
+debugger; // Code pauses here in DevTools
 ```
 
-### Ver el DOM
+### View the DOM
 ```javascript
-console.log(document.documentElement.outerHTML); // HTML completo
+console.log(document.documentElement.outerHTML); // Complete HTML
 ```
 
 ---
 
-Última actualización: Marzo 2026
+Last updated: March 2026

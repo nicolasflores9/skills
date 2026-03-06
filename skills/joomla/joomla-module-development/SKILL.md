@@ -3,51 +3,51 @@ name: joomla-module-development
 description: Build custom Joomla 5/6 modules with modern PSR-4 architecture, dependency injection, and manifest.xml. Includes Hello World and database access examples.
 ---
 
-# Desarrollo de Módulos Personalizados en Joomla 5/6
+# Custom Module Development in Joomla 5/6
 
-## 1. Conceptos Fundamentales
+## 1. Fundamental Concepts
 
-Los módulos en Joomla 5/6 siguen una arquitectura moderna basada en:
-- **PSR-4**: Autoloading automático de clases
-- **Inyección de Dependencias (DI)**: Gestión centralizada de servicios
-- **Namespaces**: Organización clara del código
-- **XML Configuration**: Parámetros y configuración declarativa
+Modules in Joomla 5/6 follow a modern architecture based on:
+- **PSR-4**: Automatic class autoloading
+- **Dependency Injection (DI)**: Centralized service management
+- **Namespaces**: Clear code organization
+- **XML Configuration**: Declarative parameters and configuration
 
-Un módulo es una extensión que se renderiza en posiciones específicas del sitio (sidebar, header, etc.). Diferente de componentes (secciones principales) y plugins (hooks del sistema).
+A module is an extension that renders in specific site positions (sidebar, header, etc.). Different from components (main sections) and plugins (system hooks).
 
-## 2. Estructura de Archivos Moderna
+## 2. Modern File Structure
 
 ```
 mod_ejemplo/
-├── manifest.xml                    (configuración e instalación)
-├── mod_ejemplo.php                 (punto de entrada)
+├── manifest.xml                    (configuration and installation)
+├── mod_ejemplo.php                 (entry point)
 ├── language/
 │   └── en-GB/
 │       ├── mod_ejemplo.ini
 │       └── mod_ejemplo.sys.ini
 ├── src/
-│   ├── Dispatcher/Dispatcher.php   (manejo del renderizado)
-│   └── Helper/ExampleHelper.php    (lógica de negocio)
+│   ├── Dispatcher/Dispatcher.php   (rendering handler)
+│   └── Helper/ExampleHelper.php    (business logic)
 ├── services/
-│   └── provider.php                (registro de servicios DI)
+│   └── provider.php                (DI service registration)
 └── tmpl/
-    ├── default.php                 (template HTML)
-    └── default.xml                 (definición de layout)
+    ├── default.php                 (HTML template)
+    └── default.xml                 (layout definition)
 ```
 
-**Convenciones de nombres**:
-- Módulos: `mod_[nombre]` (ej: `mod_latest_articles`)
-- Clases: `PascalCase` (ej: `ExampleHelper`, `Dispatcher`)
-- Métodos: `camelCase` (ej: `getItems()`, `renderContent()`)
-- Namespace raíz: `Joomla\Module\[ModuleName]`
+**Naming conventions**:
+- Modules: `mod_[name]` (e.g.: `mod_latest_articles`)
+- Classes: `PascalCase` (e.g.: `ExampleHelper`, `Dispatcher`)
+- Methods: `camelCase` (e.g.: `getItems()`, `renderContent()`)
+- Root namespace: `Joomla\Module\[ModuleName]`
 
-## 3. Manifest.xml - Configuración Principal
+## 3. Manifest.xml - Main Configuration
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="module" client="site" method="upgrade">
     <name>MOD_EJEMPLO</name>
-    <author>Tu Nombre</author>
+    <author>Your Name</author>
     <version>1.0.0</version>
     <description>MOD_EJEMPLO_DESC</description>
     <license>GNU General Public License v2.0</license>
@@ -70,7 +70,7 @@ mod_ejemplo/
         <fields name="params">
             <fieldset name="basic">
                 <field name="title" type="text" label="MOD_EJEMPLO_TITLE"
-                    default="Mi Módulo" />
+                    default="My Module" />
                 <field name="count" type="integer" label="MOD_EJEMPLO_COUNT"
                     default="5" min="1" max="100" />
                 <field name="categoria" type="category" label="MOD_EJEMPLO_CAT"
@@ -88,9 +88,9 @@ mod_ejemplo/
 </extension>
 ```
 
-**Tipos de campos disponibles**: text, integer, textarea, list, category, article, user, menu, modulelayout, sql, radio, checkbox, email, url, password, hidden
+**Available field types**: text, integer, textarea, list, category, article, user, menu, modulelayout, sql, radio, checkbox, email, url, password, hidden
 
-## 4. Inyección de Dependencias - services/provider.php
+## 4. Dependency Injection - services/provider.php
 
 ```php
 <?php
@@ -127,7 +127,7 @@ class Provider implements ServiceProviderInterface
 }
 ```
 
-## 5. Dispatcher - Control del Renderizado
+## 5. Dispatcher - Rendering Control
 
 ### src/Dispatcher/Dispatcher.php
 
@@ -157,7 +157,7 @@ class Dispatcher extends AbstractModuleDispatcher
 }
 ```
 
-## 6. Helper - Lógica de Negocio
+## 6. Helper - Business Logic
 
 ### src/Helper/ExampleHelper.php
 
@@ -196,7 +196,7 @@ class ExampleHelper
 }
 ```
 
-## 7. Templates - Renderizado HTML
+## 7. Templates - HTML Rendering
 
 ### tmpl/default.php
 
@@ -206,7 +206,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\HTML\HTMLHelper;
 ?>
 <div class="mod-ejemplo">
-    <h3><?php echo $displayData['params']->get('title', 'Ejemplo'); ?></h3>
+    <h3><?php echo $displayData['params']->get('title', 'Example'); ?></h3>
     <?php if (!empty($displayData['items'])): ?>
         <ul>
             <?php foreach ($displayData['items'] as $item): ?>
@@ -218,7 +218,7 @@ use Joomla\CMS\HTML\HTMLHelper;
             <?php endforeach; ?>
         </ul>
     <?php else: ?>
-        <p>No hay elementos</p>
+        <p>No items available</p>
     <?php endif; ?>
 </div>
 ```
@@ -235,7 +235,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 </layout>
 ```
 
-## 8. Archivo Principal - mod_ejemplo.php
+## 8. Main File - mod_ejemplo.php
 
 ```php
 <?php
@@ -248,37 +248,37 @@ $path = ModuleHelper::getLayoutPath('mod_ejemplo', $layout);
 require $path;
 ```
 
-## 9. Archivos de Idioma
+## 9. Language Files
 
 ### language/en-GB/mod_ejemplo.ini
 
 ```ini
-MOD_EJEMPLO="Ejemplo Module"
-MOD_EJEMPLO_DESC="Módulo de ejemplo con características modernas"
-MOD_EJEMPLO_TITLE="Título del módulo"
-MOD_EJEMPLO_TITLE_DESC="Mostrado en la parte superior"
-MOD_EJEMPLO_COUNT="Cantidad de elementos"
-MOD_EJEMPLO_COUNT_DESC="Número de artículos a mostrar"
-MOD_EJEMPLO_CAT="Categoría"
-MOD_EJEMPLO_CAT_DESC="Selecciona la categoría a mostrar"
-MOD_EJEMPLO_LAYOUT_DEFAULT="Layout por defecto"
+MOD_EJEMPLO="Example Module"
+MOD_EJEMPLO_DESC="Example module with modern features"
+MOD_EJEMPLO_TITLE="Module title"
+MOD_EJEMPLO_TITLE_DESC="Displayed at the top"
+MOD_EJEMPLO_COUNT="Number of items"
+MOD_EJEMPLO_COUNT_DESC="Number of articles to display"
+MOD_EJEMPLO_CAT="Category"
+MOD_EJEMPLO_CAT_DESC="Select the category to display"
+MOD_EJEMPLO_LAYOUT_DEFAULT="Default layout"
 ```
 
 ### language/en-GB/mod_ejemplo.sys.ini
 
 ```ini
-MOD_EJEMPLO="Ejemplo Module"
-MOD_EJEMPLO_DESC="Módulo de ejemplo con características modernas"
+MOD_EJEMPLO="Example Module"
+MOD_EJEMPLO_DESC="Example module with modern features"
 ```
 
-## 10. Ejemplo Completo: Hello World
+## 10. Complete Example: Hello World
 
-**Estructura mínima** para un módulo funcional:
+**Minimal structure** for a functional module:
 
-1. Crear carpeta `mod_hello_world`
-2. Crear `manifest.xml` (ver sección 3)
-3. Crear `mod_hello_world.php` (ver sección 8)
-4. Crear `tmpl/default.php`:
+1. Create folder `mod_hello_world`
+2. Create `manifest.xml` (see section 3)
+3. Create `mod_hello_world.php` (see section 8)
+4. Create `tmpl/default.php`:
 
 ```php
 <?php defined('_JEXEC') or die; ?>
@@ -288,47 +288,47 @@ MOD_EJEMPLO_DESC="Módulo de ejemplo con características modernas"
 </div>
 ```
 
-5. Crear `tmpl/default.xml` (ver sección 7)
-6. Crear `language/en-GB/mod_hello_world.ini` y `.sys.ini`
-7. Empaquetar en ZIP: `mod_hello_world.zip`
-8. Instalar desde Panel Admin → Instalar Extensiones
+5. Create `tmpl/default.xml` (see section 7)
+6. Create `language/en-GB/mod_hello_world.ini` and `.sys.ini`
+7. Package as ZIP: `mod_hello_world.zip`
+8. Install from Admin Panel → Install Extensions
 
-## 11. Diferencias Joomla 4 → 5 → 6
+## 11. Differences Joomla 4 → 5 → 6
 
 | Feature | J4 | J5 | J6 |
 |---------|----|----|-----|
-| PSR-4 | Sí | Sí | Sí |
-| DI Container | Nuevo | Mejorado | Mejorado+ |
-| src/ directory | Opcional | Estándar | Estándar |
-| services/provider | Opcional | Estándar | Estándar |
-| namespace en XML | Nuevo | Obligatorio | Obligatorio |
+| PSR-4 | Yes | Yes | Yes |
+| DI Container | New | Improved | Improved+ |
+| src/ directory | Optional | Standard | Standard |
+| services/provider | Optional | Standard | Standard |
+| namespace in XML | New | Required | Required |
 
-Joomla 5 y 6 comparten arquitectura; cambios son principalmente optimizaciones internas.
+Joomla 5 and 6 share architecture; changes are primarily internal optimizations.
 
-## 12. Checklist de Instalación
+## 12. Installation Checklist
 
-- ✓ Folder structure PSR-4 completa
-- ✓ manifest.xml con namespace valido
-- ✓ Dispatcher extiende AbstractModuleDispatcher
-- ✓ services/provider.php registra servicios
-- ✓ Templates con defined('_JEXEC')
-- ✓ Archivos .ini en language/
-- ✓ Parámetros en manifest.xml
-- ✓ Punto de entrada mod_[nombre].php
+- ✓ Complete PSR-4 folder structure
+- ✓ manifest.xml with valid namespace
+- ✓ Dispatcher extends AbstractModuleDispatcher
+- ✓ services/provider.php registers services
+- ✓ Templates with defined('_JEXEC')
+- ✓ .ini files in language/
+- ✓ Parameters in manifest.xml
+- ✓ Entry point mod_[name].php
 
-## 13. Mejores Prácticas
+## 13. Best Practices
 
-1. **Seguridad**: Escapar siempre en templates con `HTMLHelper::_()` y `htmlspecialchars()`
-2. **Validación**: Validar parámetros en Helper antes de usar
-3. **Performance**: Usar caching (field "cache" en manifest)
-4. **Testabilidad**: Inyectar todas las dependencias
-5. **Documentación**: Incluir README.md explicando instalación y uso
+1. **Security**: Always escape in templates with `HTMLHelper::_()` and `htmlspecialchars()`
+2. **Validation**: Validate parameters in Helper before use
+3. **Performance**: Use caching (cache field in manifest)
+4. **Testability**: Inject all dependencies
+5. **Documentation**: Include README.md explaining installation and usage
 
-Ver archivo references/cheat-sheet.md para comandos rápidos.
+See references/cheat-sheet.md for quick commands.
 
 ---
 
-**Recursos**:
+**Resources**:
 - https://manual.joomla.org/docs/building-extensions/modules/
 - https://docs.joomla.org/Module_development_tutorial_(4.x)
-- https://github.com/joomla/joomla-cms (ejemplos en core)
+- https://github.com/joomla/joomla-cms (core examples)

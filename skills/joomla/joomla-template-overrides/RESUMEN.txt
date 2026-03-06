@@ -1,171 +1,171 @@
 ================================================================================
-SKILL: JOOMLA TEMPLATE OVERRIDES - SISTEMA COMPLETO
+SKILL: JOOMLA TEMPLATE OVERRIDES - COMPLETE SYSTEM
 ================================================================================
 
-Creado: Marzo 2024
-Versiones: Joomla 5.x, 6.x compatible
+Created: March 2024
+Versions: Joomla 5.x, 6.x compatible
 
 ================================================================================
-ESTRUCTURA CREADA
+STRUCTURE CREATED
 ================================================================================
 
 /joomla-template-overrides/
-├── SKILL.md (ARCHIVO PRINCIPAL)
-│   - 519 líneas
-│   - Documentación completa del sistema
-│   - Frontmatter con triggers
-│   - Conceptos, estructura, ejemplos integrados
-│   - Buenas prácticas, troubleshooting, referencia rápida
+├── SKILL.md (MAIN FILE)
+│   - 519 lines
+│   - Complete system documentation
+│   - Frontmatter with triggers
+│   - Concepts, structure, integrated examples
+│   - Best practices, troubleshooting, quick reference
 │
 ├── README.md
-│   - 300 líneas
-│   - Descripción del conjunto
-│   - Guía de uso por nivel
-│   - FAQ y puntos clave
+│   - 300 lines
+│   - Description of the full set
+│   - Usage guide by level
+│   - FAQ and key points
 │
 └── referencias/
-    ├── 01-com-content-article-completo.php (250 líneas)
-    │   └── Override completo de artículo individual
+    ├── 01-com-content-article-completo.php (250 lines)
+    │   └── Complete single article override
     │
-    ├── 02-blog-item-personalizado.php (200 líneas)
-    │   └── Override de artículo en blog de categoría
+    ├── 02-blog-item-personalizado.php (200 lines)
+    │   └── Category blog article override
     │
-    ├── 03-mod-login-avanzado.php (200 líneas)
-    │   └── Override de módulo login con features
+    ├── 03-mod-login-avanzado.php (200 lines)
+    │   └── Login module override with features
     │
-    ├── 04-jlayout-custom-card.php (300 líneas)
-    │   └── JLayout reutilizable personalizado
+    ├── 04-jlayout-custom-card.php (300 lines)
+    │   └── Custom reusable JLayout
     │
-    ├── 05-child-template-config.xml (200 líneas)
-    │   └── Configuración completa de child template
+    ├── 05-child-template-config.xml (200 lines)
+    │   └── Complete child template configuration
     │
-    ├── 06-field-override-ejemplo.php (250 líneas)
-    │   └── Override de campos personalizados
+    ├── 06-field-override-ejemplo.php (250 lines)
+    │   └── Custom fields override
     │
-    ├── GUIA-RAPIDA.md (400 líneas)
-    │   └── Referencia rápida de consulta
+    ├── GUIA-RAPIDA.md (400 lines)
+    │   └── Quick reference guide
     │
-    └── INDICE-REFERENCIAS.md (400 líneas)
-        └── Índice detallado de todos los archivos
+    └── INDICE-REFERENCIAS.md (400 lines)
+        └── Detailed index of all files
 
 ================================================================================
-CONTENIDO COBERTURA
+CONTENT COVERAGE
 ================================================================================
 
-CONCEPTOS FUNDAMENTALES:
-  ✓ ¿Qué son los template overrides?
-  ✓ ¿Por qué usarlos?
-  ✓ Cómo funciona el sistema
-  ✓ Jerarquía de carga
+FUNDAMENTAL CONCEPTS:
+  - What are template overrides?
+  - Why use them?
+  - How the system works
+  - Loading hierarchy
 
-ESTRUCTURA:
-  ✓ Carpeta /html/ y convención de nombres
-  ✓ Estructura de directorios completa
-  ✓ com_, mod_, plg_ prefixes
+STRUCTURE:
+  - /html/ folder and naming conventions
+  - Complete directory structure
+  - com_, mod_, plg_ prefixes
 
-OVERRIDES DE COMPONENTES:
-  ✓ com_content - artículo individual (article/default.php)
-  ✓ com_content - categoría blog (category/blog.php, blog_item.php)
-  ✓ com_content - categoría lista (category/default.php)
-  ✓ Otros componentes (com_users, com_search)
+COMPONENT OVERRIDES:
+  - com_content - single article (article/default.php)
+  - com_content - category blog (category/blog.php, blog_item.php)
+  - com_content - category list (category/default.php)
+  - Other components (com_users, com_search)
 
-OVERRIDES DE MÓDULOS:
-  ✓ Estructura de módulos
-  ✓ Lista de módulos comunes
-  ✓ Ejemplo completo: mod_login
-  ✓ Otros: mod_menu, mod_custom
+MODULE OVERRIDES:
+  - Module structure
+  - List of common modules
+  - Complete example: mod_login
+  - Others: mod_menu, mod_custom
 
-OVERRIDES DE PLUGINS:
-  ✓ Requisitos para overridear
-  ✓ Estructura plugin override
-  ✓ Ejemplo: plg_content_pagenavigation
+PLUGIN OVERRIDES:
+  - Requirements for overriding
+  - Plugin override structure
+  - Example: plg_content_pagenavigation
 
-LAYOUTS ALTERNATIVOS:
-  ✓ Diferencia vs template override
-  ✓ Crear para módulos
-  ✓ Crear para componentes
-  ✓ Seleccionar en backend
+ALTERNATIVE LAYOUTS:
+  - Difference vs template override
+  - Creating for modules
+  - Creating for components
+  - Selecting in backend
 
 JLAYOUT:
-  ✓ Concepto de reutilización
-  ✓ Override de layouts joomla/
-  ✓ Crear personalizado
-  ✓ JLayoutHelper::render() sintaxis
+  - Reuse concept
+  - Override of joomla/ layouts
+  - Creating custom layouts
+  - JLayoutHelper::render() syntax
 
 CHILD TEMPLATES:
-  ✓ Concepto y ventajas
-  ✓ Estructura mínima
-  ✓ templateDetails.xml completo
-  ✓ Herencia automática
+  - Concept and advantages
+  - Minimum structure
+  - Complete templateDetails.xml
+  - Automatic inheritance
 
 FIELD OVERRIDES:
-  ✓ Custom fields layout overrides
-  ✓ Rendimiento por tipo de campo
-  ✓ Layouts alternativos
+  - Custom fields layout overrides
+  - Rendering by field type
+  - Alternative layouts
 
 TEMPLATE MANAGER:
-  ✓ Acceso en backend
-  ✓ Crear overrides automáticos
-  ✓ Ventajas
+  - Backend access
+  - Creating automatic overrides
+  - Advantages
 
-BUENAS PRÁCTICAS:
-  ✓ Documentación en código
-  ✓ Control de versiones
-  ✓ Testing post-actualizaciones
-  ✓ Seguridad y escapado
-  ✓ Rendimiento
+BEST PRACTICES:
+  - Code documentation
+  - Version control
+  - Post-update testing
+  - Security and escaping
+  - Performance
 
 TROUBLESHOOTING:
-  ✓ Override no funciona
-  ✓ Permisos de archivo
-  ✓ Problemas de cacheo
-  ✓ Debugging
+  - Override not working
+  - File permissions
+  - Caching issues
+  - Debugging
 
-REFERENCIA RÁPIDA:
-  ✓ Rutas comunes
-  ✓ Variables útiles
-  ✓ Checklist
-  ✓ Comandos útiles
-
-================================================================================
-CARACTERÍSTICAS
-================================================================================
-
-CÓDIGO:
-  ✓ 6 ejemplos completos y funcionales
-  ✓ 250-300 líneas por ejemplo
-  ✓ Completamente comentado
-  ✓ Casos de uso reales
-  ✓ Listo para copiar y adaptar
-
-DOCUMENTACIÓN:
-  ✓ Todo en ESPAÑOL
-  ✓ Formato imperativo
-  ✓ Sin emojis
-  ✓ Claro y conciso
-  ✓ Estructura lógica
-
-CALIDAD:
-  ✓ Seguridad (escapado, validación)
-  ✓ Accesibilidad (WCAG, ARIA)
-  ✓ Responsive design
-  ✓ HTML semántico
-  ✓ SEO (schema.org)
-
-USABILIDAD:
-  ✓ Múltiples puntos de entrada
-  ✓ Índices y tablas
-  ✓ Diagramas ASCII
-  ✓ Ejemplos con explicaciones
-  ✓ Guía rápida incluida
+QUICK REFERENCE:
+  - Common paths
+  - Useful variables
+  - Checklist
+  - Useful commands
 
 ================================================================================
-TRIGGERS PARA ACTIVAR LA SKILL
+FEATURES
 ================================================================================
 
-La skill se activa con preguntas que contengan:
+CODE:
+  - 6 complete and functional examples
+  - 250-300 lines per example
+  - Fully commented
+  - Real use cases
+  - Ready to copy and adapt
+
+DOCUMENTATION:
+  - All in ENGLISH
+  - Imperative format
+  - No emojis
+  - Clear and concise
+  - Logical structure
+
+QUALITY:
+  - Security (escaping, validation)
+  - Accessibility (WCAG, ARIA)
+  - Responsive design
+  - Semantic HTML
+  - SEO (schema.org)
+
+USABILITY:
+  - Multiple entry points
+  - Indexes and tables
+  - ASCII diagrams
+  - Examples with explanations
+  - Quick guide included
+
+================================================================================
+TRIGGERS TO ACTIVATE THE SKILL
+================================================================================
+
+The skill is activated by questions containing:
   - "override template joomla"
-  - "sobreescribir vista joomla"
+  - "override joomla view"
   - "blog_item.php"
   - "com_content override"
   - "JLayout"
@@ -173,148 +173,148 @@ La skill se activa con preguntas que contengan:
   - "html override joomla"
   - "template overrides"
   - "child template joomla"
-  - "personalizar artículo joomla"
-  - "modificar módulo joomla"
-  - "campo personalizado joomla"
+  - "customize joomla article"
+  - "modify joomla module"
+  - "joomla custom field"
   - "field override"
   - "template manager"
-  - "layout alternativo"
+  - "alternative layout"
 
 ================================================================================
-INFORMACIÓN TÉCNICA
+TECHNICAL INFORMATION
 ================================================================================
 
-Lenguaje: Español
-Formato: Markdown (.md) + PHP (.php) + XML (.xml)
-Total líneas: ~2,500+
-Total archivos: 9
-Tamaño total: ~80 KB
+Language: English
+Format: Markdown (.md) + PHP (.php) + XML (.xml)
+Total lines: ~2,500+
+Total files: 9
+Total size: ~80 KB
 
-Requisitos:
+Requirements:
   - Joomla 5.x, 6.x
   - PHP 8.0+
-  - Conocimiento básico de PHP
-  - Estructura de carpetas Joomla
+  - Basic knowledge of PHP
+  - Joomla folder structure
 
 Frontmatter SKILL.md:
   ---
   name: joomla-template-overrides
-  description: [descripción pushy de 400+ caracteres]
+  description: [detailed description of 400+ characters]
   ---
 
 ================================================================================
-CÓMO USAR
+HOW TO USE
 ================================================================================
 
-PRINCIPIANTE:
-  1. Leer GUIA-RAPIDA.md (pasos básicos)
-  2. Ver ejemplo 01 (com_content/article)
-  3. Leer SKILL.md (conceptos completos)
-  4. Aplicar en proyecto
+BEGINNER:
+  1. Read GUIA-RAPIDA.md (basic steps)
+  2. See example 01 (com_content/article)
+  3. Read SKILL.md (complete concepts)
+  4. Apply to project
 
-INTERMEDIO:
-  1. Revisar SKILL.md (sección relevante)
-  2. Examinar ejemplo correspondiente
-  3. Adaptar código a necesidades
-  4. Aplicar y testear
+INTERMEDIATE:
+  1. Review SKILL.md (relevant section)
+  2. Examine corresponding example
+  3. Adapt code to needs
+  4. Apply and test
 
-AVANZADO:
-  1. Revisar ejemplos 04-06
-  2. Combinar técnicas
-  3. Crear soluciones personalizadas
-  4. Implementar buenas prácticas
+ADVANCED:
+  1. Review examples 04-06
+  2. Combine techniques
+  3. Create custom solutions
+  4. Implement best practices
 
-REFERENCIA RÁPIDA:
-  → Usar GUIA-RAPIDA.md
-  → Copiar estructura de ejemplos
-  → Buscar rutas de archivos
-  → Consultar variables útiles
+QUICK REFERENCE:
+  → Use GUIA-RAPIDA.md
+  → Copy structure from examples
+  → Look up file paths
+  → Consult useful variables
 
 ================================================================================
-EJEMPLOS INCLUIDOS
+INCLUDED EXAMPLES
 ================================================================================
 
 01-com-content-article-completo.php:
-   Ubicación: /templates/cassiopeia/html/com_content/article/default.php
-   Característica: Artículo individual con campos personalizados
-   Cambios: HTML5 semántico, breadcrumbs, tags, navegación
+   Location: /templates/cassiopeia/html/com_content/article/default.php
+   Feature: Single article with custom fields
+   Changes: Semantic HTML5, breadcrumbs, tags, navigation
 
 02-blog-item-personalizado.php:
-   Ubicación: /templates/cassiopeia/html/com_content/category/blog_item.php
-   Característica: Artículo en listado de categoría
-   Cambios: Tarjeta, metadatos compactos, campos resumidos
+   Location: /templates/cassiopeia/html/com_content/category/blog_item.php
+   Feature: Article in category listing
+   Changes: Card layout, compact metadata, summarized fields
 
 03-mod-login-avanzado.php:
-   Ubicación: /templates/cassiopeia/html/mod_login/default.php
-   Característica: Formulario login con features modernas
-   Cambios: Validación HTML5, usuario logueado, accesibilidad
+   Location: /templates/cassiopeia/html/mod_login/default.php
+   Feature: Login form with modern features
+   Changes: HTML5 validation, logged-in user, accessibility
 
 04-jlayout-custom-card.php:
-   Ubicación: /templates/cassiopeia/html/layouts/joomla/custom/article-card.php
-   Característica: Componente reutilizable de tarjeta
-   Cambios: Reutilización en múltiples vistas, modularidad
+   Location: /templates/cassiopeia/html/layouts/joomla/custom/article-card.php
+   Feature: Reusable card component
+   Changes: Reuse across multiple views, modularity
 
 05-child-template-config.xml:
-   Ubicación: /templates/cassiopeia-child/templateDetails.xml
-   Característica: Configuración completa de child template
-   Cambios: Herencia, parámetros configurables, posiciones
+   Location: /templates/cassiopeia-child/templateDetails.xml
+   Feature: Complete child template configuration
+   Changes: Inheritance, configurable parameters, positions
 
 06-field-override-ejemplo.php:
-   Ubicación: /templates/cassiopeia/html/layouts/com_fields/field/render.php
-   Característica: Campos personalizados con rendimiento por tipo
-   Cambios: Switch por tipo, validaciones, alternativas
+   Location: /templates/cassiopeia/html/layouts/com_fields/field/render.php
+   Feature: Custom fields with type-based rendering
+   Changes: Switch by type, validations, alternatives
 
 ================================================================================
-RECURSOS INTERNOS
+INTERNAL RESOURCES
 ================================================================================
 
-Dentro de los archivos:
-  - Diagramas ASCII de estructura
-  - Tablas comparativas
-  - Ejemplos de código lado a lado (BUENO vs MALO)
-  - Notas de implementación
-  - CSS recomendado
-  - Comandos útiles
+Within the files:
+  - ASCII structure diagrams
+  - Comparative tables
+  - Side-by-side code examples (GOOD vs BAD)
+  - Implementation notes
+  - Recommended CSS
+  - Useful commands
 
 ================================================================================
-VALIDACIONES
+VALIDATIONS
 ================================================================================
 
-✓ SKILL.md: 519 líneas (dentro de límite 500+)
-✓ Frontmatter correcto y descriptivo
-✓ Todos los ejemplos funcionales
-✓ Código completo y comentado
-✓ Seguridad implementada
-✓ Buenas prácticas integradas
-✓ Español completo
-✓ Sin emojis
-✓ Estructura lógica
-✓ Índices y tablas
-✓ Referencias correctas
-✓ Formato imperativo
+- SKILL.md: 519 lines (within 500+ limit)
+- Correct and descriptive frontmatter
+- All examples functional
+- Complete and commented code
+- Security implemented
+- Best practices integrated
+- Complete English
+- No emojis
+- Logical structure
+- Indexes and tables
+- Correct references
+- Imperative format
 
 ================================================================================
-PROPÓSITO
+PURPOSE
 ================================================================================
 
-Documentación exhaustiva que permita a desarrolladores Joomla:
+Exhaustive documentation that enables Joomla developers to:
 
-1. Entender completamente cómo funcionan los overrides
-2. Saber dónde encontrar archivos originales
-3. Crear overrides correctamente
-4. Implementar buenas prácticas
-5. Resolver problemas comunes
-6. Usar ejemplos como templates
-7. Crear soluciones personalizadas
+1. Fully understand how overrides work
+2. Know where to find original files
+3. Create overrides correctly
+4. Implement best practices
+5. Resolve common issues
+6. Use examples as templates
+7. Create custom solutions
 
-La skill proporciona tanto teoría como práctica, adecuada para
-todos los niveles de experiencia.
+The skill provides both theory and practice, suitable for
+all experience levels.
 
 ================================================================================
-FECHA DE CREACIÓN
+CREATION DATE
 ================================================================================
 
-Marzo 6, 2024
-Compatible con Joomla 5.x, 6.x
+March 6, 2024
+Compatible with Joomla 5.x, 6.x
 
 ================================================================================

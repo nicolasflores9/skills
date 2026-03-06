@@ -1,233 +1,233 @@
-# Índice de Recursos: Custom Fields en Joomla 5/6
+# Resource Index: Custom Fields in Joomla 5/6
 
-## Archivo Principal
+## Main File
 
-### SKILL.md (325 líneas)
-Guía técnica completa sobre Custom Fields en Joomla 5/6. Cubre:
-- Inicio rápido con ejemplos de código
-- Los 16 tipos de campos disponibles
-- API FieldsHelper (getFields, render)
-- Creación desde panel administrativo
-- Estructura de bases de datos (#__fields, #__fields_values)
-- Renderizado en templates
-- Uso en módulos
-- Integración en componentes personalizados
-- Field Groups (grupos de campos)
-- Contextos soportados
-- Validación y filtros
-- Eventos del sistema
-- Mejores prácticas
+### SKILL.md (325 lines)
+Complete technical guide on Custom Fields in Joomla 5/6. Covers:
+- Quick start with code examples
+- The 16 available field types
+- FieldsHelper API (getFields, render)
+- Creation from admin panel
+- Database structure (#__fields, #__fields_values)
+- Rendering in templates
+- Usage in modules
+- Integration in custom components
+- Field Groups
+- Supported contexts
+- Validation and filters
+- System events
+- Best practices
 - Troubleshooting
 
-**Triggers internos:** campo personalizado joomla, custom field, FieldsHelper, #__fields, campos artículos joomla, field group joomla
+**Internal triggers:** joomla custom field, custom field, FieldsHelper, #__fields, joomla article fields, field group joomla
 
 ---
 
-## Archivos de Referencia
+## Reference Files
 
-### references/ejemplos-practicos.php (320 líneas)
-Código PHP completo con 8 ejemplos prácticos listos para usar:
+### references/ejemplos-practicos.php (320 lines)
+Complete PHP code with 8 practical ready-to-use examples:
 
-1. **Cargar campos en componente** - Cómo extender un modelo para cargar Custom Fields
-2. **Plugin de inyección** - Inyectar campos en formularios de componentes personalizados
-3. **Módulo con Custom Fields** - Helper completo para módulo que muestra campos
-4. **Consultas a BD** - FieldValueRepository con métodos CRUD completos
-5. **Override de template** - Renderizar campos con estilo personalizado
-6. **Validación personalizada** - Crear reglas de validación JFormRule
-7. **Vista de módulo** - Template HTML para mostrar campos en módulo
-8. **Acceso por nombre** - Indexar campos y acceder directamente por nombre
+1. **Load fields in a component** - How to extend a model to load Custom Fields
+2. **Injection plugin** - Inject fields into custom component forms
+3. **Module with Custom Fields** - Complete helper for a module that displays fields
+4. **Database queries** - FieldValueRepository with full CRUD methods
+5. **Template override** - Render fields with custom styling
+6. **Custom validation** - Create JFormRule validation rules
+7. **Module view** - HTML template to display fields in a module
+8. **Access by name** - Index fields and access directly by name
 
-**Características:**
-- Código comentado y estructurado
-- Implementación de interfaces Joomla
-- Inyección de dependencias
-- Manejo de errores
+**Features:**
+- Commented and structured code
+- Joomla interface implementation
+- Dependency injection
+- Error handling
 
-### references/base-datos.md (320 líneas)
-Referencia completa sobre la estructura de base de datos:
+### references/base-datos.md (320 lines)
+Complete reference on the database structure:
 
-**Tablas:**
-- #__fields - Definiciones de campos
-- #__fields_values - Valores almacenados
-- #__fields_groups - Grupos de campos
+**Tables:**
+- #__fields - Field definitions
+- #__fields_values - Stored values
+- #__fields_groups - Field groups
 
-**Contenidos:**
-- Estructura SQL de cada tabla
-- Descripción de campos (id, context, name, type, params, etc.)
-- Ejemplos de consultas comunes (7 casos típicos)
-- Estructura JSON en params y fieldparams
-- Clase PHP FieldsRepository completa
-- Consideraciones de performance
-- Versionado y migración
+**Contents:**
+- SQL structure of each table
+- Field descriptions (id, context, name, type, params, etc.)
+- Common query examples (7 typical cases)
+- JSON structure in params and fieldparams
+- Complete PHP FieldsRepository class
+- Performance considerations
+- Versioning and migration
 
-**Utilidad:** Para desarrolladores que necesitan trabajar directamente con BD o entender la estructura interna.
+**Usefulness:** For developers who need to work directly with the database or understand the internal structure.
 
-### references/casos-uso.md (380 líneas)
-7 casos de uso prácticos del mundo real:
+### references/casos-uso.md (380 lines)
+7 practical real-world use cases:
 
-1. **Galería de imágenes para artículos**
-   - Campos repetibles y list of images
-   - Renderizado en template
+1. **Image gallery for articles**
+   - Repeatable fields and list of images
+   - Template rendering
 
-2. **SEO personalizado por artículo**
-   - Campos específicos de SEO
-   - Plugin que inyecta meta tags
+2. **Custom SEO per article**
+   - SEO-specific fields
+   - Plugin that injects meta tags
 
-3. **Información adicional en registro de usuario**
-   - Campos en com_users.user
-   - Plugin de validación frontend
+3. **Additional information in user registration**
+   - Fields in com_users.user
+   - Frontend validation plugin
 
-4. **Tipología de contenido por categoría**
-   - Diferentes campos según categoría
-   - Template dinámico
+4. **Content typology by category**
+   - Different fields per category
+   - Dynamic template
 
-5. **Contactos con información extendida**
-   - Campos en com_contact.contact
-   - Módulo de visualización
+5. **Contacts with extended information**
+   - Fields in com_contact.contact
+   - Display module
 
-6. **Dashboard de usuario**
-   - Acceso a campos en frontend
-   - Perfil personalizado
+6. **User dashboard**
+   - Frontend field access
+   - Custom profile
 
-7. **REST API con Custom Fields**
-   - Exponer campos en JSON
-   - Integración con API
+7. **REST API with Custom Fields**
+   - Expose fields as JSON
+   - API integration
 
-**Características:**
-- Implementación completa para cada caso
-- Código HTML, PHP, SQL
-- Buenas prácticas documentadas
+**Features:**
+- Complete implementation for each case
+- HTML, PHP, SQL code
+- Documented best practices
 
-### references/faq-troubleshooting.md (290 líneas)
-Preguntas frecuentes y solución de problemas:
+### references/faq-troubleshooting.md (290 lines)
+Frequently asked questions and problem solving:
 
-**FAQ (11 preguntas):**
-- Cargar campos en componentes personalizados
-- Campos compartidos entre contextos
-- Validación server-side
-- Almacenamiento de múltiples valores
-- Automatic Display vs renderizado manual
-- Migración entre Joomla
-- Campos dinámicos desde BD
-- Caché de resultados
-- Reordenamiento de campos
-- Y más...
+**FAQ (11 questions):**
+- Loading fields in custom components
+- Shared fields between contexts
+- Server-side validation
+- Storing multiple values
+- Automatic Display vs manual rendering
+- Migration between Joomla instances
+- Dynamic fields from database
+- Caching results
+- Reordering fields
+- And more...
 
-**Troubleshooting (13 problemas):**
-- Campos no aparecen en formulario
-- Valores no se guardan
-- Template override no funciona
-- Campo aparece sin valor
-- Campos lentos
-- Campo repetible no funciona
-- Permisos de acceso
-- Campo de media no muestra imagen
-- Validación personalizada no se ejecuta
-- REST API devuelve "Field not found"
-- Upgrade rompe campos
-- Y más...
+**Troubleshooting (13 problems):**
+- Fields not appearing in form
+- Values not saving
+- Template override not working
+- Field appears without value
+- Slow fields
+- Repeatable field not working
+- Access permissions
+- Media field not showing image
+- Custom validation not executing
+- REST API returns "Field not found"
+- Upgrade breaks fields
+- And more...
 
-**Herramientas de Debug:**
-- Inspeccionar campos cargados
-- Verificar BD
-- Logs del sistema
-- Herramientas de terceros
+**Debug Tools:**
+- Inspect loaded fields
+- Verify database
+- System logs
+- Third-party tools
 
-**Checklist de Deployment**
+**Deployment Checklist**
 
 ---
 
-## Estructura de Carpetas
+## Folder Structure
 
 ```
 /mnt/skills/joomla-custom-fields/
-├── SKILL.md                              (Guía principal)
-├── INDEX.md                              (Este archivo)
+├── SKILL.md                              (Main guide)
+├── INDEX.md                              (This file)
 └── references/
-    ├── ejemplos-practicos.php            (8 ejemplos de código)
-    ├── base-datos.md                     (Estructura BD y queries)
-    ├── casos-uso.md                      (7 casos prácticos reales)
-    └── faq-troubleshooting.md            (FAQ y troubleshooting)
+    ├── ejemplos-practicos.php            (8 code examples)
+    ├── base-datos.md                     (DB structure and queries)
+    ├── casos-uso.md                      (7 real-world use cases)
+    └── faq-troubleshooting.md            (FAQ and troubleshooting)
 ```
 
 ---
 
-## Cómo Usar Este Skill
+## How to Use This Skill
 
-### Para Comenzar Rápido
-1. Lee: **SKILL.md** - Sección "Inicio Rápido"
-2. Consulta: **referencias/ejemplos-practicos.php** - Ejemplo 1
+### To Get Started Quickly
+1. Read: **SKILL.md** - "Quick Start" section
+2. Check: **references/ejemplos-practicos.php** - Example 1
 
-### Para Implementar un Módulo
-1. Lee: **SKILL.md** - Sección "Uso en Módulos"
-2. Copia: **referencias/ejemplos-practicos.php** - Ejemplo 3
-3. Adapta a tu lógica
+### To Implement a Module
+1. Read: **SKILL.md** - "Usage in Modules" section
+2. Copy: **references/ejemplos-practicos.php** - Example 3
+3. Adapt to your logic
 
-### Para Resolver Problemas
-1. Busca en: **referencias/faq-troubleshooting.md**
-2. Consulta: **referencias/base-datos.md** para queries
+### To Solve Problems
+1. Search in: **references/faq-troubleshooting.md**
+2. Check: **references/base-datos.md** for queries
 
-### Para Aplicar Casos Complejos
-1. Encuentra tu caso en: **referencias/casos-uso.md**
-2. Lee implementación completa
-3. Copia código base
-4. Personaliza para tu proyecto
+### To Apply Complex Cases
+1. Find your case in: **references/casos-uso.md**
+2. Read the complete implementation
+3. Copy the base code
+4. Customize for your project
 
-### Para Trabajar con BD
-1. Referencia: **referencias/base-datos.md**
-2. Copia queries de "Ejemplos de Consultas Comunes"
-3. Adapta a tus necesidades
-
----
-
-## Contextos Cubiertos
-
-- `com_content.article` - Artículos
-- `com_content.categories` - Categorías
-- `com_users.user` - Usuarios
-- `com_contact.contact` - Contactos
-- Componentes personalizados (com_*.*)
+### To Work with the Database
+1. Reference: **references/base-datos.md**
+2. Copy queries from "Common Query Examples"
+3. Adapt to your needs
 
 ---
 
-## Conceptos Clave Explicados
+## Covered Contexts
 
-- **FieldsHelper** - Helper central para Custom Fields
-- **jcfields** - Array de campos cargados en elemento
-- **Contexto** - Identificador de dónde existen los campos
-- **Field Group** - Agrupación de campos en pestañas
-- **rawvalue vs value** - Valor sin procesar vs HTML renderizado
-- **#__fields** - Tabla de definiciones
-- **#__fields_values** - Tabla de valores
+- `com_content.article` - Articles
+- `com_content.categories` - Categories
+- `com_users.user` - Users
+- `com_contact.contact` - Contacts
+- Custom components (com_*.*)
 
 ---
 
-## Tecnologías
+## Key Concepts Explained
 
-- **PHP 8.0+** - Sintaxis moderna con type hints
-- **Joomla 5/6** - Framework CMS
-- **MySQL 5.7+** - Base de datos
-- **JDatabase API** - Consultas a BD
-- **REST API** - Integración con servicios
-
----
-
-## Niveles de Experiencia
-
-- **Principiante:** Lee SKILL.md completo + Ejemplo 1 y 7
-- **Intermedio:** Combina SKILL.md + 2-3 casos de referencias/
-- **Avanzado:** Trabaja directamente con BD + plugins personalizados
+- **FieldsHelper** - Central helper for Custom Fields
+- **jcfields** - Array of loaded fields on an element
+- **Context** - Identifier for where fields exist
+- **Field Group** - Grouping of fields into tabs
+- **rawvalue vs value** - Unprocessed value vs rendered HTML
+- **#__fields** - Definitions table
+- **#__fields_values** - Values table
 
 ---
 
-## Última Actualización
+## Technologies
 
-Marzo 2026 - Joomla 5/6
+- **PHP 8.0+** - Modern syntax with type hints
+- **Joomla 5/6** - CMS Framework
+- **MySQL 5.7+** - Database
+- **JDatabase API** - Database queries
+- **REST API** - Service integration
 
-## Próximos Tópicos Recomendados
+---
 
-- Crear tipos de campos personalizados
-- REST API de Custom Fields
-- Migración de datos entre campos
-- Performance optimization en grandes volúmenes
-- Multi-idioma en campos personalizados
+## Experience Levels
+
+- **Beginner:** Read full SKILL.md + Examples 1 and 7
+- **Intermediate:** Combine SKILL.md + 2-3 reference cases
+- **Advanced:** Work directly with the database + custom plugins
+
+---
+
+## Last Updated
+
+March 2026 - Joomla 5/6
+
+## Recommended Next Topics
+
+- Creating custom field types
+- Custom Fields REST API
+- Data migration between fields
+- Performance optimization for large volumes
+- Multilingual custom fields

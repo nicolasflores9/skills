@@ -1,9 +1,9 @@
 /**
- * EJEMPLO COMPLETO: Módulo de Artículos Recientes
- * Módulo funcional con acceso a base de datos, caché y parámetros avanzados
+ * COMPLETE EXAMPLE: Latest Articles Module
+ * Functional module with database access, caching, and advanced parameters
  */
 
-// ===== mod_latest_articles.php (ARCHIVO PRINCIPAL)
+// ===== mod_latest_articles.php (MAIN FILE)
 <?php
 defined('_JEXEC') or die;
 
@@ -18,7 +18,7 @@ require $path;
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="module" client="site" method="upgrade">
     <name>MOD_LATEST_ARTICLES</name>
-    <author>Tu Nombre</author>
+    <author>Your Name</author>
     <creationDate>2025-03-06</creationDate>
     <copyright>Copyright 2025</copyright>
     <license>GNU General Public License v2.0</license>
@@ -48,7 +48,7 @@ require $path;
                 <field name="titulo" type="text"
                     label="MOD_LATEST_ARTICLES_TITULO"
                     description="MOD_LATEST_ARTICLES_TITULO_DESC"
-                    default="Últimos Artículos"
+                    default="Latest Articles"
                     size="50" />
 
                 <field name="cantidad" type="integer"
@@ -283,7 +283,7 @@ class ArticlesHelper
                          (int)$categoryId);
         }
 
-        // Orden
+        // Sort order
         $orderField = $this->getOrderField($order);
         $query->order($this->db->quoteName($orderField) . ' ' . $direction);
 
@@ -317,7 +317,7 @@ use Joomla\CMS\Route;
 
 $items = $displayData['items'];
 $params = $displayData['params'];
-$titulo = $params->get('titulo', 'Últimos Artículos');
+$titulo = $params->get('titulo', 'Latest Articles');
 $mostrar_fecha = (bool) $params->get('mostrar_fecha', 1);
 $mostrar_autor = (bool) $params->get('mostrar_autor', 1);
 $mostrar_resumen = (bool) $params->get('mostrar_resumen', 1);
@@ -369,7 +369,7 @@ $mostrar_imagen = (bool) $params->get('mostrar_imagen', 1);
         </ul>
     <?php else: ?>
         <p class="mod-latest-articles-empty">
-            <?php echo 'No hay artículos disponibles'; ?>
+            <?php echo 'No articles available'; ?>
         </p>
     <?php endif; ?>
 </div>
@@ -416,33 +416,33 @@ MOD_LATEST_ARTICLES="Latest Articles Module"
 MOD_LATEST_ARTICLES_DESC="Display latest articles with advanced options"
 
 // ===== language/es-ES/mod_latest_articles.ini
-MOD_LATEST_ARTICLES="Módulo Últimos Artículos"
-MOD_LATEST_ARTICLES_DESC="Muestra los últimos artículos con opciones avanzadas"
-MOD_LATEST_ARTICLES_FIELDSET_BASIC="Configuración Básica"
-MOD_LATEST_ARTICLES_FIELDSET_DISPLAY="Opciones de Visualización"
-MOD_LATEST_ARTICLES_TITULO="Título del Módulo"
-MOD_LATEST_ARTICLES_TITULO_DESC="Título mostrado en el módulo"
-MOD_LATEST_ARTICLES_CANTIDAD="Cantidad de Artículos"
-MOD_LATEST_ARTICLES_CANTIDAD_DESC="Cuántos artículos mostrar"
-MOD_LATEST_ARTICLES_CATEGORIA="Categoría"
-MOD_LATEST_ARTICLES_CATEGORIA_DESC="Dejar vacío para todas las categorías"
+MOD_LATEST_ARTICLES="Modulo Ultimos Articulos"
+MOD_LATEST_ARTICLES_DESC="Muestra los ultimos articulos con opciones avanzadas"
+MOD_LATEST_ARTICLES_FIELDSET_BASIC="Configuracion Basica"
+MOD_LATEST_ARTICLES_FIELDSET_DISPLAY="Opciones de Visualizacion"
+MOD_LATEST_ARTICLES_TITULO="Titulo del Modulo"
+MOD_LATEST_ARTICLES_TITULO_DESC="Titulo mostrado en el modulo"
+MOD_LATEST_ARTICLES_CANTIDAD="Cantidad de Articulos"
+MOD_LATEST_ARTICLES_CANTIDAD_DESC="Cuantos articulos mostrar"
+MOD_LATEST_ARTICLES_CATEGORIA="Categoria"
+MOD_LATEST_ARTICLES_CATEGORIA_DESC="Dejar vacio para todas las categorias"
 MOD_LATEST_ARTICLES_MOSTRAR_FECHA="Mostrar Fecha"
 MOD_LATEST_ARTICLES_MOSTRAR_AUTOR="Mostrar Autor"
 MOD_LATEST_ARTICLES_MOSTRAR_RESUMEN="Mostrar Resumen"
 MOD_LATEST_ARTICLES_LONGITUD_RESUMEN="Longitud del Resumen"
 MOD_LATEST_ARTICLES_ORDEN="Ordenar Por"
-MOD_LATEST_ARTICLES_ORDEN_FECHA="Fecha de Publicación"
-MOD_LATEST_ARTICLES_ORDEN_TITULO="Título"
+MOD_LATEST_ARTICLES_ORDEN_FECHA="Fecha de Publicacion"
+MOD_LATEST_ARTICLES_ORDEN_TITULO="Titulo"
 MOD_LATEST_ARTICLES_ORDEN_VISITAS="Visitas"
-MOD_LATEST_ARTICLES_DIRECCION="Dirección de Orden"
+MOD_LATEST_ARTICLES_DIRECCION="Direccion de Orden"
 MOD_LATEST_ARTICLES_DIRECCION_ASC="Ascendente"
 MOD_LATEST_ARTICLES_DIRECCION_DESC="Descendente"
 MOD_LATEST_ARTICLES_MOSTRAR_IMAGEN="Mostrar Imagen Destacada"
-MOD_LATEST_ARTICLES_TAMANIO_IMAGEN="Tamaño de Imagen"
+MOD_LATEST_ARTICLES_TAMANIO_IMAGEN="Tamanio de Imagen"
 MOD_LATEST_ARTICLES_TAMANIO_IMAGEN_DESC="Formato: 100x100"
 MOD_LATEST_ARTICLES_LAYOUT_DEFAULT="Layout por Defecto"
-MOD_LATEST_ARTICLES_LAYOUT_DEFAULT_DESC="Lista simple de últimos artículos"
+MOD_LATEST_ARTICLES_LAYOUT_DEFAULT_DESC="Lista simple de ultimos articulos"
 
 // ===== language/es-ES/mod_latest_articles.sys.ini
-MOD_LATEST_ARTICLES="Módulo Últimos Artículos"
-MOD_LATEST_ARTICLES_DESC="Muestra los últimos artículos con opciones avanzadas"
+MOD_LATEST_ARTICLES="Modulo Ultimos Articulos"
+MOD_LATEST_ARTICLES_DESC="Muestra los ultimos articulos con opciones avanzadas"

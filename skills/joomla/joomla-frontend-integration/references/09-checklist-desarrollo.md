@@ -1,113 +1,113 @@
-# Checklist Desarrollo Frontend Joomla 5/6 + Helix
+# Frontend Development Checklist for Joomla 5/6 + Helix
 
-## Pre-Desarrollo
+## Pre-Development
 
-### Preparación del Entorno
-- [ ] Joomla 5.6+ instalado localmente
-- [ ] Helix Ultimate 2.x+ template activo
-- [ ] Cache deshabilitado en desarrollo (Site > Global Configuration > System)
-- [ ] Error reporting activado (System > Global Configuration > Server)
-- [ ] Browser developer tools abiertos (F12)
-- [ ] Extensión de Joomla debug instalada (opcional pero recomendada)
+### Environment Preparation
+- [ ] Joomla 5.6+ installed locally
+- [ ] Helix Ultimate 2.x+ template active
+- [ ] Cache disabled in development (Site > Global Configuration > System)
+- [ ] Error reporting enabled (System > Global Configuration > Server)
+- [ ] Browser developer tools open (F12)
+- [ ] Joomla debug extension installed (optional but recommended)
 
-### Análisis de Requisitos
-- [ ] Identificar todos los assets (CSS, JS) necesarios
-- [ ] Listar dependencias entre assets
-- [ ] Definir qué assets son críticos (above the fold)
-- [ ] Determinar breakpoints responsive (mobile, tablet, desktop)
-- [ ] Crear lista de navegadores a soportar
+### Requirements Analysis
+- [ ] Identify all necessary assets (CSS, JS)
+- [ ] List dependencies between assets
+- [ ] Define which assets are critical (above the fold)
+- [ ] Determine responsive breakpoints (mobile, tablet, desktop)
+- [ ] Create list of browsers to support
 
-### Arquitectura del Proyecto
-- [ ] Decidir si usar módulo, componente o plugin
-- [ ] Crear estructura de carpetas
-- [ ] Planificar joomla.asset.json (presets, versionado)
-- [ ] Definir convención de nombres CSS/JS
+### Project Architecture
+- [ ] Decide whether to use a module, component, or plugin
+- [ ] Create folder structure
+- [ ] Plan joomla.asset.json (presets, versioning)
+- [ ] Define CSS/JS naming convention
 
 ---
 
-## Durante Desarrollo
+## During Development
 
-### Estructura de Archivos
-- [ ] Crear carpeta `/css` en el proyecto
-- [ ] Crear carpeta `/js` en el proyecto
-- [ ] Crear `joomla.asset.json` en raíz del proyecto
-- [ ] Crear `README.md` con instrucciones
-- [ ] NO crear archivos en carpetas core de Helix
+### File Structure
+- [ ] Create `/css` folder in the project
+- [ ] Create `/js` folder in the project
+- [ ] Create `joomla.asset.json` in the project root
+- [ ] Create `README.md` with instructions
+- [ ] Do NOT create files in Helix core folders
 
 ### Assets Management (WebAssetManager)
-- [ ] Registrar todos los assets en `joomla.asset.json`
-- [ ] Usar versioning automático (`"version": "auto"`)
-- [ ] Declarar todas las dependencias correctamente
-- [ ] Usar presets para agrupar assets relacionados
-- [ ] Validar JSON con schema oficial
+- [ ] Register all assets in `joomla.asset.json`
+- [ ] Use automatic versioning (`"version": "auto"`)
+- [ ] Declare all dependencies correctly
+- [ ] Use presets to group related assets
+- [ ] Validate JSON with official schema
 
 ### CSS Development
-- [ ] Usar mobile-first approach (CSS base para mobile)
-- [ ] Escribir CSS modular y reutilizable
-- [ ] No usar `!important` (excepto casos extremos)
-- [ ] Usar CSS custom properties (variables)
-- [ ] Seguir naming convention (BEM o similar)
-- [ ] NO sobrescribir clases Bootstrap directamente
-- [ ] Crear clases custom en lugar de modificar base
+- [ ] Use mobile-first approach (base CSS for mobile)
+- [ ] Write modular and reusable CSS
+- [ ] Do not use `!important` (except in extreme cases)
+- [ ] Use CSS custom properties (variables)
+- [ ] Follow naming convention (BEM or similar)
+- [ ] Do NOT override Bootstrap classes directly
+- [ ] Create custom classes instead of modifying base ones
 
 ### JavaScript Development
-- [ ] Usar `defer` para scripts custom
-- [ ] Usar `async` solo para analytics/tracking
-- [ ] Documentar funciones con JSDoc
-- [ ] Usar `document.addEventListener('DOMContentLoaded', ...)`
-- [ ] Manejar errores apropiadamente
-- [ ] NO usar jQuery innecesariamente (aunque disponible)
-- [ ] Considerar Web Components para componentes reutilizables
+- [ ] Use `defer` for custom scripts
+- [ ] Use `async` only for analytics/tracking
+- [ ] Document functions with JSDoc
+- [ ] Use `document.addEventListener('DOMContentLoaded', ...)`
+- [ ] Handle errors appropriately
+- [ ] Do NOT use jQuery unnecessarily (even though it is available)
+- [ ] Consider Web Components for reusable components
 
 ### Responsive Design
-- [ ] Diseñar mobile-first
-- [ ] Probar en viewport 375px (móvil pequeño)
-- [ ] Probar en viewport 768px (tablet)
-- [ ] Probar en viewport 1024px (desktop)
-- [ ] Probar en viewport 1400px (desktop grande)
-- [ ] Usar media queries correctamente
-- [ ] Verificar que Bootstrap grid funciona (col-12, col-md-6, etc.)
-- [ ] Probar zoom (100%, 90%, 110%)
+- [ ] Design mobile-first
+- [ ] Test at 375px viewport (small mobile)
+- [ ] Test at 768px viewport (tablet)
+- [ ] Test at 1024px viewport (desktop)
+- [ ] Test at 1400px viewport (large desktop)
+- [ ] Use media queries correctly
+- [ ] Verify that Bootstrap grid works (col-12, col-md-6, etc.)
+- [ ] Test zoom (100%, 90%, 110%)
 
-### Módulos Custom (si aplica)
-- [ ] Crear `joomla.asset.json` en raíz del módulo
-- [ ] Crear `helper.php` con métodos de ayuda
-- [ ] Cargar assets en helper.php
-- [ ] Crear template HTML limpio
-- [ ] Añadir CSS y JS modulares
-- [ ] Hacer el módulo reutilizable
+### Custom Modules (if applicable)
+- [ ] Create `joomla.asset.json` in the module root
+- [ ] Create `helper.php` with helper methods
+- [ ] Load assets in helper.php
+- [ ] Create clean HTML template
+- [ ] Add modular CSS and JS
+- [ ] Make the module reusable
 
-### SP Page Builder Addons (si aplica)
-- [ ] Crear plugin tipo sppagebuilder
-- [ ] Usar Custom CSS para estilos
-- [ ] Para JS: crear plugin custom
-- [ ] Registrar assets en el plugin
-- [ ] Documentar parámetros del addon
-- [ ] Hacer responsive el addon
+### SP Page Builder Addons (if applicable)
+- [ ] Create sppagebuilder type plugin
+- [ ] Use Custom CSS for styles
+- [ ] For JS: create custom plugin
+- [ ] Register assets in the plugin
+- [ ] Document addon parameters
+- [ ] Make the addon responsive
 
 ---
 
-## Testing & Validación
+## Testing & Validation
 
-### Navegadores Desktop
-- [ ] Chrome/Chromium (versión actual)
-- [ ] Firefox (versión actual)
-- [ ] Safari (si tienes Mac)
-- [ ] Edge (versión actual)
-- [ ] Compatibilidad con versiones antiguas (IE11 si es requerido)
+### Desktop Browsers
+- [ ] Chrome/Chromium (current version)
+- [ ] Firefox (current version)
+- [ ] Safari (if you have a Mac)
+- [ ] Edge (current version)
+- [ ] Compatibility with older versions (IE11 if required)
 
-### Navegadores Mobile
+### Mobile Browsers
 - [ ] Chrome Mobile
 - [ ] Safari Mobile (iOS)
 - [ ] Samsung Internet
 - [ ] Firefox Mobile
 
-### Validación de Código
-- [ ] Validar HTML (https://validator.w3.org/)
-- [ ] Validar CSS (https://jigsaw.w3.org/css-validator/)
-- [ ] Revisar console.log en Developer Tools (sin errores)
-- [ ] Revisar Network tab (sin 404s)
-- [ ] Usar Lighthouse para auditoría
+### Code Validation
+- [ ] Validate HTML (https://validator.w3.org/)
+- [ ] Validate CSS (https://jigsaw.w3.org/css-validator/)
+- [ ] Check console.log in Developer Tools (no errors)
+- [ ] Check Network tab (no 404s)
+- [ ] Use Lighthouse for auditing
 
 ### Performance
 - [ ] PageSpeed Insights score > 80
@@ -116,163 +116,163 @@
 - [ ] Largest Contentful Paint < 4s
 - [ ] Cumulative Layout Shift < 0.1
 - [ ] Total Blocking Time < 200ms
-- [ ] Minificar CSS/JS en producción
+- [ ] Minify CSS/JS in production
 
-### Accesibilidad
+### Accessibility
 - [ ] WCAG 2.1 Level AA compliance
-- [ ] Navegación con teclado funcional
-- [ ] Focus indicators visibles
-- [ ] Contraste de colores adecuado (4.5:1 mínimo)
-- [ ] Labels en formularios
-- [ ] Alt text en imágenes
-- [ ] Landmarks HTML5 correctos (header, main, footer)
-- [ ] aria-labels donde sea necesario
+- [ ] Keyboard navigation functional
+- [ ] Visible focus indicators
+- [ ] Adequate color contrast (4.5:1 minimum)
+- [ ] Labels on forms
+- [ ] Alt text on images
+- [ ] Correct HTML5 landmarks (header, main, footer)
+- [ ] aria-labels where necessary
 
 ### Assets Loading
-- [ ] `<jdoc:include type="head" />` en template
-- [ ] Scripts cargan en orden correcto (Network tab)
-- [ ] No hay dependencias circulares
-- [ ] Todos los assets están disponibles
-- [ ] Versioning funciona (check URL assets)
-- [ ] Cache busting en producción
+- [ ] `<jdoc:include type="head" />` in template
+- [ ] Scripts load in correct order (Network tab)
+- [ ] No circular dependencies
+- [ ] All assets are available
+- [ ] Versioning works (check asset URLs)
+- [ ] Cache busting in production
 
 ### Responsive Testing
-- [ ] Usar responsive mode en DevTools
-- [ ] Probar portrait y landscape
-- [ ] Verificar media queries se aplican
-- [ ] Imágenes responsive funcionen
-- [ ] Táctil funcional (hover effects manejar)
-- [ ] Overflow controlado en mobile
+- [ ] Use responsive mode in DevTools
+- [ ] Test portrait and landscape
+- [ ] Verify media queries are applied
+- [ ] Responsive images work
+- [ ] Touch is functional (handle hover effects)
+- [ ] Overflow controlled on mobile
 - [ ] Touch targets > 48px
 
 ### Cross-browser Testing
-- [ ] Variables CSS soportadas en todos
-- [ ] Flexbox renderiza igual
-- [ ] Grid layout funciona
-- [ ] Animaciones CSS suave
-- [ ] Fuentes cargadas correctamente
-- [ ] Formularios responsivos
-- [ ] Audio/Video funciona (si aplica)
+- [ ] CSS variables supported in all browsers
+- [ ] Flexbox renders the same
+- [ ] Grid layout works
+- [ ] Smooth CSS animations
+- [ ] Fonts loaded correctly
+- [ ] Responsive forms
+- [ ] Audio/Video works (if applicable)
 
 ---
 
-## Pre-Producción
+## Pre-Production
 
 ### Code Review
-- [ ] Revisar joomla.asset.json por errores
-- [ ] Revisar CSS por especificidad excesiva
-- [ ] Revisar JS por memory leaks
-- [ ] Revisar comentarios y documentación
-- [ ] Limpiar código Debug (console.log, etc.)
-- [ ] Verificar no hay datos sensibles en código
+- [ ] Review joomla.asset.json for errors
+- [ ] Review CSS for excessive specificity
+- [ ] Review JS for memory leaks
+- [ ] Review comments and documentation
+- [ ] Clean up debug code (console.log, etc.)
+- [ ] Verify no sensitive data in code
 
-### Optimización
-- [ ] Minificar CSS (opcional)
-- [ ] Minificar JS (opcional)
-- [ ] Optimizar imágenes (WEBP donde sea posible)
-- [ ] Usar lazy loading para imágenes off-screen
-- [ ] Prefetch/preload críticos (opcional)
-- [ ] Implementar compresión gzip
-- [ ] Usar CDN para assets grandes (opcional)
+### Optimization
+- [ ] Minify CSS (optional)
+- [ ] Minify JS (optional)
+- [ ] Optimize images (WEBP where possible)
+- [ ] Use lazy loading for off-screen images
+- [ ] Prefetch/preload critical resources (optional)
+- [ ] Implement gzip compression
+- [ ] Use CDN for large assets (optional)
 
 ### Security
-- [ ] Validar inputs en formularios
-- [ ] Escapar outputs HTML
-- [ ] CSRF protection en forms
-- [ ] No almacenar datos sensibles en localStorage
-- [ ] HTTPS configurado
-- [ ] Content Security Policy headers (opcional)
+- [ ] Validate form inputs
+- [ ] Escape HTML outputs
+- [ ] CSRF protection on forms
+- [ ] Do not store sensitive data in localStorage
+- [ ] HTTPS configured
+- [ ] Content Security Policy headers (optional)
 
-### Documentación
-- [ ] Documentar estructura de proyecto
-- [ ] Crear README.md con instrucciones
-- [ ] Documentar convenciones CSS/JS
-- [ ] Crear ejemplos de uso
-- [ ] Documentar parámetros de módulos
-- [ ] Crear guía de customización
+### Documentation
+- [ ] Document project structure
+- [ ] Create README.md with instructions
+- [ ] Document CSS/JS conventions
+- [ ] Create usage examples
+- [ ] Document module parameters
+- [ ] Create customization guide
 
-### Backup & Versionado
-- [ ] Código en Git/Version Control
-- [ ] Tags de versión creadas
-- [ ] Changelog actualizado
-- [ ] Backup de database pre-deployment
-- [ ] Backup de files pre-deployment
+### Backup & Versioning
+- [ ] Code in Git/Version Control
+- [ ] Version tags created
+- [ ] Changelog updated
+- [ ] Database backup pre-deployment
+- [ ] File backup pre-deployment
 
 ---
 
-## Producción
+## Production
 
-### Configuración Final
-- [ ] Cache habilitado (Site > Global Configuration > Cache)
-- [ ] Gzip habilitado en servidor
-- [ ] CDN configurado (opcional)
-- [ ] Analytics instalado
+### Final Configuration
+- [ ] Cache enabled (Site > Global Configuration > Cache)
+- [ ] Gzip enabled on server
+- [ ] CDN configured (optional)
+- [ ] Analytics installed
 - [ ] Monitoring setup (Uptime Robot, New Relic, etc.)
-- [ ] Error logging configurado
-- [ ] Backups automáticos activados
+- [ ] Error logging configured
+- [ ] Automatic backups enabled
 
 ### Post-Deployment
-- [ ] Revisar sitio en producción
-- [ ] Probar todas funcionalidades
-- [ ] Verificar assets cargan desde CDN
-- [ ] Revisar Console en DevTools (sin errores)
-- [ ] Revisar Network tab (carga óptima)
-- [ ] PageSpeed Insights en producción
-- [ ] Test unitarios/integración (si aplica)
-- [ ] Monitor uptime y performance
+- [ ] Review site in production
+- [ ] Test all functionalities
+- [ ] Verify assets load from CDN
+- [ ] Check Console in DevTools (no errors)
+- [ ] Check Network tab (optimal loading)
+- [ ] PageSpeed Insights in production
+- [ ] Unit/integration tests (if applicable)
+- [ ] Monitor uptime and performance
 
-### Mantenimiento
-- [ ] Revisar logs de errores regularmente
-- [ ] Update Joomla cuando nuevo version
-- [ ] Update plugins/extensiones
-- [ ] Monitorear performance metrics
-- [ ] Revisar broken links mensualmente
-- [ ] Actualizar contenido obsoleto
-- [ ] Respaldo de base de datos diarios
-
----
-
-## Troubleshooting Rápido
-
-### Assets no cargan
-```
-1. Revisar <jdoc:include type="head" /> en template
-2. Revisar path en joomla.asset.json
-3. Limpiar cache Joomla (System > Clear Cache)
-4. Revisar Network tab en DevTools (404?)
-5. Revisar permisos de archivos (755)
-```
-
-### CSS/JS no aplica
-```
-1. Verificar que $wa->useScript() fue llamado
-2. Revisar que joomla.asset.json está correcto
-3. Revisar especificidad CSS (otros estilos sobreescriben?)
-4. Revisar Network tab (asset está ahí?)
-5. Hard refresh navegador (Ctrl+Shift+R)
-```
-
-### Bootstrap se rompe
-```
-1. Verificar que Bootstrap está en $wa->useStyle('bootstrap')
-2. No sobrescribir variables Bootstrap
-3. No usar !important en sobrescrituras
-4. Revisar que clases Bootstrap están correctas
-5. Revisar order de carga (Bootstrap debe cargar primero)
-```
-
-### Helix se rompe
-```
-1. NUNCA editar archivos core de Helix (template.css, etc.)
-2. SIEMPRE usar custom.css
-3. SIEMPRE usar Custom Code section para snippets globales
-4. Revisar que Custom Code no tiene errores
-5. Limpiar cache y hard refresh
-```
+### Maintenance
+- [ ] Review error logs regularly
+- [ ] Update Joomla when new version available
+- [ ] Update plugins/extensions
+- [ ] Monitor performance metrics
+- [ ] Check broken links monthly
+- [ ] Update obsolete content
+- [ ] Daily database backups
 
 ---
 
-## Recursos Útiles
+## Quick Troubleshooting
+
+### Assets Not Loading
+```
+1. Check <jdoc:include type="head" /> in template
+2. Check path in joomla.asset.json
+3. Clear Joomla cache (System > Clear Cache)
+4. Check Network tab in DevTools (404?)
+5. Check file permissions (755)
+```
+
+### CSS/JS Not Applying
+```
+1. Verify that $wa->useScript() was called
+2. Check that joomla.asset.json is correct
+3. Check CSS specificity (other styles overriding?)
+4. Check Network tab (is the asset there?)
+5. Hard refresh browser (Ctrl+Shift+R)
+```
+
+### Bootstrap Breaks
+```
+1. Verify that Bootstrap is in $wa->useStyle('bootstrap')
+2. Do not override Bootstrap variables
+3. Do not use !important on overrides
+4. Check that Bootstrap classes are correct
+5. Check load order (Bootstrap must load first)
+```
+
+### Helix Breaks
+```
+1. NEVER edit Helix core files (template.css, etc.)
+2. ALWAYS use custom.css
+3. ALWAYS use Custom Code section for global snippets
+4. Check that Custom Code has no errors
+5. Clear cache and hard refresh
+```
+
+---
+
+## Useful Resources
 
 - Joomla Manual: https://manual.joomla.org/
 - Bootstrap Docs: https://getbootstrap.com/
@@ -284,5 +284,5 @@
 
 ---
 
-Versión: 1.0
-Última actualización: Marzo 2026
+Version: 1.0
+Last updated: March 2026

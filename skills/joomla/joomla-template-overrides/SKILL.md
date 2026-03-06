@@ -1,76 +1,76 @@
 ---
 name: joomla-template-overrides
-description: Domina el sistema de overrides de templates en Joomla 5/6. Personaliza vistas de componentes (com_content, artículos, categorías), módulos, plugins, crea layouts alternativos, usa JLayout para componentes reutilizables, implementa child templates y field overrides. Incluye ejemplos completos de blog_item.php, article/default.php, mod_login, alternativas de layout, buenas prácticas y troubleshooting.
+description: Master the template overrides system in Joomla 5/6. Customize component views (com_content, articles, categories), modules, plugins, create alternative layouts, use JLayout for reusable components, implement child templates and field overrides. Includes complete examples of blog_item.php, article/default.php, mod_login, layout alternatives, best practices and troubleshooting.
 ---
 
-# Joomla Template Overrides - Sistema Completo
+# Joomla Template Overrides - Complete System
 
-## Introducción
+## Introduction
 
-Los template overrides permiten personalizar la salida de componentes, módulos y plugins sin modificar archivos core. Se almacenan en `/templates/[nombre]/html/` y se cargan automáticamente en lugar de los archivos originales.
+Template overrides allow you to customize the output of components, modules, and plugins without modifying core files. They are stored in `/templates/[name]/html/` and are automatically loaded in place of the original files.
 
-**Cubre**: Joomla 5.x, 6.x | **Requisitos**: Conocimiento básico de PHP, estructura de carpetas Joomla
-
----
-
-## Conceptos Fundamentales
-
-### ¿Por qué usar Overrides?
-
-- Personalizar presentación sin modificar core
-- Mantener funcionalidad al actualizar Joomla
-- Reutilizar código entre vistas
-- Separar lógica de presentación
-
-### Jerarquía de Carga
-
-Joomla busca archivos en este orden:
-1. `/templates/[activo]/html/[ruta]` → Override personalizado
-2. `/[componente]/views/[vista]/tmpl/` → Archivo original
+**Covers**: Joomla 5.x, 6.x | **Requirements**: Basic knowledge of PHP, Joomla folder structure
 
 ---
 
-## Estructura de Carpetas /html/
+## Fundamental Concepts
+
+### Why Use Overrides?
+
+- Customize presentation without modifying core
+- Maintain functionality when updating Joomla
+- Reuse code across views
+- Separate presentation logic
+
+### Loading Hierarchy
+
+Joomla looks for files in this order:
+1. `/templates/[active]/html/[path]` → Custom override
+2. `/[component]/views/[view]/tmpl/` → Original file
+
+---
+
+## /html/ Folder Structure
 
 ```
 /templates/cassiopeia/html/
-├── com_content/              # Componentes (com_)
+├── com_content/              # Components (com_)
 │   ├── article/
 │   │   └── default.php
 │   └── category/
 │       ├── blog.php
 │       ├── blog_item.php
 │       └── default.php
-├── mod_login/                # Módulos (mod_)
+├── mod_login/                # Modules (mod_)
 │   ├── default.php
 │   └── slim.php
 ├── plg_content_pagenavigation/ # Plugins (plg_)
 │   └── default.php
-└── layouts/                  # JLayout reutilizables
+└── layouts/                  # Reusable JLayouts
     └── joomla/
         └── content/
             ├── intro_image.php
             └── info_block.php
 ```
 
-**Convención de Nombres**:
-- `com_[componente]` → componentes
-- `mod_[modulo]` → módulos
-- `plg_[grupo]_[plugin]` → plugins
+**Naming Convention**:
+- `com_[component]` → components
+- `mod_[module]` → modules
+- `plg_[group]_[plugin]` → plugins
 
 ---
 
-## Overrides de Componentes - com_content
+## Component Overrides - com_content
 
-### Artículo Individual (article/default.php)
+### Single Article (article/default.php)
 
-**Ubicación Original**: `/components/com_content/views/article/tmpl/default.php`
+**Original Location**: `/components/com_content/views/article/tmpl/default.php`
 **Override**: `/templates/cassiopeia/html/com_content/article/default.php`
 
-Variables disponibles:
-- `$this->item` → objeto del artículo
-- `$this->params` → parámetros
-- `$this->item->jcfields` → campos personalizados
+Available variables:
+- `$this->item` → article object
+- `$this->params` → parameters
+- `$this->item->jcfields` → custom fields
 
 ```php
 <?php defined('_JEXEC') or die; ?>
@@ -101,11 +101,11 @@ Variables disponibles:
 </article>
 ```
 
-### Categoría Modo Blog - blog_item.php
+### Category Blog Mode - blog_item.php
 
-**Ubicación**: `/templates/cassiopeia/html/com_content/category/blog_item.php`
+**Location**: `/templates/cassiopeia/html/com_content/category/blog_item.php`
 
-Render cada artículo en el blog:
+Renders each article in the blog:
 
 ```php
 <?php defined('_JEXEC') or die;
@@ -127,35 +127,35 @@ $item = $this->item; ?>
     </div>
 
     <a href="<?php echo JRoute::_($item->link); ?>" class="read-more">
-        Leer más
+        Read more
     </a>
 </article>
 ```
 
-### Categoría Modo Lista - default.php
+### Category List Mode - default.php
 
-**Ubicación**: `/templates/cassiopeia/html/com_content/category/default.php`
+**Location**: `/templates/cassiopeia/html/com_content/category/default.php`
 
-Contenedor principal con tabla de artículos.
+Main container with article table.
 
 ---
 
-## Overrides de Módulos
+## Module Overrides
 
-### Estructura
+### Structure
 
-Ubicación: `/templates/[template]/html/mod_[modulo]/[layout].php`
+Location: `/templates/[template]/html/mod_[module]/[layout].php`
 
-Módulos comunes:
-- `mod_login` → formulario login
-- `mod_menu` → menús
-- `mod_custom` → contenido personalizado
-- `mod_articles_latest` → artículos recientes
-- `mod_breadcrumbs` → migas de pan
+Common modules:
+- `mod_login` → login form
+- `mod_menu` → menus
+- `mod_custom` → custom content
+- `mod_articles_latest` → latest articles
+- `mod_breadcrumbs` → breadcrumbs
 
-### Ejemplo: mod_login Override
+### Example: mod_login Override
 
-**Ubicación**: `/templates/cassiopeia/html/mod_login/default.php`
+**Location**: `/templates/cassiopeia/html/mod_login/default.php`
 
 ```php
 <?php defined('_JEXEC') or die;
@@ -163,18 +163,18 @@ $params = $this->params; ?>
 
 <form action="<?php echo JRoute::_('index.php'); ?>" method="post" class="login-form">
     <div class="form-group">
-        <label for="login-username">Usuario</label>
+        <label for="login-username">Username</label>
         <input type="text" name="username" id="login-username"
                class="form-control" required>
     </div>
 
     <div class="form-group">
-        <label for="login-password">Contraseña</label>
+        <label for="login-password">Password</label>
         <input type="password" name="password" id="login-password"
                class="form-control" required>
     </div>
 
-    <button type="submit" class="btn btn-primary">Entrar</button>
+    <button type="submit" class="btn btn-primary">Log In</button>
 
     <input type="hidden" name="option" value="com_users">
     <input type="hidden" name="task" value="user.login">
@@ -185,49 +185,49 @@ $params = $this->params; ?>
 
 ---
 
-## Layouts Alternativos
+## Alternative Layouts
 
-Variaciónes seleccionables sin reemplazar completamente la vista.
+Selectable variations without fully replacing the view.
 
-### Diferencia vs Template Override
+### Difference vs Template Override
 
-| Aspecto | Override | Layout Alternativo |
-|---------|----------|-------------------|
-| Aplicación | Automática sitio completo | Seleccionable por módulo |
-| Archivo | default.php (reemplaza) | Nombre único (ej: grid.php) |
-| Uso | Reemplaza vista original | Opción junto a original |
+| Aspect | Override | Alternative Layout |
+|--------|----------|-------------------|
+| Application | Automatic site-wide | Selectable per module |
+| File | default.php (replaces) | Unique name (e.g.: grid.php) |
+| Usage | Replaces original view | Option alongside original |
 
-### Crear Layout Alternativo
+### Creating an Alternative Layout
 
-**Para módulos**: Múltiples archivos en `/html/mod_[modulo]/`
+**For modules**: Multiple files in `/html/mod_[module]/`
 
 ```php
 // /templates/cassiopeia/html/mod_login/grid.php
-// Layout alternativo en grid para mod_login
+// Alternative grid layout for mod_login
 <?php defined('_JEXEC') or die; ?>
 <div class="login-grid">
-    <!-- estructura en grid -->
+    <!-- grid structure -->
 </div>
 ```
 
-**Para componentes**: En menú seleccionar "Alternative Layout"
+**For components**: In menu select "Alternative Layout"
 
-Reglas de naming:
-- No usar underscores
-- Nombres descriptivos: `grid.php`, `minimal.php`, `card.php`
-- `default.php` = layout original
+Naming rules:
+- Do not use underscores
+- Descriptive names: `grid.php`, `minimal.php`, `card.php`
+- `default.php` = original layout
 
 ---
 
-## JLayout - Componentes Reutilizables
+## JLayout - Reusable Components
 
-Sistema para crear fragmentos reutilizables.
+System for creating reusable fragments.
 
-**Ubicación de layouts Joomla**: `/layouts/joomla/[grupo]/[layout].php`
+**Joomla layouts location**: `/layouts/joomla/[group]/[layout].php`
 
-**Override**: `/templates/cassiopeia/html/layouts/joomla/[grupo]/[layout].php`
+**Override**: `/templates/cassiopeia/html/layouts/joomla/[group]/[layout].php`
 
-### Crear Layout Personalizado
+### Creating a Custom Layout
 
 ```php
 // /templates/cassiopeia/html/layouts/joomla/custom/article-card.php
@@ -252,13 +252,13 @@ $link = $displayData['link'] ?? '#';
             <?php echo $content; ?>
         </div>
         <a href="<?php echo htmlspecialchars($link); ?>" class="card-link">
-            Ver más
+            View more
         </a>
     </div>
 </article>
 ```
 
-### Uso en blog_item.php
+### Usage in blog_item.php
 
 ```php
 <?php echo JLayoutHelper::render('joomla.custom.article-card', [
@@ -273,15 +273,15 @@ $link = $displayData['link'] ?? '#';
 
 ## Child Templates
 
-Template que hereda de uno padre, solo almacenando cambios.
+A template that inherits from a parent, only storing changes.
 
-### Crear Child Template
+### Creating a Child Template
 
-**Estructura**:
+**Structure**:
 ```
 /templates/cassiopeia-child/
 ├── html/
-│   └── com_content/article/default.php  (override personalizado)
+│   └── com_content/article/default.php  (custom override)
 ├── css/
 │   └── custom.css
 └── templateDetails.xml
@@ -293,7 +293,7 @@ Template que hereda de uno padre, solo almacenando cambios.
 <extension type="template" client="site">
     <name>Cassiopeia Child</name>
     <version>1.0.0</version>
-    <description>Child template basado en Cassiopeia</description>
+    <description>Child template based on Cassiopeia</description>
     <parent>cassiopeia</parent>
 
     <files>
@@ -310,19 +310,19 @@ Template que hereda de uno padre, solo almacenando cambios.
 </extension>
 ```
 
-**Ventajas**:
-- Hereda automáticamente archivos no personalizados
-- Solo almacena archivos modificados
-- Facilita mantenimiento y actualizaciones
-- Permite múltiples variaciones del mismo padre
+**Advantages**:
+- Automatically inherits non-customized files
+- Only stores modified files
+- Simplifies maintenance and updates
+- Allows multiple variations of the same parent
 
 ---
 
-## Field Overrides - Campos Personalizados
+## Field Overrides - Custom Fields
 
-Override de cómo se muestran custom fields.
+Override how custom fields are displayed.
 
-**Ubicación**: `/templates/[template]/html/layouts/com_fields/field/[layout].php`
+**Location**: `/templates/[template]/html/layouts/com_fields/field/[layout].php`
 
 ```php
 // /templates/cassiopeia/html/layouts/com_fields/field/render.php
@@ -343,177 +343,177 @@ if (!$field || !$value) return;
 </div>
 ```
 
-Seleccionar en backend: Field Edit > Render Options > Layout
+Select in backend: Field Edit > Render Options > Layout
 
 ---
 
-## Template Manager - Crear Overrides
+## Template Manager - Creating Overrides
 
 Backend: Extensions > Templates > [Template] > Create Overrides
 
-Ventajas:
-- Interfaz visual intuitiva
-- Copia automáticamente archivos
-- No requiere búsqueda manual
-- Asegura estructura correcta
+Advantages:
+- Intuitive visual interface
+- Automatically copies files
+- No manual searching required
+- Ensures correct structure
 
 ---
 
-## Buenas Prácticas
+## Best Practices
 
-### Documentación en Código
+### Code Documentation
 
 ```php
 <?php
 /**
- * Override: Artículo personalizado
+ * Override: Custom article
  *
- * Componente: com_content
- * Vista original: article/tmpl/default.php
+ * Component: com_content
+ * Original view: article/tmpl/default.php
  *
- * CAMBIOS:
- * - Estructura semántica mejorada
- * - Agregados campos personalizados
- * - Reordenados metadatos
+ * CHANGES:
+ * - Improved semantic structure
+ * - Added custom fields
+ * - Reordered metadata
  *
- * DEPENDENCIAS: Campo 'autor-bio' personalizado
+ * DEPENDENCIES: Custom field 'author-bio'
  * JOOMLA: 5.0+
- * FECHA: 2024-03-06
+ * DATE: 2024-03-06
  */
 defined('_JEXEC') or die;
 ```
 
-### Seguridad - Escapado
+### Security - Escaping
 
 ```php
-// BUENO: Escapar outputs
+// GOOD: Escape outputs
 <?php echo htmlspecialchars($item->title, ENT_QUOTES, 'UTF-8'); ?>
 <?php echo JHtml::_('string.truncate', $item->text, 100); ?>
 
-// BUENO: URLs con JRoute
+// GOOD: URLs with JRoute
 <?php echo JRoute::_('index.php?option=com_content&view=article&id=' . $item->id); ?>
 
-// MALO: Output sin escape
+// BAD: Unescaped output
 <?php echo $item->title; ?>
 ```
 
-### Testing Post-Actualización
+### Post-Update Testing
 
 ```bash
-# Comparar overrides con core files
+# Compare overrides with core files
 diff -u /components/com_content/views/article/tmpl/default.php \
          /templates/cassiopeia/html/com_content/article/default.php
 
-# Backup overrides antes de actualizar
+# Backup overrides before updating
 cp -r templates/cassiopeia/html templates/cassiopeia/html.backup
 ```
 
-### Evitar Overrides Innecesarios
+### Avoid Unnecessary Overrides
 
-- Override solo si modificas la vista
-- Usa layouts alternativos para variaciones
-- Usa JLayout para componentes reutilizables
-- Mantén control de cambios (git, documentación)
+- Only override if you modify the view
+- Use alternative layouts for variations
+- Use JLayout for reusable components
+- Maintain change tracking (git, documentation)
 
 ---
 
 ## Troubleshooting
 
-### Override No Funciona
+### Override Not Working
 
-1. Verificar ruta correcta en `/templates/[activo]/html/`
-2. Limpiar caché (System > Clear Cache)
-3. Verificar permisos de archivos (755 carpetas, 644 archivos)
-4. Verificar sintaxis PHP (php -l archivo.php)
-5. Revisar error logs en `/logs/`
+1. Verify correct path in `/templates/[active]/html/`
+2. Clear cache (System > Clear Cache)
+3. Verify file permissions (755 folders, 644 files)
+4. Verify PHP syntax (php -l file.php)
+5. Check error logs in `/logs/`
 
-### Permisos de Archivo
+### File Permissions
 
 ```bash
-# Carpetas: lectura+ejecución
+# Folders: read+execute
 chmod 755 /templates/cassiopeia/html/
 
-# Archivos: lectura
+# Files: read
 chmod 644 /templates/cassiopeia/html/com_content/article/default.php
 ```
 
-### Problemas de Cacheo
+### Caching Issues
 
-- Limpiar caché en backend: System > Clear Cache
-- Opción en template: Style Edit > Caching
-- Verificar router cache en configuration.php
-
----
-
-## Caso Práctico: Artículos Featured
-
-**Objetivo**: Mostrar artículos destacados en formato card
-
-**Pasos**:
-1. Crear override: `com_content/article/featured.php`
-2. Crear JLayout: `layouts/joomla/custom/featured-card.php`
-3. Usar en override con JLayoutHelper::render()
-4. Asignar CSS personalizado
-
-Ver ejemplos completos en `/referencias/`
+- Clear cache in backend: System > Clear Cache
+- Template option: Style Edit > Caching
+- Verify router cache in configuration.php
 
 ---
 
-## Referencia Rápida
+## Practical Case: Featured Articles
 
-### Rutas Comunes
+**Objective**: Display featured articles in card format
 
-| Elemento | Original | Override |
-|----------|----------|----------|
-| Artículo | `com_content/views/article/tmpl/default.php` | `html/com_content/article/default.php` |
+**Steps**:
+1. Create override: `com_content/article/featured.php`
+2. Create JLayout: `layouts/joomla/custom/featured-card.php`
+3. Use in override with JLayoutHelper::render()
+4. Assign custom CSS
+
+See complete examples in `/referencias/`
+
+---
+
+## Quick Reference
+
+### Common Paths
+
+| Element | Original | Override |
+|---------|----------|----------|
+| Article | `com_content/views/article/tmpl/default.php` | `html/com_content/article/default.php` |
 | Blog item | `com_content/views/category/tmpl/blog_item.php` | `html/com_content/category/blog_item.php` |
-| Categoría lista | `com_content/views/category/tmpl/default.php` | `html/com_content/category/default.php` |
-| Módulo login | `modules/mod_login/tmpl/default.php` | `html/mod_login/default.php` |
-| JLayout imagen | `layouts/joomla/content/intro_image.php` | `html/layouts/joomla/content/intro_image.php` |
-| Plugin nav | `plugins/content/pagenavigation/tmpl/default.php` | `html/plg_content_pagenavigation/default.php` |
+| Category list | `com_content/views/category/tmpl/default.php` | `html/com_content/category/default.php` |
+| Login module | `modules/mod_login/tmpl/default.php` | `html/mod_login/default.php` |
+| JLayout image | `layouts/joomla/content/intro_image.php` | `html/layouts/joomla/content/intro_image.php` |
+| Nav plugin | `plugins/content/pagenavigation/tmpl/default.php` | `html/plg_content_pagenavigation/default.php` |
 
-### Checklist - Crear Override
+### Checklist - Creating an Override
 
-- [ ] Ubicar archivo original en core
-- [ ] Crear estructura `/html/` en template
-- [ ] Copiar archivo a ubicación override
-- [ ] Realizar modificaciones
-- [ ] Escapar outputs correctamente
-- [ ] Documentar cambios en cabecera
-- [ ] Probar en navegador
-- [ ] Limpiar caché
-- [ ] Verificar en diferentes resoluciones
-- [ ] Usar Template Manager para verificar estructura
+- [ ] Locate original file in core
+- [ ] Create `/html/` structure in template
+- [ ] Copy file to override location
+- [ ] Make modifications
+- [ ] Escape outputs correctly
+- [ ] Document changes in header
+- [ ] Test in browser
+- [ ] Clear cache
+- [ ] Verify at different resolutions
+- [ ] Use Template Manager to verify structure
 
-### Variables Útiles
+### Useful Variables
 
 ```php
-// Artículos
+// Articles
 $this->item->id
 $this->item->title
 $this->item->introtext
 $this->item->text
 $this->item->images (JSON)
-$this->item->jcfields (campos personalizados)
+$this->item->jcfields (custom fields)
 
-// Parámetros
+// Parameters
 $this->params->get('show_author')
 $this->params->get('show_category')
 
-// Módulos
+// Modules
 $this->module->id
 $this->module->title
 $this->params
 
 // JLayout
-$displayData (array de datos pasados)
+$displayData (array of passed data)
 ```
 
 ---
 
-## Recursos Adicionales
+## Additional Resources
 
 - [Joomla Documentation - Template Overrides](https://docs.joomla.org/Understanding_Output_Overrides)
-- [Template Manager en Backend](Extensions > Templates)
+- [Template Manager in Backend](Extensions > Templates)
 - [Joomla Magazine - Child Templates](https://magazine.joomla.org)
 - [Debugging - developer.joomla.org](https://developer.joomla.org)

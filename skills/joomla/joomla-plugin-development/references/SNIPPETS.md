@@ -1,13 +1,13 @@
-# Snippets Útiles: Copy & Paste para Plugins Joomla 5/6
+# Useful Snippets: Copy & Paste for Joomla 5/6 Plugins
 
-## 1. Template Mínimo de Plugin
+## 1. Minimal Plugin Template
 
 ### manifest.xml
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="plugin" group="system">
     <name>PLG_SYSTEM_TEMPLATE</name>
-    <author>Tu Nombre</author>
+    <author>Your Name</author>
     <creationDate>2025-03-06</creationDate>
     <copyright>Copyright 2025</copyright>
     <license>GNU General Public License version 2 or later</license>
@@ -76,7 +76,7 @@ class Extension extends CMSPlugin implements SubscriberInterface
 
     public function onAfterInitialise(AfterInitialiseEvent $event)
     {
-        // Tu código aquí
+        // Your code here
     }
 }
 ```
@@ -87,19 +87,19 @@ PLG_SYSTEM_TEMPLATE="Plugin Template"
 PLG_SYSTEM_TEMPLATE_DESCRIPTION="A template plugin for Joomla"
 ```
 
-## 2. Acceder a Servicios Comunes
+## 2. Accessing Common Services
 
-### Base de Datos
+### Database
 ```php
 use Joomla\Database\DatabaseInterface;
 
-// Opción 1: Mediante Factory
+// Option 1: Via Factory
 $db = Factory::getDbo();
 
-// Opción 2: Mediante contenedor (inyección)
+// Option 2: Via container (injection)
 $db = $this->getContainer()->get(DatabaseInterface::class);
 
-// Usar
+// Usage
 $query = $db->getQuery(true)
     ->select('*')
     ->from($db->quoteName('#__articles'))
@@ -110,46 +110,46 @@ $db->setQuery($query);
 $result = $db->loadObject();
 ```
 
-### Usuario Actual
+### Current User
 ```php
 use Joomla\CMS\Factory;
 
 $user = Factory::getUser();
 
-// Propiedades
+// Properties
 $userId = $user->id;
 $username = $user->username;
 $email = $user->email;
 $name = $user->name;
 
-// Verificar si está logueado
+// Check if logged in
 if ($user->id === 0) {
-    // Es un invitado (guest)
+    // Is a guest
 }
 
-// Verificar permisos
+// Check permissions
 if ($user->authorise('core.edit', 'com_content')) {
-    // Tiene permisos de edición
+    // Has edit permissions
 }
 ```
 
-### Aplicación
+### Application
 ```php
 use Joomla\CMS\Factory;
 
 $app = Factory::getApplication();
 
-// Mostrar mensaje
-$app->enqueueMessage('Mensaje de éxito', 'message');
-$app->enqueueMessage('Advertencia', 'warning');
+// Display message
+$app->enqueueMessage('Success message', 'message');
+$app->enqueueMessage('Warning', 'warning');
 $app->enqueueMessage('Error', 'error');
 
 // Logging
 $logger = $app->getLogger();
-$logger->info('Información', ['category' => 'plugin']);
+$logger->info('Information', ['category' => 'plugin']);
 $logger->error('Error', ['exception' => $e]);
 
-// Obtener configuración
+// Get configuration
 $config = Factory::getConfig();
 $sitename = $config->get('sitename');
 $siteurl = $config->get('live_site');
@@ -161,38 +161,38 @@ use Joomla\CMS\Cache\CacheFactory;
 
 $cache = CacheFactory::getCache('_system');
 
-// Leer del cache
-if ($data = $cache->get('mi_clave')) {
+// Read from cache
+if ($data = $cache->get('my_key')) {
     return $data;
 }
 
-// Procesar
-$data = $this->procesamiento();
+// Process
+$data = $this->processing();
 
-// Guardar en cache (3600 seg = 1 hora)
-$cache->store($data, 'mi_clave', '_system', 3600);
+// Store in cache (3600 sec = 1 hour)
+$cache->store($data, 'my_key', '_system', 3600);
 
-// Limpiar un item
-$cache->remove('mi_clave', '_system');
+// Remove an item
+$cache->remove('my_key', '_system');
 
-// Limpiar todo
+// Clear all
 $cache->clean('_system');
 ```
 
-## 3. Patrones de Eventos Comunes
+## 3. Common Event Patterns
 
-### Evento de Sistema
+### System Event
 ```php
 use Joomla\CMS\Event\System\AfterInitialiseEvent;
 
 public function onAfterInitialise(AfterInitialiseEvent $event)
 {
-    // Se ejecuta después de inicializar Joomla
-    // Útil para configuración global
+    // Executes after Joomla initialization
+    // Useful for global configuration
 }
 ```
 
-### Evento de Contenido - Preparación
+### Content Event - Preparation
 ```php
 use Joomla\CMS\Event\Content\ContentPrepareEvent;
 
@@ -205,15 +205,15 @@ public function onContentPrepare(ContentPrepareEvent $event)
         return;
     }
 
-    // Modificar el contenido
-    $article->text = $this->procesarContenido($article->text);
+    // Modify the content
+    $article->text = $this->processContent($article->text);
 
-    // Actualizar el evento
+    // Update the event
     $event->setArgument('0', $article);
 }
 ```
 
-### Evento de Usuario - Login
+### User Event - Login
 ```php
 use Joomla\CMS\Event\User\UserLoginEvent;
 
@@ -222,14 +222,14 @@ public function onUserLogin(UserLoginEvent $event)
     $response = $event->getArgument('response');
     $user = $event->getArgument('1');
 
-    // $response contiene: username, password_clear, error
-    // $user es el objeto usuario
+    // $response contains: username, password_clear, error
+    // $user is the user object
 
     $username = $response['username'];
 }
 ```
 
-### Evento de Usuario - Save
+### User Event - Save
 ```php
 use Joomla\CMS\Event\User\UserAfterSaveEvent;
 
@@ -239,23 +239,23 @@ public function onUserAfterSave(UserAfterSaveEvent $event)
     $isNew = $event->getArgument('1');
 
     if ($isNew) {
-        // Nuevo usuario creado
-        // Enviar email de bienvenida, etc.
+        // New user created
+        // Send welcome email, etc.
     } else {
-        // Usuario existente actualizado
+        // Existing user updated
     }
 }
 ```
 
-## 4. Validación y Filtrado
+## 4. Validation and Filtering
 
-### Validar Entrada
+### Validate Input
 ```php
 use Joomla\CMS\Filter\InputFilter;
 
 $filter = InputFilter::getInstance();
 
-// Tipos comunes
+// Common types
 $text = $filter->clean($_GET['text'], 'STRING');
 $number = $filter->clean($_GET['id'], 'INT');
 $email = $filter->clean($_GET['email'], 'EMAIL');
@@ -263,27 +263,27 @@ $bool = $filter->clean($_GET['flag'], 'BOOLEAN');
 $array = $filter->clean($_GET['items'], 'ARRAY');
 $html = $filter->clean($_POST['content'], 'HTML');
 
-// Validación personalizada
+// Custom validation
 if (strlen($text) > 255) {
-    // Rechazar
+    // Reject
     return false;
 }
 ```
 
-### Escapar Salida
+### Escape Output
 ```php
-// Para texto plano
+// For plain text
 echo htmlspecialchars($userContent, ENT_QUOTES, 'UTF-8');
 
-// Para HTML
-echo $userContent; // Si es HTML sanitizado
+// For HTML
+echo $userContent; // If HTML is sanitized
 
-// Usar HTMLHelper
+// Use HTMLHelper
 use Joomla\CMS\HTML\HTMLHelper;
 echo HTMLHelper::_('common.escape', $userContent);
 ```
 
-## 5. Manejo de Errores
+## 5. Error Handling
 
 ### Try-Catch
 ```php
@@ -308,27 +308,27 @@ try {
 }
 ```
 
-### Validación y Retorno
+### Validation and Return
 ```php
 public function onContentBeforeSave(ContentBeforeSaveEvent $event)
 {
     $article = $event->getArgument('1');
 
-    // Validar
+    // Validate
     if (empty($article->title)) {
         $app = Factory::getApplication();
-        $app->enqueueMessage('Título requerido', 'error');
-        return false; // Prevenir guardado
+        $app->enqueueMessage('Title required', 'error');
+        return false; // Prevent saving
     }
 
-    // Pasar validación
+    // Pass validation
     return true;
 }
 ```
 
-## 6. Internacionalización
+## 6. Internationalization
 
-### En manifest.xml
+### In manifest.xml
 ```xml
 <config>
     <fields name="params">
@@ -345,7 +345,7 @@ public function onContentBeforeSave(ContentBeforeSaveEvent $event)
 </config>
 ```
 
-### En .ini
+### In .ini
 ```ini
 PLG_MYPLUGIN="My Plugin"
 PLG_MYPLUGIN_DESCRIPTION="Description of the plugin"
@@ -353,41 +353,41 @@ PLG_MYPLUGIN_CUSTOM_TEXT_LABEL="Custom Text"
 PLG_MYPLUGIN_CUSTOM_TEXT_DESCRIPTION="Enter custom text here"
 ```
 
-### En PHP
+### In PHP
 ```php
-// Acceder a traducciones
+// Access translations
 $text = Text::_('PLG_MYPLUGIN_CUSTOM_LABEL');
 
-// Con parámetros
+// With parameters
 $text = Text::_('PLG_MYPLUGIN_HELLO_USER');
-// La traducción podría ser: "Hello {USER}"
+// The translation could be: "Hello {USER}"
 $text = sprintf($text, $username);
 ```
 
-## 7. Configuración de Plugin
+## 7. Plugin Configuration
 
-### Acceder a Parámetros
+### Accessing Parameters
 ```php
 class Extension extends CMSPlugin
 {
     public function onAfterInitialise($event)
     {
-        // Acceso simple
+        // Simple access
         $value = $this->params->get('param_name');
 
-        // Con valor por defecto
+        // With default value
         $value = $this->params->get('param_name', 'default_value');
 
-        // Acceso con tipo
+        // Access with type
         $value = $this->params->get('param_name', true, 'bool');
 
-        // Parámetro dentro de grupo
+        // Parameter within a group
         $subvalue = $this->params->get('group.sub_param');
     }
 }
 ```
 
-### En manifest.xml
+### In manifest.xml
 ```xml
 <config>
     <fields name="params">
@@ -419,9 +419,9 @@ class Extension extends CMSPlugin
 </config>
 ```
 
-## 8. Queries Avanzadas
+## 8. Advanced Queries
 
-### Select con Joins
+### Select with Joins
 ```php
 $db = Factory::getDbo();
 $query = $db->getQuery(true)
@@ -476,15 +476,15 @@ $db->setQuery($query);
 $db->execute();
 ```
 
-## 9. Inyección de Dependencias Personalizada
+## 9. Custom Dependency Injection
 
-### En services/provider.php
+### In services/provider.php
 ```php
 class ServiceProvider implements ServiceProviderInterface
 {
     public function register(Container $container)
     {
-        // Registrar servicio personalizado
+        // Register custom service
         $container->set(
             'my.custom.service',
             function (Container $c) {
@@ -495,7 +495,7 @@ class ServiceProvider implements ServiceProviderInterface
             }
         );
 
-        // Registrar el plugin con inyección
+        // Register the plugin with injection
         $container->set(
             PluginInterface::class,
             function (Container $c) {
@@ -504,7 +504,7 @@ class ServiceProvider implements ServiceProviderInterface
                     (array) PluginHelper::getPlugin('system', 'myservice')
                 );
 
-                // Inyectar servicios
+                // Inject services
                 $plugin->setContainer($c);
                 $plugin->setCustomService(
                     $c->get('my.custom.service')
@@ -517,7 +517,7 @@ class ServiceProvider implements ServiceProviderInterface
 }
 ```
 
-### En Extension.php
+### In Extension.php
 ```php
 class Extension extends CMSPlugin
 {
@@ -531,26 +531,26 @@ class Extension extends CMSPlugin
 
     public function onAfterInitialise($event)
     {
-        // Usar el servicio inyectado
+        // Use the injected service
         $result = $this->customService->doSomething();
     }
 }
 ```
 
-## 10. Checklist de Implementación
+## 10. Implementation Checklist
 
-- [ ] Crear carpeta en `plugins/tipo/nombre/`
-- [ ] Crear `manifest.xml` con namespace correcto
-- [ ] Crear `services/provider.php` con namespace exacto
-- [ ] Crear `src/Extension/Nombre.php` con SubscriberInterface
-- [ ] Implementar `getSubscribedEvents()`
-- [ ] Crear archivos `.ini` en `language/en-GB/`
-- [ ] Establecer `$autoloadLanguage = true`
-- [ ] Establecer `$allowLegacyListeners = false`
-- [ ] Implementar métodos de eventos
-- [ ] Validar entrada en métodos
-- [ ] Escapar salida en métodos
-- [ ] Agregar logging/debugging
-- [ ] Probar en Panel Control
-- [ ] Verificar logs en `logs/joomla.log`
-- [ ] Crear estructura de referencias (referencias.md)
+- [ ] Create folder at `plugins/type/name/`
+- [ ] Create `manifest.xml` with correct namespace
+- [ ] Create `services/provider.php` with exact namespace
+- [ ] Create `src/Extension/Name.php` with SubscriberInterface
+- [ ] Implement `getSubscribedEvents()`
+- [ ] Create `.ini` files in `language/en-GB/`
+- [ ] Set `$autoloadLanguage = true`
+- [ ] Set `$allowLegacyListeners = false`
+- [ ] Implement event methods
+- [ ] Validate input in methods
+- [ ] Escape output in methods
+- [ ] Add logging/debugging
+- [ ] Test in Control Panel
+- [ ] Verify logs at `logs/joomla.log`
+- [ ] Create reference structure (references.md)

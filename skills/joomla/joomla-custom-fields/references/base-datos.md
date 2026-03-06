@@ -1,10 +1,10 @@
-# Referencia de Base de Datos: Custom Fields en Joomla 5/6
+# Database Reference: Custom Fields in Joomla 5/6
 
-## Tablas Principales
+## Main Tables
 
-### #__fields - Definiciones de Campos
+### #__fields - Field Definitions
 
-Almacena la configuración de cada campo personalizado.
+Stores the configuration of each custom field.
 
 ```sql
 CREATE TABLE `#__fields` (
@@ -26,23 +26,23 @@ CREATE TABLE `#__fields` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
-**Campos:**
-- `id` - ID único del campo
-- `context` - Contexto (com_content.article, com_users.user, etc.)
-- `name` - Nombre técnico (snake_case, único por contexto)
-- `label` - Etiqueta visible en formularios
-- `description` - Descripción / instrucciones
-- `type` - Tipo de campo (text, textarea, list, media, etc.)
-- `default_value` - Valor por defecto para nuevos elementos
-- `params` - Configuración general en JSON
-- `fieldparams` - Parámetros específicos del tipo en JSON
-- `access` - Nivel de acceso Joomla (1=Public, 2=Registered, 3=Special, etc.)
-- `state` - Publicado (1) o No publicado (0)
-- `group_id` - ID del grupo de campos (Field Group)
+**Fields:**
+- `id` - Unique field ID
+- `context` - Context (com_content.article, com_users.user, etc.)
+- `name` - Technical name (snake_case, unique per context)
+- `label` - Visible label in forms
+- `description` - Description / instructions
+- `type` - Field type (text, textarea, list, media, etc.)
+- `default_value` - Default value for new elements
+- `params` - General configuration in JSON
+- `fieldparams` - Type-specific parameters in JSON
+- `access` - Joomla access level (1=Public, 2=Registered, 3=Special, etc.)
+- `state` - Published (1) or Unpublished (0)
+- `group_id` - Field group ID (Field Group)
 
-### #__fields_values - Valores de Campos
+### #__fields_values - Field Values
 
-Almacena los valores reales de campos para cada elemento.
+Stores the actual field values for each element.
 
 ```sql
 CREATE TABLE `#__fields_values` (
@@ -57,15 +57,15 @@ CREATE TABLE `#__fields_values` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
-**Campos:**
-- `id` - ID único del valor
-- `field_id` - Referencia a #__fields.id
-- `item_id` - ID del elemento (artículo, usuario, etc.)
-- `value` - Valor almacenado (JSON para múltiples valores)
+**Fields:**
+- `id` - Unique value ID
+- `field_id` - Reference to #__fields.id
+- `item_id` - Element ID (article, user, etc.)
+- `value` - Stored value (JSON for multiple values)
 
-### #__fields_groups - Grupos de Campos
+### #__fields_groups - Field Groups
 
-Organiza campos en pestañas en el formulario de edición.
+Organizes fields into tabs in the editing form.
 
 ```sql
 CREATE TABLE `#__fields_groups` (
@@ -81,18 +81,18 @@ CREATE TABLE `#__fields_groups` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
-**Campos:**
-- `id` - ID único del grupo
-- `title` - Nombre visible en pestaña
-- `description` - Descripción del grupo
-- `context` - Contexto (com_content.article, etc.)
-- `access` - Nivel de acceso
-- `state` - Publicado (1) o No (0)
-- `params` - Configuración adicional en JSON
+**Fields:**
+- `id` - Unique group ID
+- `title` - Visible name in tab
+- `description` - Group description
+- `context` - Context (com_content.article, etc.)
+- `access` - Access level
+- `state` - Published (1) or Not (0)
+- `params` - Additional configuration in JSON
 
-## Ejemplos de Consultas Comunes
+## Common Query Examples
 
-### 1. Obtener todos los campos de un artículo
+### 1. Get all fields for an article
 
 ```sql
 SELECT fv.*, f.name, f.label, f.type
@@ -103,7 +103,7 @@ WHERE fv.item_id = 123
   AND f.state = 1;
 ```
 
-### 2. Obtener todas las definiciones de campos para un contexto
+### 2. Get all field definitions for a context
 
 ```sql
 SELECT *
@@ -113,7 +113,7 @@ WHERE context = 'com_content.article'
 ORDER BY label ASC;
 ```
 
-### 3. Obtener campos agrupados con información del grupo
+### 3. Get grouped fields with group information
 
 ```sql
 SELECT f.*, fg.title as group_title
@@ -124,10 +124,10 @@ WHERE f.context = 'com_content.article'
 ORDER BY f.group_id, f.label;
 ```
 
-### 4. Campos con permisos visibles para un usuario
+### 4. Fields with visible permissions for a user
 
 ```sql
--- Asumir que el usuario tiene niveles de acceso [1, 2, 4]
+-- Assuming the user has access levels [1, 2, 4]
 SELECT *
 FROM `#__fields`
 WHERE context = 'com_content.article'
@@ -136,7 +136,7 @@ WHERE context = 'com_content.article'
 ORDER BY label ASC;
 ```
 
-### 5. Obtener últimos valores modificados de un campo
+### 5. Get latest modified values of a field
 
 ```sql
 SELECT fv.*, a.title
@@ -147,18 +147,18 @@ ORDER BY a.modified DESC
 LIMIT 10;
 ```
 
-### 6. Contar cuántos elementos tienen un campo completado
+### 6. Count how many elements have a completed field
 
 ```sql
-SELECT COUNT(DISTINCT item_id) as elementos_con_valor
+SELECT COUNT(DISTINCT item_id) as elements_with_value
 FROM `#__fields_values`
 WHERE field_id = 5 AND value IS NOT NULL AND value != '';
 ```
 
-### 7. Buscar artículos por valor de campo
+### 7. Search articles by field value
 
 ```sql
--- Buscar artículos donde "color_destacado" = "rojo"
+-- Search articles where "color_destacado" = "rojo"
 SELECT DISTINCT a.*
 FROM `#__content` a
 INNER JOIN `#__fields_values` fv ON a.id = fv.item_id
@@ -168,35 +168,35 @@ WHERE f.name = 'color_destacado'
   AND f.context = 'com_content.article';
 ```
 
-## Estructura JSON en Fields
+## JSON Structure in Fields
 
-### Parámetro `params`
+### `params` Parameter
 
-Contiene configuración general del campo en JSON:
+Contains general field configuration in JSON:
 
 ```json
 {
     "class": "campo-personalizado",
-    "hint": "Ingresa un valor",
+    "hint": "Enter a value",
     "required": false,
     "filter": "RAW",
     "automatic_display": "false"
 }
 ```
 
-### Parámetro `fieldparams`
+### `fieldparams` Parameter
 
-Parámetros específicos del tipo de campo:
+Type-specific field parameters:
 
-**Para tipo List:**
+**For List type:**
 ```json
 {
-    "options": "Opción 1\nOpción 2\nOpción 3",
+    "options": "Option 1\nOption 2\nOption 3",
     "multiple": false
 }
 ```
 
-**Para tipo Text:**
+**For Text type:**
 ```json
 {
     "maxlength": 255,
@@ -205,7 +205,7 @@ Parámetros específicos del tipo de campo:
 }
 ```
 
-**Para tipo Media:**
+**For Media type:**
 ```json
 {
     "directory": "images",
@@ -213,29 +213,29 @@ Parámetros específicos del tipo de campo:
 }
 ```
 
-### Campo `value` en fields_values
+### `value` Field in fields_values
 
-Para campos simples:
+For simple fields:
 ```
-"valor simple"
+"simple value"
 ```
 
-Para campos múltiples (checkbox, list múltiple):
+For multiple fields (checkbox, multiple list):
 ```json
-["opcion1", "opcion2", "opcion3"]
+["option1", "option2", "option3"]
 ```
 
-Para campos repetibles:
+For repeatable fields:
 ```json
 [
-    {"nombre": "Item 1", "descripcion": "Descripción 1"},
-    {"nombre": "Item 2", "descripcion": "Descripción 2"}
+    {"name": "Item 1", "description": "Description 1"},
+    {"name": "Item 2", "description": "Description 2"}
 ]
 ```
 
-## Consultas en JDatabase (Joomla)
+## JDatabase Queries (Joomla)
 
-### Clase RepositorioDBCompleto
+### Complete DB Repository Class
 
 ```php
 <?php
@@ -253,7 +253,7 @@ class FieldsRepository {
     }
 
     /**
-     * Obtén todos los campos de un artículo con sus valores
+     * Get all fields for an article with their values
      */
     public function getArticleFields($articleId) {
         $query = $this->db->getQuery(true)
@@ -273,10 +273,10 @@ class FieldsRepository {
     }
 
     /**
-     * Guarda o actualiza un valor de campo
+     * Save or update a field value
      */
     public function saveValue($fieldId, $itemId, $value) {
-        // Busca si ya existe
+        // Check if it already exists
         $query = $this->db->getQuery(true)
             ->select('id')
             ->from($this->db->quoteName('#__fields_values'))
@@ -287,7 +287,7 @@ class FieldsRepository {
         $existing = $this->db->loadResult();
 
         if ($existing) {
-            // Actualiza
+            // Update
             $query = $this->db->getQuery(true)
                 ->update($this->db->quoteName('#__fields_values'))
                 ->set($this->db->quoteName('value') . ' = ' . $this->db->quote(json_encode($value)))
@@ -295,7 +295,7 @@ class FieldsRepository {
 
             $this->db->setQuery($query);
         } else {
-            // Inserta
+            // Insert
             $obj = new \stdClass();
             $obj->field_id = (int)$fieldId;
             $obj->item_id = (int)$itemId;
@@ -308,7 +308,7 @@ class FieldsRepository {
     }
 
     /**
-     * Obtén campo por nombre
+     * Get field by name
      */
     public function getFieldByName($name, $context) {
         $query = $this->db->getQuery(true)
@@ -323,7 +323,7 @@ class FieldsRepository {
     }
 
     /**
-     * Elimina todos los valores de un elemento
+     * Delete all values for an element
      */
     public function deleteItemValues($itemId) {
         $query = $this->db->getQuery(true)
@@ -337,11 +337,11 @@ class FieldsRepository {
 ?>
 ```
 
-## Consideraciones de Performance
+## Performance Considerations
 
-1. **Índices:** Las tablas vienen optimizadas con índices en `context`, `state`, y la clave única en `context+name`.
+1. **Indexes:** The tables come optimized with indexes on `context`, `state`, and the unique key on `context+name`.
 
-2. **Joins:** Si necesitas muchos campos, considera cachear resultados con JCache:
+2. **Joins:** If you need many fields, consider caching results with JCache:
    ```php
    $cache = Factory::getContainer()->get('cache');
    $key = 'article_fields_' . $articleId;
@@ -349,11 +349,11 @@ class FieldsRepository {
 
    if (!$fields) {
        $fields = FieldsHelper::getFields('com_content.article', $article, true);
-       $cache->store($fields, $key, 3600); // 1 hora
+       $cache->store($fields, $key, 3600); // 1 hour
    }
    ```
 
-3. **Batch Operations:** Para múltiples actualizaciones, usa transacciones:
+3. **Batch Operations:** For multiple updates, use transactions:
    ```php
    $this->db->transactionStart();
 
@@ -364,20 +364,20 @@ class FieldsRepository {
    $this->db->transactionCommit();
    ```
 
-## Versionado y Migración
+## Versioning and Migration
 
-Para cambios en estructura de campos, crea un script SQL en tu componente:
+For changes in field structure, create a SQL script in your component:
 
 ```sql
--- Agregar campo nuevo
+-- Add new field
 INSERT INTO `#__fields` (context, name, label, type, state)
-VALUES ('com_content.article', 'nuevo_campo', 'Nuevo Campo', 'text', 1);
+VALUES ('com_content.article', 'nuevo_campo', 'New Field', 'text', 1);
 
--- Eliminar campo (cascade delete funciona automáticamente)
+-- Delete field (cascade delete works automatically)
 DELETE FROM `#__fields` WHERE id = X;
 
--- Modificar tipo de campo
+-- Modify field type
 UPDATE `#__fields` SET type = 'textarea' WHERE id = X;
 ```
 
-Siempre realiza backups antes de modificar estructura de campos en producción.
+Always perform backups before modifying field structure in production.

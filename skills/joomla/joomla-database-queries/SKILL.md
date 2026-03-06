@@ -1,49 +1,49 @@
 ---
 name: joomla-database-queries
-description: "Consultas a base de datos en Joomla 5/6: SELECT, INSERT, UPDATE, DELETE, JOINs, Prepared Statements, DatabaseDriver, query chaining, seguridad contra inyección SQL, filtrado avanzado, ordenamiento y paginación."
+description: "Joomla 5/6 database queries: SELECT, INSERT, UPDATE, DELETE, JOINs, Prepared Statements, DatabaseDriver, query chaining, SQL injection prevention, advanced filtering, sorting and pagination."
 ---
 
-# Joomla 5/6: Sistema de Consultas a Base de Datos
+# Joomla 5/6: Database Query System
 
-## Tabla de Contenidos
-1. [Introducción](#introducción)
-2. [Conceptos Fundamentales](#conceptos-fundamentales)
-3. [Consultas SELECT](#consultas-select)
-4. [Prepared Statements](#prepared-statements-obligatorios)
-5. [JOINs entre Tablas](#joins-entre-tablas)
-6. [Filtrado Avanzado](#filtrado-avanzado)
-7. [Ordenamiento y Paginación](#ordenamiento-y-paginación)
-8. [Operaciones INSERT](#operaciones-insert)
-9. [Operaciones UPDATE](#operaciones-update)
-10. [Operaciones DELETE](#operaciones-delete)
-11. [Seguridad en Consultas](#seguridad-en-consultas)
-
----
-
-## Introducción
-
-Joomla 5 y 6 implementan un sistema de consultas a base de datos completamente modernizado. Los principales cambios respecto a versiones anteriores son:
-
-- **Prepared Statements obligatorios**: Previene inyecciones SQL
-- **Query Chaining**: Encadenamiento de métodos para código más legible
-- **Container/Factory mejorado**: Acceso a la base de datos a través del contenedor de inyección de dependencias
-- **Deprecated `Factory::getDbo()`**: Usar `Factory::getContainer()->get(DatabaseInterface::class)`
-- **ParameterType**: Sistema de tipos para parámetros vinculados
-
-Esta skill cubre todo lo necesario para realizar consultas seguras y eficientes en Joomla 5/6.
+## Table of Contents
+1. [Introduction](#introduction)
+2. [Fundamental Concepts](#fundamental-concepts)
+3. [SELECT Queries](#select-queries)
+4. [Prepared Statements](#prepared-statements-mandatory)
+5. [JOINs Between Tables](#joins-between-tables)
+6. [Advanced Filtering](#advanced-filtering)
+7. [Sorting and Pagination](#sorting-and-pagination)
+8. [INSERT Operations](#insert-operations)
+9. [UPDATE Operations](#update-operations)
+10. [DELETE Operations](#delete-operations)
+11. [Query Security](#query-security)
 
 ---
 
-## Conceptos Fundamentales
+## Introduction
 
-### Obtener la Instancia de Base de Datos
+Joomla 5 and 6 implement a fully modernized database query system. The main changes from previous versions are:
 
-En **modelos**:
+- **Mandatory Prepared Statements**: Prevents SQL injections
+- **Query Chaining**: Method chaining for more readable code
+- **Improved Container/Factory**: Database access through the dependency injection container
+- **Deprecated `Factory::getDbo()`**: Use `Factory::getContainer()->get(DatabaseInterface::class)`
+- **ParameterType**: Type system for bound parameters
+
+This skill covers everything needed to perform secure and efficient queries in Joomla 5/6.
+
+---
+
+## Fundamental Concepts
+
+### Getting the Database Instance
+
+In **models**:
 ```php
 $db = $this->getDatabase();
 ```
 
-En **otros contextos**:
+In **other contexts**:
 ```php
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
@@ -51,25 +51,25 @@ use Joomla\Database\DatabaseInterface;
 $db = Factory::getContainer()->get(DatabaseInterface::class);
 ```
 
-### Crear una Consulta
+### Creating a Query
 
 ```php
-$query = $db->getQuery(true); // true = nueva query limpia
-// o
+$query = $db->getQuery(true); // true = new clean query
+// or
 $query = $db->createQuery();
 ```
 
-### Nomenclatura y quoteName()
+### Naming and quoteName()
 
-`#__` es el prefijo de tablas (se reemplaza automáticamente):
+`#__` is the table prefix (replaced automatically):
 ```php
-$db->quoteName('#__content')    // Devuelve: `joomla_content`
-$db->quoteName('title')          // Devuelve: `title`
-$db->quoteName(['id', 'title']) // Devuelve: `id`, `title`
+$db->quoteName('#__content')    // Returns: `joomla_content`
+$db->quoteName('title')          // Returns: `title`
+$db->quoteName(['id', 'title']) // Returns: `id`, `title`
 $db->quoteName('#__content', 'c') // Alias: `joomla_content` AS `c`
 ```
 
-### Importar ParameterType
+### Importing ParameterType
 
 ```php
 use Joomla\Database\ParameterType;
@@ -77,9 +77,9 @@ use Joomla\Database\ParameterType;
 
 ---
 
-## Consultas SELECT
+## SELECT Queries
 
-### Estructura Básica
+### Basic Structure
 
 ```php
 $query = $db->getQuery(true)
@@ -93,35 +93,35 @@ $db->setQuery($query);
 $results = $db->loadObjectList();
 ```
 
-### Métodos Principales
+### Main Methods
 
-| Método | Descripción |
+| Method | Description |
 |--------|-------------|
-| `select()` | Especifica campos a recuperar (array o string) |
-| `from()` | Tabla origen con alias opcional |
-| `where()` | Condiciones WHERE (múltiples permitidas) |
-| `order()` | Ordenamiento ASC/DESC |
-| `group()` | Agrupación de resultados |
-| `having()` | Condiciones post-GROUP BY |
-| `setLimit(limit, offset)` | Paginación de resultados |
+| `select()` | Specifies fields to retrieve (array or string) |
+| `from()` | Source table with optional alias |
+| `where()` | WHERE conditions (multiple allowed) |
+| `order()` | ASC/DESC sorting |
+| `group()` | Result grouping |
+| `having()` | Post-GROUP BY conditions |
+| `setLimit(limit, offset)` | Result pagination |
 | `innerJoin()` | INNER JOIN |
 | `leftJoin()` | LEFT JOIN |
 | `rightJoin()` | RIGHT JOIN |
 
-### Carga de Resultados
+### Loading Results
 
 ```php
-$db->loadObjectList();   // Array de objetos StdClass
-$db->loadObject();       // Un solo objeto
-$db->loadAssocList();    // Array de arrays asociativos
-$db->loadAssoc();        // Un array asociativo
-$db->loadColumn();       // Array de una columna
-$db->loadResult();       // Un solo valor
+$db->loadObjectList();   // Array of StdClass objects
+$db->loadObject();       // A single object
+$db->loadAssocList();    // Array of associative arrays
+$db->loadAssoc();        // One associative array
+$db->loadColumn();       // Array of a single column
+$db->loadResult();       // A single value
 ```
 
-### Ejemplo Progresivo: SELECT
+### Progressive Example: SELECT
 
-**Básico:**
+**Basic:**
 ```php
 $query = $db->getQuery(true)
   ->select('*')
@@ -131,7 +131,7 @@ $db->setQuery($query);
 $articles = $db->loadObjectList();
 ```
 
-**Con WHERE:**
+**With WHERE:**
 ```php
 $query = $db->getQuery(true)
   ->select(['id', 'title'])
@@ -143,7 +143,7 @@ $db->setQuery($query);
 $articles = $db->loadObjectList();
 ```
 
-**Con múltiples WHERE:**
+**With multiple WHERE:**
 ```php
 $query = $db->getQuery(true)
   ->select('*')
@@ -159,11 +159,11 @@ $articles = $db->loadObjectList();
 
 ---
 
-## Prepared Statements (Obligatorios)
+## Prepared Statements (Mandatory)
 
-Los prepared statements son la forma segura de inyectar valores dinámicos en consultas SQL.
+Prepared statements are the secure way to inject dynamic values into SQL queries.
 
-### Sintaxis de Placeholders Nombrados
+### Named Placeholder Syntax
 
 ```php
 $query = $db->getQuery(true)
@@ -176,7 +176,7 @@ $db->setQuery($query);
 $user = $db->loadObject();
 ```
 
-### Vinculación Múltiple
+### Multiple Binding
 
 ```php
 $query = $db->getQuery(true)
@@ -193,19 +193,19 @@ $db->setQuery($query);
 $articles = $db->loadObjectList();
 ```
 
-### ParameterType - Tipos Disponibles
+### ParameterType - Available Types
 
 ```php
-ParameterType::STRING      // Texto
-ParameterType::INTEGER     // Números enteros
-ParameterType::FLOAT       // Números decimales
-ParameterType::BOOLEAN     // Verdadero/Falso
+ParameterType::STRING      // Text
+ParameterType::INTEGER     // Whole numbers
+ParameterType::FLOAT       // Decimal numbers
+ParameterType::BOOLEAN     // True/False
 ParameterType::NULL        // NULL
 ```
 
-### Vinculación de Arrays
+### Array Binding
 
-Para consultas IN con valores dinámicos:
+For IN queries with dynamic values:
 
 ```php
 $ids = [1, 2, 3, 4];
@@ -222,9 +222,9 @@ $users = $db->loadObjectList();
 
 ---
 
-## JOINs entre Tablas
+## JOINs Between Tables
 
-### Estructura General
+### General Structure
 
 ```php
 $query = $db->getQuery(true)
@@ -241,7 +241,7 @@ $db->setQuery($query);
 $results = $db->loadObjectList();
 ```
 
-### Tipos de JOIN
+### JOIN Types
 
 ```php
 // INNER JOIN
@@ -250,7 +250,7 @@ $results = $db->loadObjectList();
   $db->quoteName('c.created_by') . ' = ' . $db->quoteName('u.id')
 )
 
-// LEFT JOIN (mantiene registros de tabla izquierda)
+// LEFT JOIN (keeps records from the left table)
 ->leftJoin(
   $db->quoteName('#__categories', 'cat') . ' ON ' .
   $db->quoteName('c.catid') . ' = ' . $db->quoteName('cat.id')
@@ -263,7 +263,7 @@ $results = $db->loadObjectList();
 )
 ```
 
-### JOIN Triple: Content + Categories + Users
+### Triple JOIN: Content + Categories + Users
 
 ```php
 $query = $db->getQuery(true)
@@ -289,7 +289,7 @@ $db->setQuery($query);
 $articles = $db->loadObjectList();
 ```
 
-### JOIN con Campos Personalizados
+### JOIN with Custom Fields
 
 ```php
 $query = $db->getQuery(true)
@@ -313,9 +313,9 @@ $results = $db->loadObjectList();
 
 ---
 
-## Filtrado Avanzado
+## Advanced Filtering
 
-### Por Categoría
+### By Category
 
 ```php
 $query = $db->getQuery(true)
@@ -325,20 +325,20 @@ $query = $db->getQuery(true)
   ->bind(':catid', 18, ParameterType::INTEGER);
 ```
 
-### Por Estado de Publicación
+### By Publication State
 
 ```php
-// Solo publicados
+// Published only
 ->where($db->quoteName('state') . ' = :state')
 ->bind(':state', 1, ParameterType::INTEGER)
 
-// Múltiples estados (publicado o pendiente)
+// Multiple states (published or pending)
 ->where($db->quoteName('state') . ' IN (:state1, :state2)')
 ->bind(':state1', 0, ParameterType::INTEGER)
 ->bind(':state2', 1, ParameterType::INTEGER)
 ```
 
-### Por Rango de Fechas
+### By Date Range
 
 ```php
 ->where(
@@ -349,7 +349,7 @@ $query = $db->getQuery(true)
 ->bind(':end_date', '2024-12-31 23:59:59')
 ```
 
-### Por Búsqueda de Texto (LIKE)
+### By Text Search (LIKE)
 
 ```php
 $search = 'joomla';
@@ -360,7 +360,7 @@ $search = 'joomla';
 ->bind(':search', '%' . $search . '%')
 ```
 
-### Filtrado por Campo Personalizado
+### Filtering by Custom Field
 
 ```php
 $query = $db->getQuery(true)
@@ -375,27 +375,27 @@ $query = $db->getQuery(true)
     $db->quoteName('fv.value') . ' = :value'
   )
   ->bind(':field_id', 12, ParameterType::INTEGER)
-  ->bind(':value', 'especial', ParameterType::STRING);
+  ->bind(':value', 'special', ParameterType::STRING);
 ```
 
 ---
 
-## Ordenamiento y Paginación
+## Sorting and Pagination
 
 ### ORDER BY
 
 ```php
-// Ordenamiento simple
+// Simple sorting
 ->order($db->quoteName('created') . ' DESC')
 
-// Múltiples campos
+// Multiple fields
 ->order([
   $db->quoteName('catid') . ' ASC',
   $db->quoteName('created') . ' DESC'
 ])
 ```
 
-### LIMIT y OFFSET
+### LIMIT and OFFSET
 
 ```php
 $limit = 10;
@@ -403,11 +403,11 @@ $page = 2;
 $offset = ($page - 1) * $limit;
 
 ->setLimit($limit, $offset);
-// O alternativamente:
+// Or alternatively:
 ->limit($limit)->offset($offset);
 ```
 
-### Ejemplo Completo: Paginación
+### Complete Example: Pagination
 
 ```php
 $query = $db->getQuery(true)
@@ -421,7 +421,7 @@ $query = $db->getQuery(true)
 $db->setQuery($query);
 $articles = $db->loadObjectList();
 
-// Para contar total (mismo query sin LIMIT)
+// To count total (same query without LIMIT)
 $countQuery = $db->getQuery(true)
   ->select('COUNT(*)')
   ->from($db->quoteName('#__content'))
@@ -434,9 +434,9 @@ $total = $db->loadResult();
 
 ---
 
-## Operaciones INSERT
+## INSERT Operations
 
-### INSERT con Query Chaining
+### INSERT with Query Chaining
 
 ```php
 use Joomla\Database\ParameterType;
@@ -452,8 +452,8 @@ $query = $db->getQuery(true)
     $db->quoteName('created_by')
   ])
   ->values(':title, :introtext, :state, :catid, :created, :created_by')
-  ->bind(':title', 'Mi Nuevo Artículo', ParameterType::STRING)
-  ->bind(':introtext', 'Texto introductorio', ParameterType::STRING)
+  ->bind(':title', 'My New Article', ParameterType::STRING)
+  ->bind(':introtext', 'Introductory text', ParameterType::STRING)
   ->bind(':state', 1, ParameterType::INTEGER)
   ->bind(':catid', 5, ParameterType::INTEGER)
   ->bind(':created', date('Y-m-d H:i:s'), ParameterType::STRING)
@@ -463,12 +463,12 @@ $db->setQuery($query);
 $db->execute();
 ```
 
-### INSERT Conveniente: insertObject()
+### Convenient INSERT: insertObject()
 
 ```php
 $data = new stdClass();
-$data->title = 'Nuevo Artículo';
-$data->introtext = 'Texto intro';
+$data->title = 'New Article';
+$data->introtext = 'Intro text';
 $data->state = 1;
 $data->catid = 5;
 $data->created = date('Y-m-d H:i:s');
@@ -477,7 +477,7 @@ $data->created_by = 42;
 $db->insertObject('#__content', $data, 'id');
 ```
 
-### INSERT Múltiple
+### Multiple INSERT
 
 ```php
 $query = $db->getQuery(true)
@@ -485,9 +485,9 @@ $query = $db->getQuery(true)
   ->columns(['title', 'state', 'catid']);
 
 $articles = [
-  ['Artículo 1', 1, 5],
-  ['Artículo 2', 1, 5],
-  ['Artículo 3', 1, 5]
+  ['Article 1', 1, 5],
+  ['Article 2', 1, 5],
+  ['Article 3', 1, 5]
 ];
 
 foreach ($articles as $i => $article) {
@@ -503,9 +503,9 @@ $db->execute();
 
 ---
 
-## Operaciones UPDATE
+## UPDATE Operations
 
-### UPDATE Básico
+### Basic UPDATE
 
 ```php
 $query = $db->getQuery(true)
@@ -516,7 +516,7 @@ $query = $db->getQuery(true)
     $db->quoteName('modified') . ' = :modified'
   ])
   ->where($db->quoteName('id') . ' = :id')
-  ->bind(':title', 'Título Actualizado', ParameterType::STRING)
+  ->bind(':title', 'Updated Title', ParameterType::STRING)
   ->bind(':state', 1, ParameterType::INTEGER)
   ->bind(':modified', date('Y-m-d H:i:s'), ParameterType::STRING)
   ->bind(':id', 42, ParameterType::INTEGER);
@@ -525,19 +525,19 @@ $db->setQuery($query);
 $db->execute();
 ```
 
-### UPDATE Conveniente: updateObject()
+### Convenient UPDATE: updateObject()
 
 ```php
 $data = new stdClass();
 $data->id = 42;
-$data->title = 'Título Actualizado';
+$data->title = 'Updated Title';
 $data->state = 1;
 $data->modified = date('Y-m-d H:i:s');
 
 $db->updateObject('#__content', $data, 'id');
 ```
 
-### UPDATE Condicional
+### Conditional UPDATE
 
 ```php
 $query = $db->getQuery(true)
@@ -557,9 +557,9 @@ $affected = $db->execute();
 
 ---
 
-## Operaciones DELETE
+## DELETE Operations
 
-### DELETE Simple
+### Simple DELETE
 
 ```php
 $query = $db->getQuery(true)
@@ -571,7 +571,7 @@ $db->setQuery($query);
 $db->execute();
 ```
 
-### DELETE Condicional
+### Conditional DELETE
 
 ```php
 $query = $db->getQuery(true)
@@ -581,16 +581,16 @@ $query = $db->getQuery(true)
     $db->quoteName('state') . ' = :state'
   )
   ->bind(':catid', 8, ParameterType::INTEGER)
-  ->bind(':state', -2, ParameterType::INTEGER); // -2 = Papelera
+  ->bind(':state', -2, ParameterType::INTEGER); // -2 = Trash
 
 $db->setQuery($query);
 $db->execute();
 ```
 
-### DELETE en Cascada
+### Cascade DELETE
 
 ```php
-// Primero eliminar campos personalizados
+// First delete custom fields
 $query1 = $db->getQuery(true)
   ->delete($db->quoteName('#__fields_values'))
   ->where($db->quoteName('item_id') . ' = :item_id')
@@ -598,7 +598,7 @@ $query1 = $db->getQuery(true)
 $db->setQuery($query1);
 $db->execute();
 
-// Luego eliminar el artículo
+// Then delete the article
 $query2 = $db->getQuery(true)
   ->delete($db->quoteName('#__content'))
   ->where($db->quoteName('id') . ' = :id')
@@ -609,60 +609,60 @@ $db->execute();
 
 ---
 
-## Seguridad en Consultas
+## Query Security
 
-### Reglas de Oro
+### Golden Rules
 
-1. **SIEMPRE usa `quoteName()` para identificadores** (tablas, campos):
+1. **ALWAYS use `quoteName()` for identifiers** (tables, fields):
 ```php
-// CORRECTO
+// CORRECT
 $db->quoteName('title')
 $db->quoteName('#__content')
 
-// INCORRECTO
+// INCORRECT
 "title"
 '#__content'
 ```
 
-2. **SIEMPRE usa `bind()` para valores**:
+2. **ALWAYS use `bind()` for values**:
 ```php
-// CORRECTO
+// CORRECT
 ->where($db->quoteName('username') . ' = :username')
 ->bind(':username', $user_input, ParameterType::STRING)
 
-// INCORRECTO - NUNCA hagas esto
+// INCORRECT - NEVER do this
 ->where("username = '$user_input'")
 ```
 
-3. **Especifica tipos de parámetros**:
+3. **Specify parameter types**:
 ```php
-// CORRECTO
+// CORRECT
 ->bind(':id', $id, ParameterType::INTEGER)
 ->bind(':name', $name, ParameterType::STRING)
 
-// Menos seguro (sin especificar tipo)
+// Less secure (no type specified)
 ->bind(':id', $id)
 ```
 
-### Prevención de Inyección SQL
+### SQL Injection Prevention
 
 ```php
 // VULNERABLE
 $title = "'; DROP TABLE #__content; --";
-$query->where("title = '$title'"); // ¡MAL!
+$query->where("title = '$title'"); // BAD!
 
-// SEGURO con Prepared Statements
+// SAFE with Prepared Statements
 $query->where($db->quoteName('title') . ' = :title')
   ->bind(':title', $title, ParameterType::STRING);
 ```
 
-### Validación de Entrada
+### Input Validation
 
-Aunque prepared statements protegen, valida también:
+Even though prepared statements provide protection, also validate:
 
 ```php
 $search = htmlspecialchars($search);
-$id = (int) $_GET['id']; // Convertir a entero
+$id = (int) $_GET['id']; // Cast to integer
 
 $query->bind(':search', '%' . $search . '%', ParameterType::STRING)
   ->bind(':id', $id, ParameterType::INTEGER);
@@ -670,9 +670,9 @@ $query->bind(':search', '%' . $search . '%', ParameterType::STRING)
 
 ---
 
-## Casos de Uso Completos
+## Complete Use Cases
 
-### Listar Artículos de Categoría con Paginación
+### List Category Articles with Pagination
 
 ```php
 public function getArticlesBy($categoryId, $page = 1, $limit = 10)
@@ -699,7 +699,7 @@ public function getArticlesBy($categoryId, $page = 1, $limit = 10)
 }
 ```
 
-### Búsqueda Avanzada
+### Advanced Search
 
 ```php
 public function search($searchTerm, $categoryId = null, $limit = 20)
@@ -732,22 +732,22 @@ public function search($searchTerm, $categoryId = null, $limit = 20)
 
 ---
 
-## Resumen de Buenas Prácticas
+## Best Practices Summary
 
-- Usa `$this->getDatabase()` en modelos
-- Siempre usa `quoteName()` para identificadores
-- Siempre usa `bind()` con prepared statements
-- Especifica `ParameterType` en bind()
-- Encadena métodos para código limpio
-- Valida entrada antes de usar en queries
-- Maneja excepciones en try-catch
-- Prueba queries complejas en phpMyAdmin primero
-- Documenta queries complejas con comentarios
-- Usa alias de tabla cortos pero claros
+- Use `$this->getDatabase()` in models
+- Always use `quoteName()` for identifiers
+- Always use `bind()` with prepared statements
+- Specify `ParameterType` in bind()
+- Chain methods for clean code
+- Validate input before using in queries
+- Handle exceptions with try-catch
+- Test complex queries in phpMyAdmin first
+- Document complex queries with comments
+- Use short but clear table aliases
 
 ---
 
-**Versión:** 1.0
-**Última actualización:** 2024
-**Compatibilidad:** Joomla 5.x, 6.x
-**Nivel:** Intermedio-Avanzado
+**Version:** 1.0
+**Last updated:** 2024
+**Compatibility:** Joomla 5.x, 6.x
+**Level:** Intermediate-Advanced

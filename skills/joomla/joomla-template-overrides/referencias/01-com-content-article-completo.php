@@ -1,30 +1,30 @@
 <?php
 /**
- * EJEMPLO COMPLETO: Override - Artículo Individual Personalizado
+ * COMPLETE EXAMPLE: Override - Custom Single Article
  *
- * Ubicación en template: /templates/cassiopeia/html/com_content/article/default.php
+ * Template location: /templates/cassiopeia/html/com_content/article/default.php
  *
- * CAMBIOS REALIZADOS:
- * - Estructura semántica mejorada (article, header, section)
- * - Imagen destacada con figcaption
- * - Metadatos ordenados debajo del título
- * - Campos personalizados (jcfields)
- * - Tags mostrados
- * - Navegación anterior/siguiente
+ * CHANGES MADE:
+ * - Improved semantic structure (article, header, section)
+ * - Featured image with figcaption
+ * - Metadata ordered below the title
+ * - Custom fields (jcfields)
+ * - Tags displayed
+ * - Previous/next navigation
  * - Breadcrumbs
  *
- * VARIABLES DISPONIBLES:
- * @var  object  $this->item          Objeto del artículo completo
- * @var  object  $this->params        Parámetros del artículo
- * @var  array   $this->jcfields      Campos personalizados
+ * AVAILABLE VARIABLES:
+ * @var  object  $this->item          Complete article object
+ * @var  object  $this->params        Article parameters
+ * @var  array   $this->jcfields      Custom fields
  *
  * JOOMLA: 5.x, 6.x
- * FECHA: 2024-03-06
+ * DATE: 2024-03-06
  */
 
 defined('_JEXEC') or die;
 
-// Datos principales
+// Main data
 $item = $this->item;
 $params = $this->params;
 $images = !empty($item->images) ? json_decode($item->images) : null;
@@ -38,15 +38,15 @@ $images = !empty($item->images) ? json_decode($item->images) : null;
             ['pathway' => $this->pathway, 'item' => $item]); ?>
     <?php endif; ?>
 
-    <!-- HEADER DEL ARTÍCULO -->
+    <!-- ARTICLE HEADER -->
     <header class="article-header">
 
-        <!-- TÍTULO -->
+        <!-- TITLE -->
         <h1 class="article-title" itemprop="headline">
             <?php echo htmlspecialchars($item->title); ?>
         </h1>
 
-        <!-- METADATOS (AUTOR, FECHA, CATEGORÍA) -->
+        <!-- METADATA (AUTHOR, DATE, CATEGORY) -->
         <?php echo JLayoutHelper::render('joomla.content.info_block', [
             'item' => $item,
             'params' => $params,
@@ -59,10 +59,10 @@ $images = !empty($item->images) ? json_decode($item->images) : null;
 
     </header>
 
-    <!-- CUERPO DEL ARTÍCULO -->
+    <!-- ARTICLE BODY -->
     <section class="article-body" itemprop="articleBody">
 
-        <!-- IMAGEN DESTACADA -->
+        <!-- FEATURED IMAGE -->
         <?php if (!empty($images) && !empty($images->image_intro)): ?>
             <figure class="article-intro-image">
                 <img src="<?php echo htmlspecialchars($images->image_intro); ?>"
@@ -76,17 +76,17 @@ $images = !empty($item->images) ? json_decode($item->images) : null;
             </figure>
         <?php endif; ?>
 
-        <!-- CONTENIDO PRINCIPAL -->
+        <!-- MAIN CONTENT -->
         <div class="article-text" itemprop="text">
             <?php echo $item->text; ?>
         </div>
 
     </section>
 
-    <!-- CAMPOS PERSONALIZADOS -->
+    <!-- CUSTOM FIELDS -->
     <?php if (!empty($item->jcfields) && is_array($item->jcfields)): ?>
         <aside class="article-custom-fields">
-            <h3 class="custom-fields-title">Información Adicional</h3>
+            <h3 class="custom-fields-title">Additional Information</h3>
             <div class="custom-fields-list">
                 <?php foreach ($item->jcfields as $field): ?>
                     <?php if (!empty($field->rawvalue)): ?>
@@ -112,7 +112,7 @@ $images = !empty($item->images) ? json_decode($item->images) : null;
     <!-- TAGS -->
     <?php if ($params->get('show_tags', 1) && !empty($item->tags->itemTags)): ?>
         <footer class="article-tags">
-            <h4 class="tags-title">Etiquetas</h4>
+            <h4 class="tags-title">Tags</h4>
             <div class="tags-list">
                 <?php foreach ($item->tags->itemTags as $tag): ?>
                     <a href="<?php echo JRoute::_('index.php?option=com_tags&view=tag&id=' . $tag->id); ?>"
@@ -124,7 +124,7 @@ $images = !empty($item->images) ? json_decode($item->images) : null;
         </footer>
     <?php endif; ?>
 
-    <!-- NAVEGACIÓN ANTERIOR/SIGUIENTE -->
+    <!-- PREVIOUS/NEXT NAVIGATION -->
     <?php if ($params->get('show_navigation')): ?>
         <?php echo JLayoutHelper::render('joomla.content.navigation', [
             'item' => $item,
@@ -143,16 +143,16 @@ $images = !empty($item->images) ? json_decode($item->images) : null;
 
 <?php
 /**
- * NOTAS DE IMPLEMENTACIÓN:
+ * IMPLEMENTATION NOTES:
  *
- * 1. BREADCRUMBS: Mostrar ruta de navegación (opcional)
- * 2. METADATOS: Usar JLayout para mantener separación
- * 3. IMAGEN: Usar figura con figcaption para semántica
- * 4. CAMPOS PERSONALIZADOS: Iterar sobre jcfields
- * 5. TAGS: Usar item->tags->itemTags
- * 6. ESCAPADO: htmlspecialchars() para strings
- * 7. RUTAS: Usar JRoute::_() para URLs
- * 8. LAYOUTS: Usar JLayoutHelper::render() para reutilización
- * 9. SCHEMA: Usar itemscope/itemtype para SEO
+ * 1. BREADCRUMBS: Show navigation path (optional)
+ * 2. METADATA: Use JLayout to maintain separation
+ * 3. IMAGE: Use figure with figcaption for semantics
+ * 4. CUSTOM FIELDS: Iterate over jcfields
+ * 5. TAGS: Use item->tags->itemTags
+ * 6. ESCAPING: htmlspecialchars() for strings
+ * 7. ROUTES: Use JRoute::_() for URLs
+ * 8. LAYOUTS: Use JLayoutHelper::render() for reuse
+ * 9. SCHEMA: Use itemscope/itemtype for SEO
  */
 ?>

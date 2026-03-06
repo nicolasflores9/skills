@@ -3,34 +3,34 @@ name: joomla-frontend-integration
 description: Frontend integration (CSS/JS) in Joomla 5/6 with Helix Framework. WebAssetManager, Bootstrap 5, SP Page Builder, responsive design, and Web Components.
 ---
 
-# Integración Frontend en Joomla 5/6 con Helix Framework
+# Frontend Integration in Joomla 5/6 with Helix Framework
 
-Guía completa para dominar CSS/JavaScript, WebAssetManager y diseño responsive en Joomla 5/6 utilizando Helix Framework y Bootstrap 5.
+Comprehensive guide to mastering CSS/JavaScript, WebAssetManager, and responsive design in Joomla 5/6 using Helix Framework and Bootstrap 5.
 
 ---
 
-## 1. WebAssetManager: El Sistema Moderno
+## 1. WebAssetManager: The Modern System
 
-El **WebAssetManager** (`\Joomla\CMS\WebAsset\WebAssetManager`) es la forma oficial de gestionar assets en Joomla 5/6. Reemplaza HTMLHelper y Document API (deprecados en 5.3+).
+The **WebAssetManager** (`\Joomla\CMS\WebAsset\WebAssetManager`) is the official way to manage assets in Joomla 5/6. It replaces HTMLHelper and Document API (deprecated in 5.3+).
 
-### Ciclo de vida
-1. **Registered**: Asset declarado en `joomla.asset.json`
-2. **Used**: Activado con `$wa->useScript()` o `$wa->useStyle()`
-3. **Rendered**: Insertado en HTML por `<jdoc:include type="head" />`
-4. **Loaded**: Descargado por navegador con versionado automático
+### Lifecycle
+1. **Registered**: Asset declared in `joomla.asset.json`
+2. **Used**: Activated with `$wa->useScript()` or `$wa->useStyle()`
+3. **Rendered**: Inserted into HTML by `<jdoc:include type="head" />`
+4. **Loaded**: Downloaded by browser with automatic versioning
 
-### Obtener instancia
+### Getting an Instance
 ```php
 $wa = \Joomla\CMS\Factory::getApplication()
       ->getDocument()
       ->getWebAssetManager();
 
-// Cargar assets
+// Load assets
 $wa->useScript('jquery');
 $wa->useStyle('bootstrap');
 ```
 
-### Niveles de carga en Joomla
+### Loading Levels in Joomla
 ```
 1. media/vendor/joomla.asset.json
 2. media/system/joomla.asset.json
@@ -41,11 +41,11 @@ $wa->useStyle('bootstrap');
 
 ---
 
-## 2. Estructura joomla.asset.json
+## 2. joomla.asset.json Structure
 
-Archivo JSON que declara todos los assets de forma centralizada. Se carga automáticamente.
+JSON file that declares all assets in a centralized way. It is loaded automatically.
 
-### Estructura Básica
+### Basic Structure
 ```json
 {
   "$schema": "https://json.schemastore.org/joomla-manifest-schema.json",
@@ -74,25 +74,25 @@ Archivo JSON que declara todos los assets de forma centralizada. Se carga autom�
 }
 ```
 
-### Ubicaciones según tipo
-- **Módulo**: `/mod_mymod/joomla.asset.json`
-- **Componente**: `/com_mycomp/joomla.asset.json`
+### Locations by Type
+- **Module**: `/mod_mymod/joomla.asset.json`
+- **Component**: `/com_mycomp/joomla.asset.json`
 - **Plugin**: `/plg_group_name/joomla.asset.json`
 - **Template**: `/templates/mytemplate/joomla.asset.json`
 
-### Versioning automático
+### Automatic Versioning
 ```json
-"version": "auto"  // Usa fecha de última modificación
-"version": "1.0.0" // Versión manual
+"version": "auto"  // Uses last modification date
+"version": "1.0.0" // Manual version
 ```
 
 ---
 
-## 3. Cargar CSS y JavaScript Correctamente
+## 3. Loading CSS and JavaScript Correctly
 
-### Método 1: WebAssetManager (RECOMENDADO)
+### Method 1: WebAssetManager (RECOMMENDED)
 ```php
-// En helper.php, layout o componente
+// In helper.php, layout, or component
 $wa = \Joomla\CMS\Factory::getApplication()
       ->getDocument()
       ->getWebAssetManager();
@@ -107,39 +107,39 @@ $wa->useStyle('bootstrap');
 $wa->useStyle('my-custom-style');
 ```
 
-### Alternativas (Dinámico, CDN, Legacy)
+### Alternatives (Dynamic, CDN, Legacy)
 ```php
-// Registrar dinámicamente
+// Register dynamically
 $wa->registerAndUseScript('my-dynamic', 'js/dynamic.js',
     ['dependencies' => ['jquery']], ['defer' => true]);
 
-// Desde CDN en joomla.asset.json
+// From CDN in joomla.asset.json
 {"name": "lib", "type": "script",
  "uri": "https://cdn.example.com/lib.min.js"}
 
-// Legacy (evitar)
+// Legacy (avoid)
 \Joomla\CMS\HTML\HTMLHelper::script('js/file.js');
 ```
 
 ---
 
-## 4. Bootstrap 5 con Helix Framework
+## 4. Bootstrap 5 with Helix Framework
 
-Helix incluye **Bootstrap 5.2.3+** automáticamente. Grid de 12 columnas, flexbox, utilidades.
+Helix includes **Bootstrap 5.2.3+** automatically. 12-column grid, flexbox, utilities.
 
-### Grid Responsivo
+### Responsive Grid
 ```html
-<!-- Bootstrap grid integrado -->
+<!-- Integrated Bootstrap grid -->
 <div class="container">
   <div class="row">
     <div class="col-12 col-md-6 col-lg-4">
-      <!-- Contenido: 100% mobile, 50% tablet, 33% desktop -->
+      <!-- Content: 100% mobile, 50% tablet, 33% desktop -->
     </div>
   </div>
 </div>
 ```
 
-### Breakpoints Bootstrap
+### Bootstrap Breakpoints
 ```css
 /* xs: 0px (mobile first) */
 /* sm: 576px (landscape phones) */
@@ -151,13 +151,13 @@ Helix incluye **Bootstrap 5.2.3+** automáticamente. Grid de 12 columnas, flexbo
 
 ### Media Queries
 ```css
-/* Mobile first: estilos base para móvil */
+/* Mobile first: base styles for mobile */
 .card {
   padding: 1rem;
   font-size: 14px;
 }
 
-/* Mejorar en tablets */
+/* Enhance for tablets */
 @media (min-width: 768px) {
   .card {
     padding: 2rem;
@@ -165,7 +165,7 @@ Helix incluye **Bootstrap 5.2.3+** automáticamente. Grid de 12 columnas, flexbo
   }
 }
 
-/* Mejorar en desktops */
+/* Enhance for desktops */
 @media (min-width: 992px) {
   .card {
     padding: 3rem;
@@ -174,21 +174,21 @@ Helix incluye **Bootstrap 5.2.3+** automáticamente. Grid de 12 columnas, flexbo
 }
 ```
 
-### No romper Bootstrap
+### Do Not Break Bootstrap
 ```css
-/* INCORRECTO: sobrescribir clases Bootstrap */
+/* INCORRECT: overriding Bootstrap classes */
 .btn { background: red; }
 
-/* CORRECTO: crear clases custom */
+/* CORRECT: create custom classes */
 .btn-custom { background: red; }
 .btn-custom:hover { background: darkred; }
 ```
 
 ---
 
-## 5. Módulos Custom con Assets
+## 5. Custom Modules with Assets
 
-**Estructura:**
+**Structure:**
 ```
 /mod_mymodule/
   ├── joomla.asset.json
@@ -199,7 +199,7 @@ Helix incluye **Bootstrap 5.2.3+** automáticamente. Grid de 12 columnas, flexbo
   └── css/module.css
 ```
 
-**Activar en helper.php o template:**
+**Activate in helper.php or template:**
 ```php
 $wa = \Joomla\CMS\Factory::getApplication()
       ->getDocument()
@@ -208,25 +208,25 @@ $wa->useScript('mod_mymodule.script');
 $wa->useStyle('mod_mymodule.style');
 ```
 
-Ver ejemplo completo en `references/02-modulo-testimonios-completo.php`.
+See complete example in `references/02-modulo-testimonios-completo.php`.
 
 ---
 
-## 6. SP Page Builder: Assets en Addons
+## 6. SP Page Builder: Assets in Addons
 
-**CSS Nativo:** Row/Column → Custom CSS (CodeMirror editor disponible).
+**Native CSS:** Row/Column > Custom CSS (CodeMirror editor available).
 
-**JS Custom:** Crear plugin tipo sppagebuilder (no soporta JS nativo).
+**Custom JS:** Create a sppagebuilder type plugin (native JS not supported).
 
-Ver ejemplo completo en `references/06-sp-page-builder-addon-plugin.php`.
+See complete example in `references/06-sp-page-builder-addon-plugin.php`.
 
 ---
 
-## 7. Dependencias Entre Assets
+## 7. Dependencies Between Assets
 
-Sistema automático de resolución de orden de carga.
+Automatic load order resolution system.
 
-### Dependencia simple
+### Simple Dependency
 ```json
 {
   "name": "my-plugin",
@@ -236,7 +236,7 @@ Sistema automático de resolución de orden de carga.
 }
 ```
 
-### Dependencias múltiples
+### Multiple Dependencies
 ```json
 {
   "name": "advanced-plugin",
@@ -250,7 +250,7 @@ Sistema automático de resolución de orden de carga.
 }
 ```
 
-### Dependencia con tipo específico
+### Dependency with Specific Type
 ```json
 {
   "name": "my-component",
@@ -264,7 +264,7 @@ Sistema automático de resolución de orden de carga.
 }
 ```
 
-### Preset (grupo de dependencias)
+### Preset (Dependency Group)
 ```json
 {
   "name": "admin-bundle",
@@ -281,9 +281,9 @@ Sistema automático de resolución de orden de carga.
 
 ---
 
-## 8. Inline Scripts y Styles
+## 8. Inline Scripts and Styles
 
-Para código pequeño o dinámico.
+For small or dynamic code.
 
 ### Inline Script
 ```php
@@ -293,7 +293,7 @@ $wa = Factory::getApplication()
 
 $wa->addInlineScript('
   document.addEventListener("DOMContentLoaded", function() {
-    console.log("Inline script ejecutado");
+    console.log("Inline script executed");
   });
 ');
 ```
@@ -309,14 +309,14 @@ $wa->addInlineStyle('
 ');
 ```
 
-### Inline nombrado (como dependencia)
+### Named Inline (as a Dependency)
 ```php
 $wa->registerAndUseScript(
     'my-init',
     'document.addEventListener("DOMContentLoaded", function() { /* init */ });'
 );
 
-// Usar como dependencia
+// Use as a dependency
 $wa->registerAndUseScript(
     'my-app',
     'js/app.js',
@@ -326,12 +326,12 @@ $wa->registerAndUseScript(
 
 ---
 
-## 9. Defer, Async y Optimización
+## 9. Defer, Async, and Optimization
 
-Atributos críticos para rendimiento.
+Critical attributes for performance.
 
 ### Defer
-Se ejecuta DESPUÉS de cargar HTML. **Recomendado para la mayoría.**
+Executes AFTER HTML is loaded. **Recommended for most cases.**
 
 ```json
 {
@@ -345,13 +345,13 @@ Se ejecuta DESPUÉS de cargar HTML. **Recomendado para la mayoría.**
 }
 ```
 
-**Usar para:**
+**Use for:**
 - jQuery
 - Bootstrap
-- Scripts custom que dependen de jQuery
+- Custom scripts that depend on jQuery
 
 ### Async
-Se ejecuta CUANDO está listo. **Para código independiente.**
+Executes WHEN ready. **For independent code.**
 
 ```json
 {
@@ -365,49 +365,49 @@ Se ejecuta CUANDO está listo. **Para código independiente.**
 }
 ```
 
-**Usar para:**
+**Use for:**
 - Google Analytics
 - Tracking scripts
 - Chat widgets
-- Code independiente
+- Independent code
 
-### Matriz de decisión
+### Decision Matrix
 ```
-jQuery / Bootstrap          → defer: true, async: false
-Custom JS que usa jQuery    → defer: true, async: false
-Analytics / Tracking        → defer: false, async: true
-3rd party widget           → async: true
+jQuery / Bootstrap          -> defer: true, async: false
+Custom JS that uses jQuery  -> defer: true, async: false
+Analytics / Tracking        -> defer: false, async: true
+3rd party widget            -> async: true
 ```
 
 ---
 
 ## 10. Web Components
 
-Estándar W3C nativo. Joomla incluye `joomla-core-loader`.
+Native W3C standard. Joomla includes `joomla-core-loader`.
 
 ```javascript
-// Crear Web Component
-class MiComponente extends HTMLElement {
+// Create Web Component
+class MyComponent extends HTMLElement {
   connectedCallback() {
-    this.innerHTML = `<div>${this.getAttribute('titulo')}</div>`;
+    this.innerHTML = `<div>${this.getAttribute('title')}</div>`;
   }
 }
-customElements.define('mi-componente', MiComponente);
+customElements.define('my-component', MyComponent);
 
-// Registrar en joomla.asset.json
-// {"name": "mi-comp", "type": "script", "uri": "js/mi-comp.js",
+// Register in joomla.asset.json
+// {"name": "my-comp", "type": "script", "uri": "js/my-comp.js",
 //  "attributes": {"type": "module", "defer": true}}
 ```
 
-Ver ejemplo completo en `references/07-web-component-custom.js`.
+See complete example in `references/07-web-component-custom.js`.
 
 ---
 
-## 11. Custom Code en Helix
+## 11. Custom Code in Helix
 
-Admin → Templates → [Tu Template] → Template Options → Custom Code tab.
+Admin > Templates > [Your Template] > Template Options > Custom Code tab.
 
-**CSS Global:**
+**Global CSS:**
 ```css
 .site-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -419,64 +419,64 @@ Admin → Templates → [Tu Template] → Template Options → Custom Code tab.
 }
 ```
 
-**JS Global & Google Fonts:** Ver ejemplos en `references/08-template-helix-custom.css` y `references/10-ejemplos-codigo-rapido.md`.
+**Global JS & Google Fonts:** See examples in `references/08-template-helix-custom.css` and `references/10-ejemplos-codigo-rapido.md`.
 
 ---
 
-## 12. Buenas Prácticas: No Romper Helix
+## 12. Best Practices: Do Not Break Helix
 
-### NUNCA editar
+### NEVER Edit
 ```
-/template/css/template.css        ✗
-/template/css/bootstrap.css        ✗
-/template/js/template.js           ✗
-```
-
-### SIEMPRE crear/usar
-```
-/template/css/custom.css           ✓
-/template/scss/custom.scss         ✓
-/template/js/custom.js             ✓
-Custom Code section en admin       ✓
+/template/css/template.css        X
+/template/css/bootstrap.css        X
+/template/js/template.js           X
 ```
 
-### CSS Cascade seguro
+### ALWAYS Create/Use
+```
+/template/css/custom.css           OK
+/template/scss/custom.scss         OK
+/template/js/custom.js             OK
+Custom Code section in admin       OK
+```
+
+### Safe CSS Cascade
 ```css
-/* template.css carga primero */
+/* template.css loads first */
 .btn { padding: 8px 12px; }
 
-/* custom.css carga al final - tiene prioridad */
+/* custom.css loads last - has priority */
 .btn { padding: 10px 16px; }
 ```
 
-### Preservar clases Bootstrap
+### Preserve Bootstrap Classes
 ```css
-/* INCORRECTO: modifica clase Bootstrap */
+/* INCORRECT: modifies Bootstrap class */
 .btn { background: purple; }
 
-/* CORRECTO: crea clase custom */
+/* CORRECT: creates custom class */
 .btn-primary-custom { background: purple; }
 
-<!-- Usar clase custom -->
-<button class="btn btn-primary-custom">Botón</button>
+<!-- Use custom class -->
+<button class="btn btn-primary-custom">Button</button>
 ```
 
 ---
 
-## 13. Troubleshooting Rápido
+## 13. Quick Troubleshooting
 
-**Assets no cargan:** Revisar `<jdoc:include type="head" />` en template, path en joomla.asset.json, permisos (755), cache Joomla.
+**Assets not loading:** Check `<jdoc:include type="head" />` in template, path in joomla.asset.json, permissions (755), Joomla cache.
 
-**Orden incorrecto:** Verificar dependencias, revisar Network tab en DevTools.
+**Incorrect order:** Verify dependencies, check Network tab in DevTools.
 
-**Bootstrap no funciona:** Confirmar `$wa->useStyle('bootstrap')`, no sobrescribir variables, usar clases correctamente.
+**Bootstrap not working:** Confirm `$wa->useStyle('bootstrap')`, do not override variables, use classes correctly.
 
-**Helix se rompe:** No editar archivos core, usar custom.css, revisar Custom Code.
+**Helix breaks:** Do not edit core files, use custom.css, check Custom Code.
 
-Más detalles en `references/09-checklist-desarrollo.md`.
+More details in `references/09-checklist-desarrollo.md`.
 
 ---
 
-## 14. Referencias Rápidas y Recursos
+## 14. Quick References and Resources
 
-Ver `references/09-checklist-desarrollo.md` y `references/10-ejemplos-codigo-rapido.md` para guías detalladas y ejemplos adicionales.
+See `references/09-checklist-desarrollo.md` and `references/10-ejemplos-codigo-rapido.md` for detailed guides and additional examples.

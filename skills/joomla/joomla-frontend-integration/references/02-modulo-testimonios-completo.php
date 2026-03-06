@@ -1,7 +1,7 @@
 <?php
 /**
- * Módulo de Testimonios Custom para Joomla 5/6
- * Ejemplo completo con CSS, JS y WebAssetManager
+ * Custom Testimonials Module for Joomla 5/6
+ * Complete example with CSS, JS, and WebAssetManager
  */
 
 defined('_JEXEC') or die;
@@ -9,7 +9,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
 
-// Cargar assets del módulo
+// Load module assets
 $wa = Factory::getApplication()
       ->getDocument()
       ->getWebAssetManager();
@@ -17,13 +17,13 @@ $wa = Factory::getApplication()
 $wa->useScript('mod_testimonios.carousel');
 $wa->useStyle('mod_testimonios.style');
 
-// Obtener parámetros del módulo
+// Get module parameters
 $testimonials = json_decode($params->get('testimonials', '[]'));
 $speed = (int)$params->get('speed', 5000);
 $autoplay = (bool)$params->get('autoplay', true);
 $moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx', ''), ENT_COMPAT, 'UTF-8');
 
-// Pasar datos a JavaScript
+// Pass data to JavaScript
 $wa->addInlineScript('
 window.TestimonialConfig = {
     speed: ' . $speed . ',
@@ -62,21 +62,21 @@ window.TestimonialConfig = {
 
     <!-- Navigation -->
     <div class="testimonials-nav">
-        <button class="nav-btn prev-btn" aria-label="Anterior">
-            <span class="icon">❮</span>
+        <button class="nav-btn prev-btn" aria-label="Previous">
+            <span class="icon">&#10094;</span>
         </button>
         <div class="dots-container" id="testimonialsDots">
             <?php if (!empty($testimonials)): ?>
                 <?php foreach ($testimonials as $index => $item): ?>
                     <button class="dot<?php echo $index === 0 ? ' active' : ''; ?>"
                             data-slide="<?php echo $index; ?>"
-                            aria-label="Ir a testimonial <?php echo $index + 1; ?>">
+                            aria-label="Go to testimonial <?php echo $index + 1; ?>">
                     </button>
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
-        <button class="nav-btn next-btn" aria-label="Siguiente">
-            <span class="icon">❯</span>
+        <button class="nav-btn next-btn" aria-label="Next">
+            <span class="icon">&#10095;</span>
         </button>
     </div>
 </div>

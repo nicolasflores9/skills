@@ -1,70 +1,70 @@
 ---
 name: joomla-plugin-development
-description: Domina el desarrollo de plugins modernos en Joomla 5/6. Aprende a crear extensiones robustas usando SubscriberInterface, Event Classes, inyección de dependencias y PSR-4. Cubre manifest.xml, service providers, eventos del sistema/contenido/usuario, namespaces y mejores prácticas de seguridad. Incluye ejemplos completos desde plugins básicos hasta avanzados. Utiliza este contenido cuando necesites crear plugins Joomla, comprender el patrón de eventos, implementar SubscriberInterface, trabajar con Event Classes, configurar dependencias, resolver problemas de namespace, o seguir arquitectura moderna.
+description: Master modern plugin development in Joomla 5/6. Learn to create robust extensions using SubscriberInterface, Event Classes, dependency injection, and PSR-4. Covers manifest.xml, service providers, system/content/user events, namespaces, and security best practices.
 ---
 
-# Desarrollo de Plugins Joomla 5/6: Guía Completa
+# Joomla 5/6 Plugin Development: Complete Guide
 
-## 1. Introducción
+## 1. Introduction
 
-Los plugins en Joomla 5/6 representan la evolución más moderna del framework. Este conjunto de conocimientos te proporciona todo lo necesario para crear extensiones robustas, eficientes y mantenibles siguiendo los patrones actuales.
+Plugins in Joomla 5/6 represent the most modern evolution of the framework. This knowledge set provides everything you need to create robust, efficient, and maintainable extensions following current patterns.
 
-### 1.1 Qué Aprenderás
+### 1.1 What You Will Learn
 
-- Arquitectura moderna de plugins Joomla 5/6
-- Implementación de SubscriberInterface y getSubscribedEvents()
-- Manejo de eventos del sistema, contenido y usuario
-- Event Classes con type hints
-- Inyección de dependencias
-- PSR-4 namespaces y autoloading automático
-- Mejores prácticas de seguridad y rendimiento
-- Ejemplos prácticos y completos
+- Modern Joomla 5/6 plugin architecture
+- SubscriberInterface and getSubscribedEvents() implementation
+- System, content, and user event handling
+- Event Classes with type hints
+- Dependency injection
+- PSR-4 namespaces and automatic autoloading
+- Security and performance best practices
+- Practical and complete examples
 
-### 1.2 Requisitos Previos
+### 1.2 Prerequisites
 
-- Instalación funcional de Joomla 5 o 6
-- Conocimiento intermedio de PHP
-- Familiaridad con namespaces y composición
-- Acceso de administrador a Joomla
-- Editor de código (VS Code, PhpStorm, etc.)
+- Working Joomla 5 or 6 installation
+- Intermediate PHP knowledge
+- Familiarity with namespaces and composition
+- Administrator access to Joomla
+- Code editor (VS Code, PhpStorm, etc.)
 
-## 2. Estructura Moderna de Plugins
+## 2. Modern Plugin Structure
 
-### 2.1 Árbol de Directorios Estándar
+### 2.1 Standard Directory Tree
 
-Todo plugin moderno sigue esta estructura:
+Every modern plugin follows this structure:
 
 ```
 plg_system_myexample/
-├── manifest.xml              # Configuración e instalación
+├── manifest.xml              # Configuration and installation
 ├── services/
-│   └── provider.php          # Inyección de dependencias
+│   └── provider.php          # Dependency injection
 ├── src/
 │   ├── Extension/
-│   │   └── MyExample.php     # Clase principal
-│   ├── Event/                # (Opcional) Event classes personalizadas
-│   └── Helper/               # (Opcional) Clases auxiliares
+│   │   └── MyExample.php     # Main class
+│   ├── Event/                # (Optional) Custom event classes
+│   └── Helper/               # (Optional) Helper classes
 └── language/
     └── en-GB/
-        ├── plg_system_myexample.ini      # Traducciones frontend
-        └── plg_system_myexample.sys.ini  # Traducciones sistema
+        ├── plg_system_myexample.ini      # Frontend translations
+        └── plg_system_myexample.sys.ini  # System translations
 ```
 
-**Nomenclatura crítica:**
-- Prefijo: `plg_` (siempre plugin)
-- Grupo: `system`, `content`, `user`, etc.
-- Nombre: minúsculas sin espacios
-- Ejemplo: `plg_content_shortcodes` = plugin de contenido llamado "shortcodes"
+**Critical naming conventions:**
+- Prefix: `plg_` (always plugin)
+- Group: `system`, `content`, `user`, etc.
+- Name: lowercase without spaces
+- Example: `plg_content_shortcodes` = content plugin named "shortcodes"
 
-### 2.2 Archivo manifest.xml
+### 2.2 manifest.xml File
 
-El manifest es el punto de entrada de instalación:
+The manifest is the installation entry point:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="plugin" group="system">
     <name>PLG_SYSTEM_MYEXAMPLE</name>
-    <author>Tu Nombre</author>
+    <author>Your Name</author>
     <creationDate>2025-03-06</creationDate>
     <copyright>Copyright 2025</copyright>
     <license>GNU General Public License version 2 or later</license>
@@ -72,10 +72,10 @@ El manifest es el punto de entrada de instalación:
     <description>PLG_SYSTEM_MYEXAMPLE_DESCRIPTION</description>
     <targetPlatform version="5.0" />
 
-    <!-- CRÍTICO: Define namespace PSR-4 -->
+    <!-- CRITICAL: Defines PSR-4 namespace -->
     <namespace path="src">MyCompany\Plugin\System\MyExample</namespace>
 
-    <!-- Declaración de archivos -->
+    <!-- File declarations -->
     <files>
         <file>manifest.xml</file>
         <folder plugin="myexample">services</folder>
@@ -83,14 +83,14 @@ El manifest es el punto de entrada de instalación:
         <folder>language</folder>
     </files>
 
-    <!-- Configuración de parámetros (opcional) -->
+    <!-- Parameter configuration (optional) -->
     <config>
         <fields name="params">
             <fieldset name="basic">
                 <field
                     name="enabled"
                     type="checkbox"
-                    label="Habilitar plugin"
+                    label="Enable plugin"
                     default="1"
                 />
             </fieldset>
@@ -99,14 +99,14 @@ El manifest es el punto de entrada de instalación:
 </extension>
 ```
 
-**Elementos críticos:**
-- `<namespace path="src">`: Define el prefijo namespace. DEBE coincidir exactamente en provider.php y Extension
-- `<folder plugin="myexample">`: El atributo debe ser el nombre del plugin (coincide con manifest.xml)
-- `type="plugin"` y `group="..."`: Identifica tipo y categoría
+**Critical elements:**
+- `<namespace path="src">`: Defines the namespace prefix. MUST match exactly in provider.php and Extension
+- `<folder plugin="myexample">`: The attribute must be the plugin name (matches manifest.xml)
+- `type="plugin"` and `group="..."`: Identifies type and category
 
 ### 2.3 Service Provider (services/provider.php)
 
-Este archivo registra tu plugin en el contenedor de inyección de dependencias:
+This file registers your plugin in the dependency injection container:
 
 ```php
 <?php
@@ -135,15 +135,15 @@ class ServiceProvider implements ServiceProviderInterface
 }
 ```
 
-**Puntos clave:**
-- El namespace DEBE coincidir exactamente con manifest.xml
-- `PluginHelper::getPlugin()` obtiene la configuración del plugin
-- El dispatcher es el gestor de eventos de Joomla
-- Se registra la clase Extension como PluginInterface
+**Key points:**
+- The namespace MUST match exactly with manifest.xml
+- `PluginHelper::getPlugin()` retrieves the plugin configuration
+- The dispatcher is Joomla's event manager
+- The Extension class is registered as PluginInterface
 
-## 3. Clase Extension: El Corazón del Plugin
+## 3. Extension Class: The Heart of the Plugin
 
-La clase principal implementa `SubscriberInterface`:
+The main class implements `SubscriberInterface`:
 
 ```php
 <?php
@@ -159,8 +159,8 @@ class Extension extends CMSPlugin implements SubscriberInterface
     protected $allowLegacyListeners = false;
 
     /**
-     * Declara eventos suscritos
-     * Este método estático es OBLIGATORIO
+     * Declares subscribed events
+     * This static method is MANDATORY
      */
     public static function getSubscribedEvents(): array
     {
@@ -170,33 +170,33 @@ class Extension extends CMSPlugin implements SubscriberInterface
     }
 
     /**
-     * Maneja el evento onAfterInitialise
+     * Handles the onAfterInitialise event
      */
     public function onAfterInitialise(AfterInitialiseEvent $event)
     {
-        // Tu lógica aquí
+        // Your logic here
     }
 }
 ```
 
-**Propiedades importantes:**
-- `$autoloadLanguage = true`: Carga automáticos los archivos .ini
-- `$allowLegacyListeners = false`: Mejora rendimiento, desactiva búsqueda con Reflection
-- Extiende `CMSPlugin` que proporciona `$params`, `$app`, etc.
+**Important properties:**
+- `$autoloadLanguage = true`: Automatically loads .ini language files
+- `$allowLegacyListeners = false`: Improves performance, disables Reflection-based lookup
+- Extends `CMSPlugin` which provides `$params`, `$app`, etc.
 
-## 4. SubscriberInterface y getSubscribedEvents()
+## 4. SubscriberInterface and getSubscribedEvents()
 
-### 4.1 Patrón Moderno vs Antiguo
+### 4.1 Modern vs Legacy Pattern
 
-**Antiguo (Joomla 3-4):**
+**Legacy (Joomla 3-4):**
 ```php
 public function onContentPrepare($context, &$article, &$params, $page = 0)
 {
-    // Lógica
+    // Logic
 }
 ```
 
-**Moderno (Joomla 5+):**
+**Modern (Joomla 5+):**
 ```php
 public static function getSubscribedEvents(): array
 {
@@ -206,14 +206,14 @@ public static function getSubscribedEvents(): array
 public function onContentPrepare(ContentPrepareEvent $event)
 {
     $article = $event->getArgument('0');
-    // Lógica con type hints
+    // Logic with type hints
 }
 ```
 
-### 4.2 Formatos de getSubscribedEvents()
+### 4.2 getSubscribedEvents() Formats
 
 ```php
-// Formato básico
+// Basic format
 public static function getSubscribedEvents(): array
 {
     return [
@@ -222,7 +222,7 @@ public static function getSubscribedEvents(): array
     ];
 }
 
-// Con prioridades (menor número = ejecuta primero)
+// With priorities (lower number = executes first)
 public static function getSubscribedEvents(): array
 {
     return [
@@ -231,7 +231,7 @@ public static function getSubscribedEvents(): array
     ];
 }
 
-// Múltiples listeners para un evento
+// Multiple listeners for one event
 public static function getSubscribedEvents(): array
 {
     return [
@@ -243,80 +243,80 @@ public static function getSubscribedEvents(): array
 }
 ```
 
-## 5. Tipos de Eventos Principales
+## 5. Main Event Types
 
-### 5.1 Eventos del Sistema
+### 5.1 System Events
 
-Se disparan en cada carga de página:
+Triggered on every page load:
 
-| Evento | Cuándo se dispara |
-|--------|-------------------|
-| `onAfterInitialise` | Después de inicializar Joomla |
-| `onAfterRoute` | Después de resolver la ruta |
-| `onAfterDispatch` | Después de ejecutar el componente |
-| `onBeforeRender` | Antes de renderizar la página |
-| `onBeforeCompileHead` | Antes de compilar etiquetas head |
-| `onAfterRender` | Después de renderizar |
+| Event | When it fires |
+|-------|---------------|
+| `onAfterInitialise` | After Joomla initialization |
+| `onAfterRoute` | After route resolution |
+| `onAfterDispatch` | After component execution |
+| `onBeforeRender` | Before page rendering |
+| `onBeforeCompileHead` | Before compiling head tags |
+| `onAfterRender` | After rendering |
 
-### 5.2 Eventos de Contenido
+### 5.2 Content Events
 
-Se disparan en ciclo de lectura/escritura de artículos:
+Triggered during article read/write cycle:
 
-| Evento | Descripción |
-|--------|-------------|
-| `onContentPrepare` | Antes de mostrar artículos |
-| `onContentAfterTitle` | Después del título |
-| `onContentBeforeSave` | Validación previa |
-| `onContentAfterSave` | Post-procesamiento |
-| `onContentBeforeDelete` | Limpieza previa |
-| `onContentAfterDelete` | Limpieza posterior |
+| Event | Description |
+|-------|-------------|
+| `onContentPrepare` | Before displaying articles |
+| `onContentAfterTitle` | After the title |
+| `onContentBeforeSave` | Pre-save validation |
+| `onContentAfterSave` | Post-processing |
+| `onContentBeforeDelete` | Pre-delete cleanup |
+| `onContentAfterDelete` | Post-delete cleanup |
 
-### 5.3 Eventos de Usuario
+### 5.3 User Events
 
-Gestión de usuarios:
+User management:
 
-| Evento | Descripción |
-|--------|-------------|
-| `onUserBeforeSave` | Antes de guardar usuario |
-| `onUserAfterSave` | Después de guardar usuario |
-| `onUserLogin` | Después de login exitoso |
-| `onUserLogout` | Después de logout |
+| Event | Description |
+|-------|-------------|
+| `onUserBeforeSave` | Before saving user |
+| `onUserAfterSave` | After saving user |
+| `onUserLogin` | After successful login |
+| `onUserLogout` | After logout |
 
 ## 6. Event Classes (Joomla 5.2+)
 
-Las Event Classes proporcionan type safety y mejor estructura:
+Event Classes provide type safety and better structure:
 
 ```php
-// Antiguo
+// Legacy
 public function onContentPrepare($context, &$article, &$params, $page = 0)
 {
     $text = $article->text;
 }
 
-// Moderno con Event Class
+// Modern with Event Class
 use Joomla\CMS\Event\Content\ContentPrepareEvent;
 
 public function onContentPrepare(ContentPrepareEvent $event)
 {
-    // Acceder por índice
+    // Access by index
     $article = $event->getArgument('0');
 
-    // O usar métodos específicos (si existen)
+    // Or use specific methods (if available)
     $article = $event->getArticle();
 
-    // Modificar
+    // Modify
     $event->setArgument('0', $modifiedArticle);
 }
 ```
 
-**Ubicación de Event Classes:**
-- `\Joomla\CMS\Event\Content\*` para eventos de contenido
-- `\Joomla\CMS\Event\System\*` para eventos del sistema
-- `\Joomla\CMS\Event\User\*` para eventos de usuario
+**Event Classes location:**
+- `\Joomla\CMS\Event\Content\*` for content events
+- `\Joomla\CMS\Event\System\*` for system events
+- `\Joomla\CMS\Event\User\*` for user events
 
-## 7. Inyección de Dependencias
+## 7. Dependency Injection
 
-### 7.1 Acceso a Servicios Básicos
+### 7.1 Accessing Basic Services
 
 ```php
 <?php
@@ -338,13 +338,13 @@ class Extension extends CMSPlugin implements SubscriberInterface
 
     public function onContentPrepare($event)
     {
-        // Acceder al contenedor
+        // Access the container
         $container = $this->getContainer();
 
-        // Obtener la base de datos
+        // Get the database
         $db = $container->get(DatabaseInterface::class);
 
-        // Ejecutar consulta
+        // Execute query
         $query = $db->getQuery(true)
             ->select('*')
             ->from($db->quoteName('#__articles'));
@@ -355,7 +355,7 @@ class Extension extends CMSPlugin implements SubscriberInterface
 }
 ```
 
-### 7.2 En Service Provider
+### 7.2 In Service Provider
 
 ```php
 <?php
@@ -379,7 +379,7 @@ class ServiceProvider implements ServiceProviderInterface
                     (array) PluginHelper::getPlugin('content', 'example')
                 );
 
-                // Inyectar el contenedor
+                // Inject the container
                 $plugin->setContainer($c);
 
                 return $plugin;
@@ -389,9 +389,9 @@ class ServiceProvider implements ServiceProviderInterface
 }
 ```
 
-## 8. Tu Primer Plugin: "Hello World"
+## 8. Your First Plugin: "Hello World"
 
-### 8.1 Estructura Mínima
+### 8.1 Minimal Structure
 
 ```
 plg_system_helloworld/
@@ -413,7 +413,7 @@ plg_system_helloworld/
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="plugin" group="system">
     <name>PLG_SYSTEM_HELLOWORLD</name>
-    <author>Tu Nombre</author>
+    <author>Your Name</author>
     <creationDate>2025-03-06</creationDate>
     <copyright>Copyright 2025</copyright>
     <license>GNU General Public License version 2 or later</license>
@@ -486,12 +486,12 @@ class Extension extends CMSPlugin implements SubscriberInterface
     public function onAfterInitialise(AfterInitialiseEvent $event)
     {
         $app = $this->getApplication();
-        $app->getLogger()->info('Hello World! El plugin está funcionando.');
+        $app->getLogger()->info('Hello World! The plugin is working.');
     }
 }
 ```
 
-### 8.5 Archivos de Idioma
+### 8.5 Language Files
 
 **language/en-GB/plg_system_helloworld.ini:**
 ```ini
@@ -501,27 +501,27 @@ PLG_SYSTEM_HELLOWORLD="Hello World Plugin"
 **language/en-GB/plg_system_helloworld.sys.ini:**
 ```ini
 PLG_SYSTEM_HELLOWORLD="Hello World Plugin"
-PLG_SYSTEM_HELLOWORLD_DESCRIPTION="Un plugin de ejemplo que muestra 'Hello World'"
+PLG_SYSTEM_HELLOWORLD_DESCRIPTION="A sample plugin that displays 'Hello World'"
 ```
 
-### 8.6 Instalación
+### 8.6 Installation
 
-1. Crear carpeta: `plugins/system/helloworld`
-2. Copiar todos los archivos
-3. Ir a Panel de Control > Extensiones > Plugins
-4. Buscar "Hello World Plugin"
-5. Habilitarlo
-6. Verificar en logs: `logs/joomla.log`
+1. Create folder: `plugins/system/helloworld`
+2. Copy all files
+3. Go to Control Panel > Extensions > Plugins
+4. Search for "Hello World Plugin"
+5. Enable it
+6. Verify in logs: `logs/joomla.log`
 
-## 9. Plugin Avanzado: Shortcodes de Contenido
+## 9. Advanced Plugin: Content Shortcodes
 
-### 9.1 Manifest.xml con Parámetros
+### 9.1 Manifest.xml with Parameters
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="plugin" group="content" method="upgrade">
     <name>PLG_CONTENT_SHORTCODES</name>
-    <author>Tu Nombre</author>
+    <author>Your Name</author>
     <creationDate>2025-03-06</creationDate>
     <copyright>Copyright 2025</copyright>
     <license>GNU General Public License version 2 or later</license>
@@ -553,7 +553,7 @@ PLG_SYSTEM_HELLOWORLD_DESCRIPTION="Un plugin de ejemplo que muestra 'Hello World
 </extension>
 ```
 
-### 9.2 Extension Class Completa
+### 9.2 Complete Extension Class
 
 ```php
 <?php
@@ -578,7 +578,7 @@ class Extension extends CMSPlugin implements SubscriberInterface
 
     public function onContentPrepare(ContentPrepareEvent $event)
     {
-        // Verificar si está habilitado
+        // Check if enabled
         if (!$this->params->get('process_shortcodes', true)) {
             return;
         }
@@ -589,7 +589,7 @@ class Extension extends CMSPlugin implements SubscriberInterface
             return;
         }
 
-        // Procesar shortcodes
+        // Process shortcodes
         $article->text = $this->processShortcodes($article->text);
     }
 
@@ -597,21 +597,21 @@ class Extension extends CMSPlugin implements SubscriberInterface
     {
         $config = Factory::getConfig();
 
-        // Reemplazar {sitename}
+        // Replace {sitename}
         $text = str_replace(
             '{sitename}',
             $config->get('sitename'),
             $text
         );
 
-        // Reemplazar {siteurl}
+        // Replace {siteurl}
         $text = str_replace(
             '{siteurl}',
             $config->get('live_site'),
             $text
         );
 
-        // Reemplazar {year}
+        // Replace {year}
         $text = str_replace(
             '{year}',
             date('Y'),
@@ -652,7 +652,7 @@ class ServiceProvider implements ServiceProviderInterface
 }
 ```
 
-### 9.4 Archivos de Idioma
+### 9.4 Language Files
 
 **language/en-GB/plg_content_shortcodes.ini:**
 ```ini
@@ -666,33 +666,33 @@ PLG_CONTENT_SHORTCODES="Content Shortcodes"
 PLG_CONTENT_SHORTCODES_DESCRIPTION="Replace shortcodes like {sitename} with site configuration values"
 ```
 
-## 10. Mejores Prácticas
+## 10. Best Practices
 
-### 10.1 Seguridad
+### 10.1 Security
 
 ```php
-// SIEMPRE validar entrada
+// ALWAYS validate input
 use Joomla\CMS\Filter\InputFilter;
 
 $filter = InputFilter::getInstance();
 $safe_input = $filter->clean($_GET['data'], 'STRING');
 
-// SIEMPRE escapar salida
+// ALWAYS escape output
 use Joomla\CMS\HTML\HTMLHelper;
 
 echo HTMLHelper::_('common.escape', $user_content);
 
-// Verificar permisos
+// Check permissions
 $user = Factory::getUser();
 if (!$user->authorise('core.manage', 'com_example')) {
     return;
 }
 ```
 
-### 10.2 Rendimiento
+### 10.2 Performance
 
 ```php
-// Usar cache
+// Use cache
 $cache = Factory::getCache('_system');
 $key = 'plugin_example_data_' . $article_id;
 
@@ -700,13 +700,13 @@ if ($data = $cache->get($key)) {
     return $data;
 }
 
-// Procesamiento
+// Processing
 $data = $this->expensiveOperation();
 
-// Guardar en cache (3600 segundos = 1 hora)
+// Store in cache (3600 seconds = 1 hour)
 $cache->store($data, $key, '_system', 3600);
 
-// Ser selectivo con eventos - NO suscribirse a todos
+// Be selective with events - DO NOT subscribe to all of them
 public static function getSubscribedEvents(): array
 {
     return [
@@ -716,58 +716,58 @@ public static function getSubscribedEvents(): array
 }
 ```
 
-### 10.3 Namespace y PSR-4
+### 10.3 Namespace and PSR-4
 
-**CORRECTO:**
+**CORRECT:**
 - manifest.xml: `<namespace path="src">MyCompany\Plugin\Content\Shortcodes</namespace>`
 - services/provider.php: `namespace MyCompany\Plugin\Content\Shortcodes;`
 - src/Extension/Shortcodes.php: `namespace MyCompany\Plugin\Content\Shortcodes;`
 
-**INCORRECTO:**
-- No coincidir en los namespaces
-- No incluir `path="src"` en manifest
-- Usar paths incorrectos en archivos
+**INCORRECT:**
+- Mismatching namespaces
+- Not including `path="src"` in manifest
+- Using incorrect paths in files
 
-## 11. Troubleshooting Común
+## 11. Common Troubleshooting
 
-### 11.1 El plugin no aparece en la lista
+### 11.1 Plugin does not appear in the list
 
-**Soluciones:**
-1. Verificar que manifest.xml está en la raíz de la carpeta del plugin
-2. Revisar que el XML es válido (sin caracteres especiales)
-3. Limpiar cache: Panel Control > Sistema > Cache > Vaciar Cache
-4. Verificar permisos de carpeta (755)
+**Solutions:**
+1. Verify that manifest.xml is in the root of the plugin folder
+2. Check that the XML is valid (no special characters)
+3. Clear cache: Control Panel > System > Cache > Clear Cache
+4. Verify folder permissions (755)
 
-### 11.2 El evento no se dispara
+### 11.2 Event does not fire
 
-**Soluciones:**
-1. Verificar que `getSubscribedEvents()` declara correctamente el evento
-2. Asegurar que el plugin está habilitado
-3. Revisar que `$allowLegacyListeners = false`
-4. Verificar logs en `logs/joomla.log`
+**Solutions:**
+1. Verify that `getSubscribedEvents()` correctly declares the event
+2. Make sure the plugin is enabled
+3. Check that `$allowLegacyListeners = false`
+4. Check logs at `logs/joomla.log`
 
-### 11.3 Error de namespace
+### 11.3 Namespace error
 
-**Soluciones:**
-1. Coincidir EXACTAMENTE namespace en manifest, provider y Extension
-2. Usar punto y coma al final de `namespace`
-3. Verificar ruta en `<folder plugin="pluginname">services</folder>`
-4. Limpiar cache de autoload: `administrator/cache/autoload_psr4.php`
+**Solutions:**
+1. Match EXACTLY the namespace in manifest, provider, and Extension
+2. Use semicolon at the end of `namespace`
+3. Verify path in `<folder plugin="pluginname">services</folder>`
+4. Clear autoload cache: `administrator/cache/autoload_psr4.php`
 
-## 12. Verificación de Instalación
+## 12. Installation Verification
 
-Después de instalar un plugin, verifica:
+After installing a plugin, verify:
 
-1. Panel Control > Extensiones > Plugins
-2. Buscar el plugin por nombre
-3. Verificar que aparece en la lista
-4. Habilitarlo (estado verde)
-5. Consultar logs en `logs/joomla.log` para mensajes
-6. Probar funcionalidad según el tipo de plugin
+1. Control Panel > Extensions > Plugins
+2. Search for the plugin by name
+3. Verify it appears in the list
+4. Enable it (green status)
+5. Check logs at `logs/joomla.log` for messages
+6. Test functionality according to the plugin type
 
-## 13. Recursos Adicionales
+## 13. Additional Resources
 
-- [Documentación Oficial Joomla Manual](https://manual.joomla.org/)
+- [Official Joomla Manual Documentation](https://manual.joomla.org/)
 - [Joomla Event Classes Documentation](https://docs.joomla.org/)
 - [API Reference](https://api.joomla.org/)
-- [Comunidad Joomla - Forum](https://forum.joomla.org/)
+- [Joomla Community - Forum](https://forum.joomla.org/)

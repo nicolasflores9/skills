@@ -1,24 +1,24 @@
 <?php
 /**
- * EJEMPLO COMPLETO: Override - Módulo Login Avanzado
+ * COMPLETE EXAMPLE: Override - Advanced Login Module
  *
- * Ubicación en template: /templates/cassiopeia/html/mod_login/default.php
+ * Template location: /templates/cassiopeia/html/mod_login/default.php
  *
- * CAMBIOS REALIZADOS:
- * - Formulario moderno con validación HTML5
- * - Diseño responsive
- * - Recordar usuario (checkbox)
- * - Enlace de recuperación de contraseña
- * - Enlace de registro
- * - Mensajes de error personalizados
- * - Accesibilidad mejorada (labels, aria-*)
+ * CHANGES MADE:
+ * - Modern form with HTML5 validation
+ * - Responsive design
+ * - Remember user (checkbox)
+ * - Password recovery link
+ * - Registration link
+ * - Custom error messages
+ * - Improved accessibility (labels, aria-*)
  *
- * VARIABLES DISPONIBLES:
- * @var  object  $this->module        Objeto del módulo
- * @var  object  $this->params        Parámetros del módulo
+ * AVAILABLE VARIABLES:
+ * @var  object  $this->module        Module object
+ * @var  object  $this->params        Module parameters
  *
  * JOOMLA: 5.x, 6.x
- * FECHA: 2024-03-06
+ * DATE: 2024-03-06
  */
 
 defined('_JEXEC') or die;
@@ -27,28 +27,28 @@ $params = $this->params;
 $app = JFactory::getApplication();
 $user = JFactory::getUser();
 
-// Si ya está logueado, mostrar usuario logueado
+// If already logged in, show logged-in user view
 if ($user->id):
     ?>
     <div class="login-module logged-in">
         <div class="user-welcome">
             <p class="welcome-text">
-                Bienvenido, <strong><?php echo htmlspecialchars($user->name); ?></strong>
+                Welcome, <strong><?php echo htmlspecialchars($user->name); ?></strong>
             </p>
         </div>
 
-        <nav class="user-menu" aria-label="Usuario">
+        <nav class="user-menu" aria-label="User">
             <ul class="user-nav-list">
                 <li>
                     <a href="<?php echo JRoute::_('index.php?option=com_users&view=profile'); ?>"
                        class="user-profile-link">
-                        <i class="fas fa-user-circle"></i> Mi Perfil
+                        <i class="fas fa-user-circle"></i> My Profile
                     </a>
                 </li>
                 <li>
                     <a href="<?php echo JRoute::_('index.php?option=com_users&task=user.logout&' . JSession::getFormToken() . '=1'); ?>"
                        class="logout-link">
-                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        <i class="fas fa-sign-out-alt"></i> Log Out
                     </a>
                 </li>
             </ul>
@@ -57,17 +57,17 @@ if ($user->id):
 
 <?php else: ?>
 
-    <!-- USUARIO NO LOGUEADO - FORMULARIO DE LOGIN -->
+    <!-- USER NOT LOGGED IN - LOGIN FORM -->
     <div class="login-module">
 
-        <!-- TÍTULO DEL MÓDULO -->
+        <!-- MODULE TITLE -->
         <?php if ($params->get('show_module_title', 1)): ?>
             <h3 class="module-title">
                 <?php echo htmlspecialchars($this->module->title); ?>
             </h3>
         <?php endif; ?>
 
-        <!-- MENSAJES DE ERROR/ÉXITO -->
+        <!-- ERROR/SUCCESS MESSAGES -->
         <?php if ($app->getMessageQueue()): ?>
             <div class="login-messages">
                 <?php foreach ($app->getMessageQueue() as $message): ?>
@@ -78,29 +78,29 @@ if ($user->id):
             </div>
         <?php endif; ?>
 
-        <!-- FORMULARIO DE LOGIN -->
+        <!-- LOGIN FORM -->
         <form action="<?php echo JRoute::_('index.php'); ?>" method="post" class="login-form"
-              aria-label="Formulario de inicio de sesión">
+              aria-label="Login form">
 
-            <!-- CAMPO USUARIO -->
+            <!-- USERNAME FIELD -->
             <div class="form-group">
                 <label for="modlgn-username" class="form-label">
-                    <i class="fas fa-envelope"></i> Email o Usuario
+                    <i class="fas fa-envelope"></i> Email or Username
                 </label>
                 <input type="text"
                        id="modlgn-username"
                        name="username"
                        class="form-control"
-                       placeholder="tu@email.com"
+                       placeholder="you@email.com"
                        required
                        autocomplete="username"
                        aria-required="true">
             </div>
 
-            <!-- CAMPO CONTRASEÑA -->
+            <!-- PASSWORD FIELD -->
             <div class="form-group">
                 <label for="modlgn-password" class="form-label">
-                    <i class="fas fa-lock"></i> Contraseña
+                    <i class="fas fa-lock"></i> Password
                 </label>
                 <input type="password"
                        id="modlgn-password"
@@ -111,7 +111,7 @@ if ($user->id):
                        aria-required="true">
             </div>
 
-            <!-- RECORDAR USUARIO -->
+            <!-- REMEMBER USER -->
             <?php if ($params->get('show_remember', 1)): ?>
                 <div class="form-group form-check">
                     <input type="checkbox"
@@ -120,19 +120,19 @@ if ($user->id):
                            class="form-check-input"
                            value="yes">
                     <label for="modlgn-remember" class="form-check-label">
-                        Recordarme
+                        Remember me
                     </label>
                 </div>
             <?php endif; ?>
 
-            <!-- BOTÓN SUBMIT -->
+            <!-- SUBMIT BUTTON -->
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-block login-submit-btn">
-                    <i class="fas fa-sign-in-alt"></i> Entrar
+                    <i class="fas fa-sign-in-alt"></i> Log In
                 </button>
             </div>
 
-            <!-- CAMPOS OCULTOS REQUERIDOS -->
+            <!-- REQUIRED HIDDEN FIELDS -->
             <input type="hidden" name="option" value="com_users">
             <input type="hidden" name="task" value="user.login">
             <input type="hidden" name="return" value="<?php echo base64_encode(JUri::current()); ?>">
@@ -140,14 +140,14 @@ if ($user->id):
 
         </form>
 
-        <!-- ENLACES ADICIONALES -->
+        <!-- ADDITIONAL LINKS -->
         <div class="login-links">
             <ul class="links-list">
                 <?php if ($params->get('show_forgot_password', 1)): ?>
                     <li>
                         <a href="<?php echo JRoute::_('index.php?option=com_users&view=reset'); ?>"
                            class="forgot-password-link">
-                            Olvidé mi contraseña
+                            Forgot my password
                         </a>
                     </li>
                 <?php endif; ?>
@@ -156,7 +156,7 @@ if ($user->id):
                     <li>
                         <a href="<?php echo JRoute::_('index.php?option=com_users&view=registration'); ?>"
                            class="register-link">
-                            Crear nueva cuenta
+                            Create new account
                         </a>
                     </li>
                 <?php endif; ?>
@@ -165,7 +165,7 @@ if ($user->id):
                     <li>
                         <a href="<?php echo JRoute::_('index.php?option=com_users&view=remind'); ?>"
                            class="forgot-username-link">
-                            Olvidé mi usuario
+                            Forgot my username
                         </a>
                     </li>
                 <?php endif; ?>
@@ -178,33 +178,33 @@ if ($user->id):
 
 <?php
 /**
- * NOTAS DE IMPLEMENTACIÓN:
+ * IMPLEMENTATION NOTES:
  *
- * 1. USUARIO LOGUEADO: Mostrar diferente UI
- * 2. VALIDACIÓN: HTML5 requerida + servidor
- * 3. MENSAJES: Mostrar queue de la app
- * 4. TOKEN: Obligatorio para seguridad CSRF
- * 5. RUTAS: Usar JRoute::_() para compatibilidad
- * 6. ACCESIBILIDAD: labels, aria-required, aria-label
- * 7. SEGURIDAD: No guardar password en value
+ * 1. LOGGED-IN USER: Show different UI
+ * 2. VALIDATION: HTML5 required + server
+ * 3. MESSAGES: Show app message queue
+ * 4. TOKEN: Required for CSRF security
+ * 5. ROUTES: Use JRoute::_() for compatibility
+ * 6. ACCESSIBILITY: labels, aria-required, aria-label
+ * 7. SECURITY: Do not store password in value
  * 8. UX: Placeholder, autocomplete, required
- * 9. PARÁMETROS: Mostrar/ocultar según config
- * 10. ICONO: Usar fontawesome (asegurar cargado en template)
+ * 9. PARAMETERS: Show/hide based on config
+ * 10. ICONS: Use fontawesome (ensure loaded in template)
  *
- * PARÁMETROS DEL MÓDULO:
- * - show_module_title: mostrar título
- * - show_remember: mostrar checkbox recordarme
- * - show_forgot_password: mostrar enlace
- * - show_register: mostrar enlace registro
- * - show_forgot_username: mostrar enlace usuario
+ * MODULE PARAMETERS:
+ * - show_module_title: show title
+ * - show_remember: show remember me checkbox
+ * - show_forgot_password: show link
+ * - show_register: show registration link
+ * - show_forgot_username: show username link
  *
- * CSS ESPERADO:
- * - .login-module: contenedor principal
- * - .login-form: formulario
- * - .form-group: grupo de campo
+ * EXPECTED CSS:
+ * - .login-module: main container
+ * - .login-form: form
+ * - .form-group: field group
  * - .form-control: input
- * - .btn: botón
- * - .alert: mensajes
- * - .login-links: enlaces adicionales
+ * - .btn: button
+ * - .alert: messages
+ * - .login-links: additional links
  */
 ?>

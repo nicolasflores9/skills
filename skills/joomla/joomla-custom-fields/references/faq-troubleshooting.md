@@ -1,114 +1,114 @@
-# FAQ y Troubleshooting: Custom Fields en Joomla 5/6
+# FAQ and Troubleshooting: Custom Fields in Joomla 5/6
 
-## Preguntas Frecuentes
+## Frequently Asked Questions
 
-### P: ¿Cómo cargo campos personalizados en un componente que no es core?
+### Q: How do I load custom fields in a non-core component?
 
-R: Implementa un plugin de sistema que responda a `onContentPrepareForm` y llame a `FieldsHelper::getFields()`. El contexto debe ser único para tu componente (ejemplo: `com_micomponente.mielemento`).
+A: Implement a system plugin that responds to `onContentPrepareForm` and calls `FieldsHelper::getFields()`. The context must be unique to your component (example: `com_mycomponent.myelement`).
 
 ```php
-$context = 'com_micomponente.mielemento';
+$context = 'com_mycomponent.myelement';
 JLoader::register('FieldsHelper', JPATH_ADMINISTRATOR . '/components/com_fields/helpers/fields.php');
 $fields = FieldsHelper::getFields($context, $data, false);
 ```
 
-### P: ¿Puedo crear campos compartidos entre múltiples contextos?
+### Q: Can I create fields shared between multiple contexts?
 
-R: No directamente. Cada contexto tiene su propia definición de campos. Sin embargo, puedes crear un plugin que replique campos manualmente o usar el mismo nombre en múltiples contextos.
+A: Not directly. Each context has its own field definitions. However, you can create a plugin that replicates fields manually or use the same name across multiple contexts.
 
-### P: ¿Cómo accedo a valores crudos sin renderizar?
+### Q: How do I access raw values without rendering?
 
-R: Usa la propiedad `$field->rawvalue` en lugar de `$field->value`:
+A: Use the `$field->rawvalue` property instead of `$field->value`:
 
 ```php
-// HTML renderizado
+// Rendered HTML
 echo $field->value;
 
-// Valor sin procesar
+// Unprocessed value
 echo $field->rawvalue;
 ```
 
-### P: ¿Puedo validar campos personalizados server-side?
+### Q: Can I validate custom fields server-side?
 
-R: Sí, implementa `onContentValidateForm` en un plugin:
+A: Yes, implement `onContentValidateForm` in a plugin:
 
 ```php
 public function onContentValidateForm($form, $data) {
-    // Valida campos personalizados
+    // Validate custom fields
     if (empty($data->mi_campo)) {
-        $form->setError('El campo es requerido');
+        $form->setError('The field is required');
         return false;
     }
     return true;
 }
 ```
 
-### P: ¿Cómo almaceno múltiples valores en un campo?
+### Q: How do I store multiple values in a field?
 
-R: Los campos como Checkboxes y List (múltiple) almacenan valores como JSON:
+A: Fields like Checkboxes and List (multiple) store values as JSON:
 
 ```php
-// Campo con múltiples valores
-$value = ['opcion1', 'opcion2', 'opcion3'];
+// Field with multiple values
+$value = ['option1', 'option2', 'option3'];
 $db->setQuery(
     "INSERT INTO #__fields_values (field_id, item_id, value)
      VALUES ($fieldId, $itemId, " . $db->quote(json_encode($value)) . ")"
 );
 ```
 
-### P: ¿Cuál es la diferencia entre "Automatic Display" y renderizar manualmente?
+### Q: What is the difference between "Automatic Display" and manual rendering?
 
-R: **Automatic Display:** Joomla renderiza automáticamente el campo en el frontend (si está configurado). **Manual:** Tú controlas cuándo y cómo se muestra usando `FieldsHelper::render()` o tu propio HTML.
+A: **Automatic Display:** Joomla automatically renders the field on the frontend (if configured). **Manual:** You control when and how it is displayed using `FieldsHelper::render()` or your own HTML.
 
-### P: ¿Puedo limitar un campo a usuarios específicos?
+### Q: Can I limit a field to specific users?
 
-R: Usa el parámetro **Access** en la configuración del campo. Selecciona el nivel de acceso (Public, Registered, Special, o nivel personalizado).
+A: Use the **Access** parameter in the field configuration. Select the access level (Public, Registered, Special, or a custom level).
 
-### P: ¿Cómo migro campos de una Joomla a otra?
+### Q: How do I migrate fields from one Joomla instance to another?
 
-R: Exporta las tablas #__fields y #__fields_groups:
+A: Export the #__fields and #__fields_groups tables:
 
 ```sql
--- Exporta
-mysqldump db_origen #__fields #__fields_groups #__fields_values > campos.sql
+-- Export
+mysqldump db_source #__fields #__fields_groups #__fields_values > fields.sql
 
--- Importa
-mysql db_destino < campos.sql
+-- Import
+mysql db_destination < fields.sql
 
--- Verifica que los contextos sean válidos en el destino
+-- Verify that contexts are valid in the destination
 ```
 
-### P: ¿Puedo crear un campo con opciones dinámicas desde base de datos?
+### Q: Can I create a field with dynamic options from the database?
 
-R: Usa un campo de tipo **SQL** y proporciona una consulta que devuelva los valores:
+A: Use a **SQL** field type and provide a query that returns the values:
 
 ```sql
 SELECT id, name FROM #__categories WHERE state = 1
 ```
 
-O crea un tipo de campo personalizado (más avanzado).
+Or create a custom field type (more advanced).
 
-### P: ¿Cómo elimino un campo sin perder datos?
+### Q: How do I delete a field without losing data?
 
-R: Simplemente desactiva el campo (state = 0) en lugar de eliminarlo. Los datos se conservan en #__fields_values. Puedes reactivarlo después.
+A: Simply deactivate the field (state = 0) instead of deleting it. The data is preserved in #__fields_values. You can reactivate it later.
 
 ```sql
 UPDATE #__fields SET state = 0 WHERE id = X;
 ```
 
-Para eliminar definitivamente:
+To permanently delete:
 
 ```sql
-DELETE FROM #__fields WHERE id = X;  -- Los valores se eliminan automáticamente (ON DELETE CASCADE)
+DELETE FROM #__fields WHERE id = X;  -- Values are automatically deleted (ON DELETE CASCADE)
 ```
 
-### P: ¿Puedo reordenar campos en el formulario?
+### Q: Can I reorder fields in the form?
 
-R: Usa Field Groups. Los campos se muestran en orden dentro de cada grupo. Sin grupo asignado, se muestran en la pestaña "Fields" en orden de creación.
+A: Use Field Groups. Fields are displayed in order within each group. Without an assigned group, they appear in the "Fields" tab in creation order.
 
-### P: ¿Cómo cacheo resultados de campos para mejorar performance?
+### Q: How do I cache field results to improve performance?
 
-R: Usa JCache:
+A: Use JCache:
 
 ```php
 $cache = Factory::getContainer()->get('cache');
@@ -117,52 +117,52 @@ $fields = $cache->get($key);
 
 if (!$fields) {
     $fields = FieldsHelper::getFields('com_content.article', $article, true);
-    $cache->store($fields, $key, 3600);  // 1 hora
+    $cache->store($fields, $key, 3600);  // 1 hour
 }
 ```
 
-### P: ¿Cuál es el máximo número de campos por elemento?
+### Q: What is the maximum number of fields per element?
 
-R: Técnicamente no hay límite duro, pero la UI se vuelve lenta con >100 campos. Usa Field Groups para organizar mejor.
+A: Technically there is no hard limit, but the UI becomes slow with >100 fields. Use Field Groups for better organization.
 
 ---
 
 ## Troubleshooting
 
-### Problema: Los campos no aparecen en el formulario
+### Problem: Fields do not appear in the form
 
-**Causas posibles:**
+**Possible causes:**
 
-1. **Campo no publicado:** Verifica que `state = 1` en #__fields
-2. **Categoría limitada:** Si el campo está limitado a categorías, verifica que corresponda
-3. **Nivel de acceso:** El usuario no tiene permiso para ver el campo (comprueba `access`)
-4. **Contexto incorrecto:** El contexto del formulario no coincide con el contexto del campo
+1. **Field not published:** Verify that `state = 1` in #__fields
+2. **Category limited:** If the field is limited to categories, verify it matches
+3. **Access level:** The user does not have permission to see the field (check `access`)
+4. **Incorrect context:** The form context does not match the field context
 
-**Solución:**
+**Solution:**
 
 ```sql
 SELECT * FROM #__fields
 WHERE context = 'com_content.article'
   AND state = 1
-  AND access <= [nivel_usuario];
+  AND access <= [user_level];
 ```
 
-### Problema: Los valores de campos no se guardan
+### Problem: Field values are not saving
 
-**Causas posibles:**
+**Possible causes:**
 
-1. **onContentPrepareData no inyecta valores:** El plugin no está preparando los datos correctamente
-2. **Campos_values no se actualiza:** El usuario no tiene permiso para editar campos
-3. **Valor con formato incorrecto:** El valor no es string o JSON válido
+1. **onContentPrepareData not injecting values:** The plugin is not preparing data correctly
+2. **fields_values not updating:** The user does not have permission to edit fields
+3. **Incorrect value format:** The value is not a valid string or JSON
 
-**Solución:**
+**Solution:**
 
-En el plugin, asegúrate de que `onContentPrepareData` inyecte los valores:
+In the plugin, make sure `onContentPrepareData` injects the values:
 
 ```php
 public function onContentPrepareData($context, $data) {
     if (strpos($context, 'com_content.article') === 0) {
-        // Asegúrate de que los campos estén disponibles
+        // Ensure fields are available
         if (!isset($data->jcfields)) {
             $data->jcfields = [];
         }
@@ -170,64 +170,64 @@ public function onContentPrepareData($context, $data) {
 }
 ```
 
-### Problema: El template override no funciona
+### Problem: Template override is not working
 
-**Verificaciones:**
+**Checks:**
 
-1. **Ubicación correcta:** `templates/[template]/html/layouts/com_content/fields/render.php`
-2. **Syntax válido:** Comprueba que el PHP sea válido (sin errores de parse)
-3. **Cache limpiado:** Limpia el caché de Joomla (Sistema → Caché)
-4. **Override creado correctamente:** Usa el gestor de templates para crear/editar
+1. **Correct location:** `templates/[template]/html/layouts/com_content/fields/render.php`
+2. **Valid syntax:** Check that the PHP is valid (no parse errors)
+3. **Cache cleared:** Clear the Joomla cache (System -> Cache)
+4. **Override created correctly:** Use the template manager to create/edit
 
 **Debug:**
 
 ```php
 <?php
-// Agrega esto en el override para verificar
-error_log('Override ejecutado para campo: ' . $displayData['field']->name);
+// Add this to the override to verify
+error_log('Override executed for field: ' . $displayData['field']->name);
 ?>
 ```
 
-Revisa `/logs/everything.php` para ver si el override se ejecuta.
+Check `/logs/everything.php` to see if the override is being executed.
 
-### Problema: Campo aparece pero sin valor
+### Problem: Field appears but without value
 
-**Causas:**
+**Causes:**
 
-1. **Valor es NULL o vacío:** Verifica #__fields_values
-2. **rawvalue vs value:** Estás usando `$field->value` en lugar de `$field->rawvalue`
-3. **Filtro aplicado incorrectamente:** El filtro elimina el contenido
+1. **Value is NULL or empty:** Verify #__fields_values
+2. **rawvalue vs value:** You are using `$field->value` instead of `$field->rawvalue`
+3. **Filter applied incorrectly:** The filter removes the content
 
-**Solución:**
+**Solution:**
 
 ```php
-// Verifica directamente en BD
+// Verify directly in the database
 SELECT * FROM #__fields_values
 WHERE field_id = X AND item_id = Y;
 
-// En código, usa rawvalue
-echo $field->rawvalue;  // Sin filtros
+// In code, use rawvalue
+echo $field->rawvalue;  // Without filters
 ```
 
-### Problema: Campos lentos en grandes tablas
+### Problem: Fields are slow on large tables
 
-**Causas:**
+**Causes:**
 
-- Muchos elementos con muchos campos
-- Consultas sin índices apropiados
-- Cargando todo en memoria
+- Many elements with many fields
+- Queries without appropriate indexes
+- Loading everything into memory
 
-**Soluciones:**
+**Solutions:**
 
-1. **Caché los resultados:**
+1. **Cache the results:**
    ```php
    $fields = Cache::get('article_fields_' . $id)
               ?: FieldsHelper::getFields(...);
    ```
 
-2. **Limita los campos cargados:**
+2. **Limit the loaded fields:**
    ```php
-   // En lugar de cargar todos, carga solo los necesarios
+   // Instead of loading all, load only the ones needed
    $query = $db->getQuery(true)
        ->select(['fv.*', 'f.name'])
        ->from('#__fields_values fv')
@@ -235,14 +235,14 @@ echo $field->rawvalue;  // Sin filtros
        ->where('f.name IN (' . $db->quote(['campo1', 'campo2']) . ')');
    ```
 
-3. **Usa paginación** si muestras muchos elementos.
+3. **Use pagination** if displaying many elements.
 
-### Problema: Campo repetible no funciona correctamente
+### Problem: Repeatable field does not work correctly
 
-**Verificación:**
+**Check:**
 
-- El JSON es válido: `json_decode($field->value)` funciona
-- Accedes correctamente al array:
+- The JSON is valid: `json_decode($field->value)` works
+- You access the array correctly:
   ```php
   $items = json_decode($field->value, true);
   foreach ($items as $item) {
@@ -250,33 +250,33 @@ echo $field->rawvalue;  // Sin filtros
   }
   ```
 
-### Problema: Permisos de acceso no funcionan
+### Problem: Access permissions are not working
 
-**Verificación:**
+**Check:**
 
 ```php
-// Comprueba niveles de acceso del usuario
+// Check the user's access levels
 $user = Factory::getUser();
 $userLevels = $user->getAuthorisedViewLevels();
 
-// Verifica si field->access está en esos niveles
+// Verify if field->access is in those levels
 if (in_array($field->access, $userLevels)) {
-    // Usuario puede ver el campo
+    // User can see the field
 }
 ```
 
-### Problema: Campo de media no muestra imagen
+### Problem: Media field does not show image
 
-**Causas:**
+**Causes:**
 
-1. **Ruta incorrecta:** El valor contiene ruta relativa pero necesita absoluta
-2. **Archivo eliminado:** La imagen fue borrada pero el campo sigue referenciándola
-3. **Permisos:** Usuario no tiene permiso para ver el directorio
+1. **Incorrect path:** The value contains a relative path but needs an absolute one
+2. **File deleted:** The image was removed but the field still references it
+3. **Permissions:** User does not have permission to view the directory
 
-**Solución:**
+**Solution:**
 
 ```php
-// Construye ruta completa si es necesario
+// Build full path if needed
 $imagePath = $field->value;
 if (strpos($imagePath, 'http') === false) {
     $imagePath = JURI::base() . $imagePath;
@@ -285,35 +285,35 @@ if (strpos($imagePath, 'http') === false) {
 echo '<img src="' . htmlspecialchars($imagePath) . '" />';
 ```
 
-### Problema: Validación personalizada no se ejecuta
+### Problem: Custom validation is not executing
 
-**Verificaciones:**
+**Checks:**
 
-1. **Archivo de validación existe:** `/components/com_mycomponent/models/rules/miregla.php`
-2. **Nombre correcto:** Debe ser `JFormRuleMiregla`
-3. **En el campo:** `validate="miregla"`
+1. **Validation file exists:** `/components/com_mycomponent/models/rules/myrule.php`
+2. **Correct name:** Must be `JFormRuleMyrule`
+3. **In the field:** `validate="myrule"`
 
 ```php
-// Estructura correcta
-class JFormRuleMiregla extends JFormRule {
+// Correct structure
+class JFormRuleMyrule extends JFormRule {
     public function test(SimpleXMLElement $element, $value, $group = null, Registry $input = null, $form = null) {
-        // Retorna true si válido, false si inválido
+        // Return true if valid, false if invalid
         return preg_match('/^[A-Z0-9]+$/', $value) === 1;
     }
 }
 ```
 
-### Problema: "Field not found" en REST API
+### Problem: "Field not found" in REST API
 
-**Verificación:**
+**Check:**
 
-- El campo está publicado
-- El contexto es correcto
-- El usuario tiene acceso al contexto
+- The field is published
+- The context is correct
+- The user has access to the context
 
-**Solución:**
+**Solution:**
 
-Expón campos manualmente en respuesta JSON:
+Expose fields manually in the JSON response:
 
 ```php
 $fields = FieldsHelper::getFields('com_content.article', $article, false);
@@ -324,33 +324,33 @@ foreach ($fields as $field) {
 }
 ```
 
-### Problema: Upgrade de Joomla rompe campos
+### Problem: Joomla upgrade breaks fields
 
-**Prevención:**
+**Prevention:**
 
-1. Haz backup antes de actualizar
-2. Verifica que los contextos aún sean válidos post-upgrade
-3. Limpia caché después de actualizar
+1. Back up before updating
+2. Verify that contexts are still valid post-upgrade
+3. Clear cache after updating
 
-**Recuperación:**
+**Recovery:**
 
 ```sql
--- Verifica integridad
+-- Verify integrity
 SELECT f.*, COUNT(fv.id) as values_count
 FROM #__fields f
 LEFT JOIN #__fields_values fv ON f.id = fv.field_id
 GROUP BY f.id;
 
--- Elimina valores orfanados (field_id sin coincidencia en #__fields)
+-- Remove orphaned values (field_id with no match in #__fields)
 DELETE FROM #__fields_values
 WHERE field_id NOT IN (SELECT id FROM #__fields);
 ```
 
 ---
 
-## Herramientas de Debug
+## Debug Tools
 
-### 1. Inspeccionar Campos Cargados
+### 1. Inspect Loaded Fields
 
 ```php
 <?php
@@ -361,42 +361,42 @@ echo '</pre>';
 ?>
 ```
 
-### 2. Verificar BD Directamente
+### 2. Verify Database Directly
 
 ```sql
--- Todos los campos disponibles
+-- All available fields
 SELECT * FROM #__fields ORDER BY context, label;
 
--- Valores de un elemento
+-- Values for an element
 SELECT f.name, f.label, fv.value
 FROM #__fields_values fv
 JOIN #__fields f ON fv.field_id = f.id
 WHERE fv.item_id = [ID];
 ```
 
-### 3. Logs de Sistema
+### 3. System Logs
 
-Verifica `/administrator/logs/everything.php` para errores de carga de campos.
+Check `/administrator/logs/everything.php` for field loading errors.
 
-### 4. Herramientas de Terceros
+### 4. Third-Party Tools
 
-- **System Information:** Menú Sistema → Información del Sistema → Debug
-- **Joomla Debug Bar:** Extensión que muestra queries y variables
-- **Database Debugger:** Ver queries SQL ejecutadas
+- **System Information:** System menu -> System Information -> Debug
+- **Joomla Debug Bar:** Extension that shows queries and variables
+- **Database Debugger:** View executed SQL queries
 
 ---
 
-## Checklist de Deployment
+## Deployment Checklist
 
-Antes de ir a producción con campos personalizados:
+Before going to production with custom fields:
 
-- [ ] Campos están publicados (state = 1)
-- [ ] Permisos de acceso configurados correctamente
-- [ ] Valores por defecto definidos
-- [ ] Validación server-side implementada
-- [ ] Template override probado en navegador
-- [ ] Performance probado con datos reales
-- [ ] Backup de BD realizado
-- [ ] Tests en navegadores diferentes
-- [ ] Documentación actualizada
-- [ ] Plan de rollback en caso de error
+- [ ] Fields are published (state = 1)
+- [ ] Access permissions configured correctly
+- [ ] Default values defined
+- [ ] Server-side validation implemented
+- [ ] Template override tested in browser
+- [ ] Performance tested with real data
+- [ ] Database backup performed
+- [ ] Tests in different browsers
+- [ ] Documentation updated
+- [ ] Rollback plan in case of error

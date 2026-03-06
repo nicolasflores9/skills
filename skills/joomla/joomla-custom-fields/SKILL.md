@@ -1,61 +1,61 @@
 ---
 name: joomla-custom-fields
-description: Domina los campos personalizados en Joomla 5/6. Aprende a crear, gestionar y renderizar Custom Fields. Utiliza FieldsHelper para acceso programático, consulta #__fields y #__fields_values, implementa overrides de templates, integra en módulos y componentes. Triggers internos&#58; campo personalizado joomla, custom field, FieldsHelper, #__fields, campos artículos joomla, field group joomla.
+description: Master custom fields in Joomla 5/6. Learn to create, manage, and render Custom Fields. Use FieldsHelper for programmatic access, query #__fields and #__fields_values, implement template overrides, integrate into modules and components. Internal triggers: joomla custom field, custom field, FieldsHelper, #__fields, joomla article fields, field group joomla.
 ---
 
-# Custom Fields en Joomla 5/6
+# Custom Fields in Joomla 5/6
 
-Domina los campos personalizados en Joomla. Los Custom Fields permiten agregar atributos adicionales a artículos, usuarios, contactos y categorías sin necesidad de extender el core. Ofrecen 16 tipos diferentes con control de acceso y validación nativa.
+Master custom fields in Joomla. Custom Fields allow you to add additional attributes to articles, users, contacts, and categories without extending the core. They offer 16 different types with native access control and validation.
 
-## Inicio Rápido
+## Quick Start
 
-Carga campos personalizados en tu código:
+Load custom fields in your code:
 
 ```php
-// Registra y carga el helper
+// Register and load the helper
 JLoader::register('FieldsHelper', JPATH_ADMINISTRATOR . '/components/com_fields/helpers/fields.php');
 
-// Obtén campos de un artículo
+// Get fields from an article
 $fields = FieldsHelper::getFields('com_content.article', $article, true);
 
-// Renderiza cada campo
+// Render each field
 foreach ($fields as $field) {
     echo $field->label . ': ' . $field->value;
 }
 ```
 
-## Los 16 Tipos de Campos
+## The 16 Field Types
 
-**Campos de Texto:** Text (una línea), Textarea (multilínea), Editor (WYSIWYG completo)
+**Text Fields:** Text (single line), Textarea (multiline), Editor (full WYSIWYG)
 
-**Campos de Selección:** List (lista simple), Checkboxes (múltiples), Radio (opción única), User (selector usuarios), User Groups (selector grupos)
+**Selection Fields:** List (simple list), Checkboxes (multiple), Radio (single option), User (user selector), User Groups (group selector)
 
-**Campos Multimedia:** Media (selector de archivos), List of images (galería), Color (color picker)
+**Media Fields:** Media (file selector), List of images (gallery), Color (color picker)
 
-**Campos Especializados:** Calendar (fecha/hora), Integer (números enteros), URL (URLs validadas), SQL (consultas dinámicas), Repeatable (múltiples instancias)
+**Specialized Fields:** Calendar (date/time), Integer (whole numbers), URL (validated URLs), SQL (dynamic queries), Repeatable (multiple instances)
 
-Cada tipo ofrece parámetros específicos. Los parámetros comunes incluyen: Label (etiqueta), Required (obligatorio), Filter (NOHTML, RAW, SAFEHTML), Default value (valor por defecto), Access (nivel acceso).
+Each type offers specific parameters. Common parameters include: Label, Required, Filter (NOHTML, RAW, SAFEHTML), Default value, Access (access level).
 
-## API FieldsHelper
+## FieldsHelper API
 
-Accede programáticamente a campos usando FieldsHelper. Este helper centraliza toda la lógica de campos personalizados.
+Access fields programmatically using FieldsHelper. This helper centralizes all custom field logic.
 
-**FieldsHelper::getFields()** devuelve array de campos para un elemento:
+**FieldsHelper::getFields()** returns an array of fields for an element:
 
 ```php
-// Firma: getFields($context, $item, $asArray = true)
+// Signature: getFields($context, $item, $asArray = true)
 $fields = FieldsHelper::getFields('com_content.article', $article, true);
 
-// Contextos comunes
-// com_content.article - Artículos
-// com_content.categories - Categorías
-// com_users.user - Usuarios
-// com_contact.contact - Contactos
+// Common contexts
+// com_content.article - Articles
+// com_content.categories - Categories
+// com_users.user - Users
+// com_contact.contact - Contacts
 ```
 
-Propiedades del objeto campo: `$field->id`, `$field->name` (técnico), `$field->label`, `$field->type`, `$field->value` (renderizado HTML), `$field->rawvalue` (valor crudo).
+Field object properties: `$field->id`, `$field->name` (technical), `$field->label`, `$field->type`, `$field->value` (rendered HTML), `$field->rawvalue` (raw value).
 
-**FieldsHelper::render()** renderiza HTML de un campo:
+**FieldsHelper::render()** renders a field's HTML:
 
 ```php
 foreach ($this->item->jcfields as $field) {
@@ -63,42 +63,42 @@ foreach ($this->item->jcfields as $field) {
 }
 ```
 
-## Crear Campos desde Admin
+## Creating Fields from Admin
 
-Navega a Contenido → Campos (o Usuarios → Campos, Contactos → Campos).
+Navigate to Content -> Fields (or Users -> Fields, Contacts -> Fields).
 
-1. Haz clic en "Nuevo"
-2. Completa: Title (nombre visible), Name (técnico), Type (selecciona tipo)
-3. En Field Group asigna a un grupo si deseas (organiza en pestañas)
-4. En Category limita a categorías específicas (opcional)
-5. Define parámetros específicos del tipo (máx. caracteres, opciones, etc.)
-6. Configura validación: Filter y reglas personalizadas
-7. Establece Access para control de permisos
-8. Publica el campo (state = Published)
+1. Click "New"
+2. Fill in: Title (visible name), Name (technical), Type (select type)
+3. In Field Group, assign to a group if desired (organizes into tabs)
+4. In Category, limit to specific categories (optional)
+5. Define type-specific parameters (max characters, options, etc.)
+6. Configure validation: Filter and custom rules
+7. Set Access for permission control
+8. Publish the field (state = Published)
 
-Los Field Groups se crean en Contenido → Field Groups. Agrupan campos en pestañas para mejorar UX. Sin grupo asignado, los campos aparecen en pestaña "Fields".
+Field Groups are created in Content -> Field Groups. They group fields into tabs to improve UX. Without an assigned group, fields appear in the "Fields" tab.
 
-## Bases de Datos
+## Databases
 
-Estructura de tablas principales:
+Main table structure:
 
-**#__fields** almacena definiciones:
-- `id` - Identificador único
-- `context` - Contexto (com_content.article, etc.)
-- `name` - Nombre técnico (snake_case)
-- `label` - Etiqueta visible
-- `type` - Tipo de campo
-- `params` - Configuración JSON
-- `access` - Nivel de acceso
-- `state` - 1=publicado
+**#__fields** stores definitions:
+- `id` - Unique identifier
+- `context` - Context (com_content.article, etc.)
+- `name` - Technical name (snake_case)
+- `label` - Visible label
+- `type` - Field type
+- `params` - JSON configuration
+- `access` - Access level
+- `state` - 1=published
 
-**#__fields_values** almacena valores:
-- `id` - Identificador único
-- `field_id` - Referencia a #__fields
-- `item_id` - ID del elemento (artículo, usuario, etc.)
-- `value` - Valor almacenado (JSON para múltiples)
+**#__fields_values** stores values:
+- `id` - Unique identifier
+- `field_id` - Reference to #__fields
+- `item_id` - Element ID (article, user, etc.)
+- `value` - Stored value (JSON for multiple values)
 
-Consulta típica con JDatabase:
+Typical query with JDatabase:
 
 ```php
 $db = Factory::getContainer()->get(DatabaseInterface::class);
@@ -112,11 +112,11 @@ $db->setQuery($query);
 $results = $db->loadObjectList();
 ```
 
-## Renderizado en Templates
+## Rendering in Templates
 
-Accede a campos renderizados mediante `$this->item->jcfields`. Este array contiene todos los campos ya cargados.
+Access rendered fields via `$this->item->jcfields`. This array contains all already-loaded fields.
 
-**Método 1: Renderizado básico con FieldsHelper**
+**Method 1: Basic rendering with FieldsHelper**
 
 ```php
 <?php foreach ($this->item->jcfields as $field) : ?>
@@ -129,31 +129,31 @@ Accede a campos renderizados mediante `$this->item->jcfields`. Este array contie
 <?php endforeach; ?>
 ```
 
-**Método 2: Acceso directo por nombre**
+**Method 2: Direct access by name**
 
 ```php
 <?php
-// Crea índice por nombre
+// Create index by name
 foreach($this->item->jcfields as $jcfield) {
     $this->item->jcFields[$jcfield->name] = $jcfield;
 }
 
-// Accede directamente
+// Access directly
 echo $this->item->jcFields['mi_campo']->value;
 ?>
 ```
 
-**Crea overrides** en: `templates/tutemplate/html/layouts/com_content/fields/render.php`
+**Create overrides** at: `templates/yourtemplate/html/layouts/com_content/fields/render.php`
 
-En el override personaliza el HTML generado. Cada campo renderizado pasa por este layout.
+In the override, customize the generated HTML. Each rendered field passes through this layout.
 
-## Uso en Módulos
+## Usage in Modules
 
-En el helper del módulo carga campos de artículos:
+In the module helper, load article fields:
 
 ```php
 <?php
-class ModTuModuloHelper {
+class ModYourModuleHelper {
     public static function getArticleWithFields($articleId) {
         $model = Factory::getApplication()->bootComponent('com_content')
             ->getMVCFactory()
@@ -169,7 +169,7 @@ class ModTuModuloHelper {
 ?>
 ```
 
-En la vista del módulo renderiza:
+In the module view, render:
 
 ```php
 <?php foreach ($this->article->jcfields as $field) : ?>
@@ -180,16 +180,16 @@ En la vista del módulo renderiza:
 <?php endforeach; ?>
 ```
 
-## Integración en Componentes Personalizados
+## Integration in Custom Components
 
-Implementa el evento `onContentPrepareForm` en un plugin para inyectar campos en tu componente:
+Implement the `onContentPrepareForm` event in a plugin to inject fields into your component:
 
 ```php
 <?php
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Factory;
 
-class PlgSystemTuComponente extends CMSPlugin {
+class PlgSystemYourComponent extends CMSPlugin {
     public function onContentPrepareForm($form, $data) {
         if (!($form instanceof Form)) {
             return true;
@@ -199,10 +199,10 @@ class PlgSystemTuComponente extends CMSPlugin {
                    Factory::getApplication()->input->getCmd('option') . '.' .
                    Factory::getApplication()->input->getCmd('view');
 
-        // Verifica contexto de tu componente
-        if (strpos($context, 'com_micomponente.mielemento') === 0) {
+        // Check your component's context
+        if (strpos($context, 'com_mycomponent.myelement') === 0) {
             JLoader::register('FieldsHelper', JPATH_ADMINISTRATOR . '/components/com_fields/helpers/fields.php');
-            FieldsHelper::getFields('com_micomponente.mielemento', $data, false);
+            FieldsHelper::getFields('com_mycomponent.myelement', $data, false);
         }
 
         return true;
@@ -211,50 +211,50 @@ class PlgSystemTuComponente extends CMSPlugin {
 ?>
 ```
 
-## Validación y Filtros
+## Validation and Filters
 
-Define validación en la configuración del campo usando el parámetro `validate`:
-
-```
-validate="required" - Campo obligatorio
-validate="integer" - Solo números enteros
-validate="integer:1,100" - Rango numérico
-validate="email" - Formato email
-validate="url" - URL válida
-validate="color" - Color válido
-```
-
-Aplicar filtros mediante Filter:
+Define validation in the field configuration using the `validate` parameter:
 
 ```
-NOHTML - Sin etiquetas HTML
-RAW - Valor sin procesar
-SAFEHTML - HTML seguro (filtra scripts)
-STRING - String simple
-WORD - Solo palabras
-ALNUM - Alfanumérico
+validate="required" - Required field
+validate="integer" - Integers only
+validate="integer:1,100" - Numeric range
+validate="email" - Email format
+validate="url" - Valid URL
+validate="color" - Valid color
 ```
 
-## Eventos del Sistema
+Apply filters using Filter:
 
-Joomla dispara eventos en el ciclo de vida de campos:
+```
+NOHTML - No HTML tags
+RAW - Unprocessed value
+SAFEHTML - Safe HTML (filters scripts)
+STRING - Simple string
+WORD - Words only
+ALNUM - Alphanumeric
+```
 
-**onContentPrepareForm** - Antes de mostrar formulario (inyecta campos)
+## System Events
 
-**onContentPrepareData** - Después de cargar datos (prepara para renderizar)
+Joomla fires events in the field lifecycle:
 
-**onContentValidateForm** - Validación server-side
+**onContentPrepareForm** - Before displaying the form (injects fields)
 
-**onContentAfterSave** - Después de guardar (procesa valores)
+**onContentPrepareData** - After loading data (prepares for rendering)
 
-Estos eventos permiten interceptar el flujo y aplicar lógica personalizada. Implementa en un plugin de sistema.
+**onContentValidateForm** - Server-side validation
 
-## Acceso Directo a Base de Datos
+**onContentAfterSave** - After saving (processes values)
 
-Para consultas avanzadas accede directamente a #__fields y #__fields_values:
+These events allow you to intercept the flow and apply custom logic. Implement them in a system plugin.
+
+## Direct Database Access
+
+For advanced queries, access #__fields and #__fields_values directly:
 
 ```php
-// Obtén todos los campos de un artículo
+// Get all fields from an article
 $db = Factory::getContainer()->get(DatabaseInterface::class);
 $query = $db->getQuery(true)
     ->select('*')
@@ -263,63 +263,63 @@ $query = $db->getQuery(true)
 $db->setQuery($query);
 $values = $db->loadObjectList('field_id');
 
-// Guarda un valor de campo
+// Save a field value
 $obj = new stdClass();
 $obj->field_id = 5;
 $obj->item_id = 123;
-$obj->value = 'Mi valor';
+$obj->value = 'My value';
 $db->insertObject('#__fields_values', $obj);
 ```
 
-## Contextos Soportados
+## Supported Contexts
 
-Los contextos válidos para getFields() son:
+Valid contexts for getFields() are:
 
 ```
-com_content.article - Artículos
-com_content.categories - Categorías de contenido
-com_users.user - Perfiles de usuario
-com_contact.contact - Contactos
+com_content.article - Articles
+com_content.categories - Content categories
+com_users.user - User profiles
+com_contact.contact - Contacts
 ```
 
-Cada contexto posee sus propias definiciones de campos. Verifica el contexto antes de cargar campos.
+Each context has its own field definitions. Verify the context before loading fields.
 
-## Campos en Editores Frontend
+## Fields in Frontend Editors
 
-En formularios frontend (registro usuario, envío artículo), el sistema carga automáticamente campos si:
+In frontend forms (user registration, article submission), the system automatically loads fields if:
 
-1. El campo está publicado (state = 1)
-2. La categoría coincide (si está limitada)
-3. El usuario tiene acceso (nivel de acceso)
+1. The field is published (state = 1)
+2. The category matches (if limited)
+3. The user has access (access level)
 
-Los campos aparecen automáticamente en el formulario. Para renderizar manualmente usa el mismo FieldsHelper.
+Fields appear automatically in the form. To render manually, use the same FieldsHelper.
 
-## Mejores Prácticas
+## Best Practices
 
-**Nomenclatura:** Usa snake_case para nombres técnicos (`mi_campo`, no `miCampo`)
+**Naming:** Use snake_case for technical names (`my_field`, not `myField`)
 
-**Organización:** Agrupa campos relacionados en Field Groups para mejorar UX en editor
+**Organization:** Group related fields into Field Groups to improve editor UX
 
-**Permisos:** Establece Access adecuadamente (Registered, Special, etc.)
+**Permissions:** Set Access appropriately (Registered, Special, etc.)
 
-**Validación:** Define siempre validación server-side en componente
+**Validation:** Always define server-side validation in the component
 
-**Performance:** Cachea resultados de getFields() si se llama múltiples veces
+**Performance:** Cache getFields() results if called multiple times
 
-**Documentación:** Documenta qué campos requiere tu componente
+**Documentation:** Document which fields your component requires
 
-**Testing:** Prueba en frontend y backend que campos se muestren correctamente
+**Testing:** Test in both frontend and backend that fields display correctly
 
 ## Troubleshooting
 
-**Campos no aparecen:** Verifica que estado = published, categoría coincida, nivel de acceso sea visible
+**Fields not appearing:** Verify that state = published, category matches, and access level is visible
 
-**Valores no se guardan:** Comprueba que onContentPrepareData esté inyectando valores en objeto
+**Values not saving:** Check that onContentPrepareData is injecting values into the object
 
-**Errores en renderizado:** Valida que jcfields contenga objetos correctos, no null
+**Rendering errors:** Validate that jcfields contains correct objects, not null
 
-**Performance lenta:** Reduce cantidad de campos cargados, implementa caché
+**Slow performance:** Reduce the number of loaded fields, implement caching
 
-**Permisos denegados:** Verifica access level del usuario vs field access
+**Permissions denied:** Verify user access level vs field access
 
-Ver referencias/ para ejemplos completos de módulos y componentes.
+See references/ for complete module and component examples.

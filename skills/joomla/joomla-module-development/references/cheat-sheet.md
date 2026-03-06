@@ -1,12 +1,12 @@
-# Cheat Sheet: Desarrollo de Módulos Joomla 5/6
+# Cheat Sheet: Joomla 5/6 Module Development
 
-## Estructura Rápida
+## Quick Structure
 
 ```bash
-# Crear estructura básica
+# Create basic structure
 mkdir -p mod_mimodulo/{src/{Dispatcher,Helper},services,tmpl,language/en-GB}
 
-# Crear archivos base
+# Create base files
 touch mod_mimodulo/{manifest.xml,mod_mimodulo.php}
 touch mod_mimodulo/src/Dispatcher/Dispatcher.php
 touch mod_mimodulo/src/Helper/MiHelper.php
@@ -15,9 +15,9 @@ touch mod_mimodulo/tmpl/{default.php,default.xml}
 touch mod_mimodulo/language/en-GB/{mod_mimodulo.ini,mod_mimodulo.sys.ini}
 ```
 
-## Templates PHP Rápidas
+## Quick PHP Templates
 
-### manifest.xml minimal
+### Minimal manifest.xml
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="module" client="site" method="upgrade">
@@ -38,7 +38,7 @@ touch mod_mimodulo/language/en-GB/{mod_mimodulo.ini,mod_mimodulo.sys.ini}
 </extension>
 ```
 
-### Dispatcher básico
+### Basic Dispatcher
 ```php
 <?php
 namespace Joomla\Module\Mimodulo\Dispatcher;
@@ -50,13 +50,13 @@ class Dispatcher extends AbstractModuleDispatcher
     protected function getLayoutData(): array
     {
         $data = parent::getLayoutData();
-        // Agregar datos aquí
+        // Add data here
         return $data;
     }
 }
 ```
 
-### Helper con BD
+### Helper with DB
 ```php
 <?php
 namespace Joomla\Module\Mimodulo\Helper;
@@ -109,36 +109,36 @@ class Provider implements ServiceProviderInterface
 }
 ```
 
-## Campos Comunes en manifest.xml
+## Common Fields in manifest.xml
 
 ```xml
 <!-- Text -->
-<field name="texto" type="text" label="Etiqueta" default="valor" />
+<field name="texto" type="text" label="Label" default="value" />
 
 <!-- Integer -->
-<field name="numero" type="integer" label="Número" min="1" max="100" />
+<field name="numero" type="integer" label="Number" min="1" max="100" />
 
 <!-- Textarea -->
-<field name="descripcion" type="textarea" label="Descripción" rows="5" />
+<field name="descripcion" type="textarea" label="Description" rows="5" />
 
 <!-- List/Dropdown -->
-<field name="opcion" type="list" label="Opción">
-    <option value="1">Opción 1</option>
-    <option value="2">Opción 2</option>
+<field name="opcion" type="list" label="Option">
+    <option value="1">Option 1</option>
+    <option value="2">Option 2</option>
 </field>
 
 <!-- Category -->
-<field name="categoria" type="category" label="Categoría"
+<field name="categoria" type="category" label="Category"
     extension="com_content" />
 
 <!-- Article -->
-<field name="articulo" type="article" label="Artículo" />
+<field name="articulo" type="article" label="Article" />
 
 <!-- User -->
-<field name="usuario" type="user" label="Usuario" />
+<field name="usuario" type="user" label="User" />
 
 <!-- Menu -->
-<field name="menu" type="menu" label="Menú" />
+<field name="menu" type="menu" label="Menu" />
 
 <!-- Module Layout -->
 <field name="layout" type="modulelayout" label="Layout" />
@@ -146,41 +146,41 @@ class Provider implements ServiceProviderInterface
 <!-- Cache -->
 <field name="cache" type="list" label="Cache" default="1">
     <option value="0">No</option>
-    <option value="1">Sí</option>
+    <option value="1">Yes</option>
 </field>
 ```
 
-## Obtener Datos en Template
+## Get Data in Template
 
 ```php
 <?php
-// Desde displayData
+// From displayData
 $params = $displayData['params'];
 $module = $displayData['module'];
 $items = $displayData['items'];
 
-// Acceder a parámetros
-$titulo = $params->get('title', 'Por defecto');
+// Access parameters
+$titulo = $params->get('title', 'Default');
 $count = (int) $params->get('count', 5);
 
-// Iterar items
+// Iterate items
 foreach ($items as $item) {
     echo $item->title;
 }
 ?>
 ```
 
-## Escapado Seguro en HTML
+## Safe HTML Escaping
 
 ```php
 <?php
-// Texto simple
+// Plain text
 <?php echo htmlspecialchars($variable, ENT_QUOTES, 'UTF-8'); ?>
 
-// Con HTMLHelper
+// With HTMLHelper
 <?php echo HTMLHelper::_('string.truncate', $item->title, 50); ?>
 
-// Atributos HTML
+// HTML attributes
 <img alt="<?php echo htmlspecialchars($alt); ?>" />
 
 // URLs
@@ -188,61 +188,61 @@ foreach ($items as $item) {
 ?>
 ```
 
-## Comandos Útiles
+## Useful Commands
 
 ```bash
-# Ver logs en Joomla
+# View Joomla logs
 tail -f /var/www/html/joomla/administrator/logs/joomla.log
 
-# Limpiar cache desde CLI
+# Clear cache from CLI
 php /path/to/joomla/cli/joomla.php cache:clean
 
-# Ver información del módulo
+# View module information
 grep -r "mod_mimodulo" /var/www/html/joomla/modules/
 
-# Empaquetar para distribución
+# Package for distribution
 cd modules && zip -r mod_mimodulo.zip mod_mimodulo/
 ```
 
-## Errores Comunes
+## Common Errors
 
-| Error | Causa | Solución |
+| Error | Cause | Solution |
 |-------|-------|----------|
-| Class not found | Namespace incorrecto | Verificar PSR-4 path en manifest |
-| No output | Dispatcher no prepara datos | Agregar getLayoutData() |
-| Parámetros vacíos | manifest.xml sin config | Agregar <config><fields> |
-| Template no encontrado | Ruta incorrecta | Verificar tmpl/ folder |
-| BD sin datos | Query incorrecto | Verificar quoteName() y sintaxis SQL |
+| Class not found | Incorrect namespace | Verify PSR-4 path in manifest |
+| No output | Dispatcher does not prepare data | Add getLayoutData() |
+| Empty parameters | manifest.xml without config | Add <config><fields> |
+| Template not found | Incorrect path | Verify tmpl/ folder |
+| DB with no data | Incorrect query | Verify quoteName() and SQL syntax |
 
-## Testing Rápido
+## Quick Testing
 
 ```php
 <?php
-// Probar en template temporalmente
+// Test in template temporarily
 echo '<pre>';
 var_dump($displayData);
 echo '</pre>';
 
-// Con Joomla Factory
+// With Joomla Factory
 use Joomla\CMS\Factory;
 $db = Factory::getDbo();
 var_dump($db->loadObjectList());
 ?>
 ```
 
-## Debugging en Joomla
+## Debugging in Joomla
 
 ```php
 <?php
-// Activar debug mode en configuration.php
+// Enable debug mode in configuration.php
 public $debug = true;
 public $debug_lang = true;
 
-// Log personalizado
+// Custom log
 use Joomla\CMS\Log\Log;
-Log::add('Mi mensaje', Log::INFO, 'com_content');
+Log::add('My message', Log::INFO, 'com_content');
 
-// Ver logs
+// View logs
 // /administrator/logs/joomla.log
 ?>
 ```

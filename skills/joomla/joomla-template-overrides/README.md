@@ -1,160 +1,160 @@
-# Joomla Template Overrides - Skill Completo
+# Joomla Template Overrides - Complete Skill
 
-Sistema exhaustivo para personalizar la salida de componentes, módulos y plugins en Joomla 5/6 sin modificar archivos core.
+An exhaustive system for customizing the output of components, modules, and plugins in Joomla 5/6 without modifying core files.
 
-## Contenido de la Skill
+## Skill Contents
 
-### Archivo Principal
-- **SKILL.md** (480 líneas) - Documentación completa con ejemplos integrados
+### Main File
+- **SKILL.md** (480 lines) - Complete documentation with integrated examples
 
-### Archivos de Referencia (exemplos/referencias)
+### Reference Files (examples/references)
 
 1. **01-com-content-article-completo.php**
-   - Override completo de artículo individual
-   - Estructura semántica mejorada
-   - Campos personalizados incluidos
-   - Breadcrumbs, metadatos, tags, navegación
+   - Complete single article override
+   - Improved semantic structure
+   - Custom fields included
+   - Breadcrumbs, metadata, tags, navigation
 
 2. **02-blog-item-personalizado.php**
-   - Override de artículo en blog de categoría
-   - Renderizado de cada artículo en listado
-   - Metadatos compactos, imagen responsiva
-   - Campos resumidos, tags limitados
+   - Category blog article override
+   - Rendering of each article in listing
+   - Compact metadata, responsive image
+   - Summarized fields, limited tags
 
 3. **03-mod-login-avanzado.php**
-   - Override de módulo de login
-   - Formulario moderno con validación
-   - Usuario logueado vs no logueado
-   - Accesibilidad mejorada, enlaces adicionales
+   - Login module override
+   - Modern form with validation
+   - Logged-in vs not logged-in user
+   - Improved accessibility, additional links
 
 4. **04-jlayout-custom-card.php**
-   - JLayout reutilizable personalizado
-   - Componente de tarjeta de artículo
-   - Uso múltiple en diferentes vistas
-   - Código comentado con ejemplos de uso
+   - Custom reusable JLayout
+   - Article card component
+   - Multiple usage across different views
+   - Commented code with usage examples
 
 5. **05-child-template-config.xml**
-   - Configuración completa de child template
-   - Estructura y herencia de parent
-   - Parámetros configurables
-   - Posiciones de módulos
+   - Complete child template configuration
+   - Structure and parent inheritance
+   - Configurable parameters
+   - Module positions
 
 6. **06-field-override-ejemplo.php**
-   - Override de campos personalizados
-   - Rendimiento por tipo de campo
-   - Layouts alternativos (minimal, card)
-   - CSS recomendado
+   - Custom fields override
+   - Rendering by field type
+   - Alternative layouts (minimal, card)
+   - Recommended CSS
 
-### Guía Rápida
+### Quick Guide
 - **GUIA-RAPIDA.md**
-  - Pasos básicos para crear overrides
-  - Rutas comunes (componentes, módulos, JLayout)
-  - Variables útiles
-  - Seguridad y escapado
+  - Basic steps to create overrides
+  - Common paths (components, modules, JLayout)
+  - Useful variables
+  - Security and escaping
   - Troubleshooting
   - Checklist
-  - Comandos útiles
+  - Useful commands
 
 ---
 
-## Temas Cubiertos
+## Topics Covered
 
-### Conceptos Fundamentales
-- Qué son los template overrides
-- Por qué usarlos
-- Cómo funciona el sistema
-- Jerarquía de carga
+### Fundamental Concepts
+- What are template overrides
+- Why use them
+- How the system works
+- Loading hierarchy
 
-### Overrides de Componentes (com_content)
-- Artículos individuales
-- Categoría modo blog (blog.php, blog_item.php)
-- Categoría modo lista
-- Otros componentes comunes
+### Component Overrides (com_content)
+- Single articles
+- Category blog mode (blog.php, blog_item.php)
+- Category list mode
+- Other common components
 
-### Overrides de Módulos
-- Estructura de módulos
-- Módulos comunes (login, menu, custom, etc.)
-- Crear override paso a paso
-- Layouts alternativos
+### Module Overrides
+- Module structure
+- Common modules (login, menu, custom, etc.)
+- Step-by-step override creation
+- Alternative layouts
 
-### Overrides de Plugins
-- Requisitos para overridear
-- Estructura plugin override
-- Ejemplo plg_content_pagenavigation
+### Plugin Overrides
+- Requirements for overriding
+- Plugin override structure
+- Example plg_content_pagenavigation
 
-### Layouts Alternativos
-- Diferencia vs template override
-- Crear para módulos
-- Crear para componentes
-- Seleccionar en backend
+### Alternative Layouts
+- Difference vs template override
+- Creating for modules
+- Creating for components
+- Selecting in backend
 
-### JLayout - Componentes Reutilizables
-- Concepto de JLayout
-- Override de layouts joomla/
-- Crear personalizado
+### JLayout - Reusable Components
+- JLayout concept
+- Override of joomla/ layouts
+- Creating custom layouts
 - JLayoutHelper::render()
 
 ### Child Templates
-- Concepto y ventajas
-- Crear child template
-- templateDetails.xml configuración
-- Herencia automática
+- Concept and advantages
+- Creating a child template
+- templateDetails.xml configuration
+- Automatic inheritance
 
 ### Field Overrides
 - Custom fields layout overrides
-- Diferentes rendimientos por tipo
-- Crear layout alternativo
-- Seleccionar en backend
+- Rendering by field type
+- Creating alternative layouts
+- Selecting in backend
 
-### Buenas Prácticas
-- Documentación en código
-- Control de versiones
-- Testing post-actualizaciones
-- Seguridad y escapado
-- Rendimiento
+### Best Practices
+- Code documentation
+- Version control
+- Post-update testing
+- Security and escaping
+- Performance
 
 ### Troubleshooting
-- Override no funciona
-- Permisos de archivo
-- Problemas de cacheo
+- Override not working
+- File permissions
+- Caching issues
 - Debugging
 
 ---
 
-## Cómo Usar Esta Skill
+## How to Use This Skill
 
-### Para Principiantes
-1. Leer SKILL.md - Conceptos Fundamentales
-2. Consultar GUIA-RAPIDA.md - Pasos básicos
-3. Examinar ejemplo 01 (com_content/article)
-4. Aplicar pasos en tu propio proyecto
+### For Beginners
+1. Read SKILL.md - Fundamental Concepts
+2. Consult GUIA-RAPIDA.md - Basic steps
+3. Examine example 01 (com_content/article)
+4. Apply steps to your own project
 
-### Para Intermedios
-1. Revisar ejemplos específicos (blog_item, mod_login)
-2. Crear overrides siguiendo estructura
-3. Usar ejemplos como template
-4. Adaptar a tus necesidades
+### For Intermediate Users
+1. Review specific examples (blog_item, mod_login)
+2. Create overrides following the structure
+3. Use examples as templates
+4. Adapt to your needs
 
-### Para Avanzados
-1. Estudiar JLayout (ejemplo 04)
-2. Crear child template (ejemplo 05)
-3. Implementar field overrides (ejemplo 06)
-4. Combinar técnicas avanzadas
+### For Advanced Users
+1. Study JLayout (example 04)
+2. Create child template (example 05)
+3. Implement field overrides (example 06)
+4. Combine advanced techniques
 
-### Para Referencia Rápida
-- Usar GUIA-RAPIDA.md
-- Copiar estructura de ejemplos
-- Buscar rutas de archivos
-- Consultar variables útiles
+### For Quick Reference
+- Use GUIA-RAPIDA.md
+- Copy structure from examples
+- Look up file paths
+- Consult useful variables
 
 ---
 
-## Estructura de Archivos
+## File Structure
 
 ```
 joomla-template-overrides/
-├── SKILL.md                              (archivo principal - 480 líneas)
-├── README.md                             (este archivo)
+├── SKILL.md                              (main file - 480 lines)
+├── README.md                             (this file)
 └── referencias/
     ├── 01-com-content-article-completo.php
     ├── 02-blog-item-personalizado.php
@@ -167,20 +167,20 @@ joomla-template-overrides/
 
 ---
 
-## Versiones Soportadas
+## Supported Versions
 
-- **Joomla 6.x** ✓
-- **Joomla 5.x** ✓
-- **Joomla 4.x** ✓ (compatible)
+- **Joomla 6.x**
+- **Joomla 5.x**
+- **Joomla 4.x** (compatible)
 
 ---
 
-## Triggers para Activar la Skill
+## Triggers to Activate the Skill
 
-Preguntas que activan esta skill automáticamente:
+Questions that automatically activate this skill:
 
 - "override template joomla"
-- "sobreescribir vista joomla"
+- "override joomla view"
 - "blog_item.php"
 - "com_content override"
 - "JLayout"
@@ -188,93 +188,93 @@ Preguntas que activan esta skill automáticamente:
 - "html override joomla"
 - "template overrides"
 - "child template joomla"
-- "personalizar artículo joomla"
-- "modificar módulo joomla"
-- "campo personalizado joomla"
+- "customize joomla article"
+- "modify joomla module"
+- "joomla custom field"
 - "field override"
 - "template manager"
-- "layout alternativo"
+- "alternative layout"
 
 ---
 
-## Características Principales
+## Main Features
 
-### Ejemplos Completos
-- 6 ejemplos totalmente funcionales
-- Comentarios extensos
-- Casos de uso reales
-- Código listo para copiar
+### Complete Examples
+- 6 fully functional examples
+- Extensive comments
+- Real use cases
+- Ready-to-copy code
 
-### Documentación Clara
-- Explicaciones en español
-- Estructura lógica
-- Visuaización ASCII de directorios
-- Tablas comparativas
+### Clear Documentation
+- English explanations
+- Logical structure
+- ASCII directory visualization
+- Comparative tables
 
-### Guía Rápida
-- Pasos paso a paso
-- Rutas de archivos comunes
-- Variables útiles
-- Comandos útiles
+### Quick Guide
+- Step-by-step instructions
+- Common file paths
+- Useful variables
+- Useful commands
 
-### Buenas Prácticas
-- Seguridad y escapado
-- Control de versiones
+### Best Practices
+- Security and escaping
+- Version control
 - Testing
-- Rendimiento
+- Performance
 
 ### Troubleshooting
-- Errores comunes
-- Soluciones rápidas
+- Common errors
+- Quick solutions
 - Debugging tips
-- Permisos de archivo
+- File permissions
 
 ---
 
-## Puntos Clave
+## Key Points
 
-### La Ruta Override Más Importante
+### The Most Important Override Path
 ```
 ORIGINAL: /components/com_content/views/article/tmpl/default.php
 OVERRIDE: /templates/[template]/html/com_content/article/default.php
 ```
 
-### Validar Siempre
+### Always Validate
 ```php
 if (!empty($variable)) {
-    // usar variable
+    // use variable
 }
 ```
 
-### Escapar Siempre
+### Always Escape
 ```php
 <?php echo htmlspecialchars($variable, ENT_QUOTES, 'UTF-8'); ?>
 ```
 
-### Documentar Siempre
+### Always Document
 ```php
 <?php
 /**
- * Override: Descripción
- * CAMBIOS: lista de cambios
- * JOOMLA: versión
+ * Override: Description
+ * CHANGES: list of changes
+ * JOOMLA: version
  */
 ```
 
 ---
 
-## Casos de Uso Comunes
+## Common Use Cases
 
-1. **Personalizar artículos** → Usar ejemplo 01
-2. **Modificar listado blog** → Usar ejemplo 02
-3. **Cambiar formulario login** → Usar ejemplo 03
-4. **Crear componente reutilizable** → Usar ejemplo 04
-5. **Crear tema personalizado** → Usar ejemplo 05
-6. **Mostrar campos custom** → Usar ejemplo 06
+1. **Customize articles** → Use example 01
+2. **Modify blog listing** → Use example 02
+3. **Change login form** → Use example 03
+4. **Create reusable component** → Use example 04
+5. **Create custom theme** → Use example 05
+6. **Display custom fields** → Use example 06
 
 ---
 
-## Recursos Externos
+## External Resources
 
 - [Joomla Documentation](https://docs.joomla.org/Understanding_Output_Overrides)
 - [Joomla Developer](https://developer.joomla.org)
@@ -282,57 +282,57 @@ if (!empty($variable)) {
 
 ---
 
-## Información Técnica
+## Technical Information
 
-- **Lenguaje**: PHP 8.0+
+- **Language**: PHP 8.0+
 - **Framework**: Joomla Framework 5/6
-- **Enfoque**: Imperatico, con código práctico
-- **Líneas SKILL.md**: ~480
-- **Ejemplos**: 6 archivos
-- **Idioma**: Español
+- **Approach**: Imperative, with practical code
+- **SKILL.md Lines**: ~480
+- **Examples**: 6 files
+- **Language**: English
 
 ---
 
-## Autor
+## Author
 
-Documentación compilada de:
+Documentation compiled from:
 - Joomla Official Documentation
 - Joomla Community Magazine
-- Best practices de la comunidad
-- Experiencia práctica
+- Community best practices
+- Practical experience
 
 ---
 
-## Última Actualización
+## Last Updated
 
-Marzo 2024 - Joomla 5.x, 6.x compatible
-
----
-
-## Licencia
-
-Documentación libre para uso educativo y comercial.
-Código de ejemplo: Creative Commons.
+March 2024 - Joomla 5.x, 6.x compatible
 
 ---
 
-## Preguntas Frecuentes
+## License
 
-**P: ¿Se pierden los overrides al actualizar Joomla?**
-R: No. Los overrides están en `/templates/` que no se actualizan. Pueden necesitar revisión si los archivos core cambiaron.
-
-**P: ¿Puedo tener múltiples overrides?**
-R: Sí. Un override por archivo. Puedes también crear layouts alternativos.
-
-**P: ¿Es seguro usar overrides?**
-R: Completamente. Es la forma recomendada de personalizar Joomla.
-
-**P: ¿Qué es mejor: override o layout alternativo?**
-R: Depende. Override reemplaza, layout alternativo es seleccionable. Usa según necesites.
-
-**P: ¿Cómo debuggear overrides?**
-R: Activar debug en configuration.php, revisar `/logs/error.log`, usar `var_dump()`.
+Free documentation for educational and commercial use.
+Example code: Creative Commons.
 
 ---
 
-**¡Comienza ahora! Lee SKILL.md o consulta GUIA-RAPIDA.md para pasos rápidos.**
+## Frequently Asked Questions
+
+**Q: Are overrides lost when updating Joomla?**
+A: No. Overrides are in `/templates/` which are not updated. They may need review if core files changed.
+
+**Q: Can I have multiple overrides?**
+A: Yes. One override per file. You can also create alternative layouts.
+
+**Q: Is it safe to use overrides?**
+A: Completely. It is the recommended way to customize Joomla.
+
+**Q: What is better: override or alternative layout?**
+A: It depends. Override replaces, alternative layout is selectable. Use according to your needs.
+
+**Q: How to debug overrides?**
+A: Enable debug in configuration.php, check `/logs/error.log`, use `var_dump()`.
+
+---
+
+**Get started now! Read SKILL.md or consult GUIA-RAPIDA.md for quick steps.**

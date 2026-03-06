@@ -1,18 +1,18 @@
 <?php
 /**
- * EJEMPLO COMPLETO: Field Override - Campos Personalizados
+ * COMPLETE EXAMPLE: Field Override - Custom Fields
  *
- * Ubicación en template: /templates/cassiopeia/html/layouts/com_fields/field/render.php
+ * Template location: /templates/cassiopeia/html/layouts/com_fields/field/render.php
  *
- * Este archivo controla CÓMO SE MUESTRAN los campos personalizados (custom fields)
- * en el frontend. Joomla itera sobre jcfields y renderiza cada uno con este layout.
+ * This file controls HOW CUSTOM FIELDS ARE DISPLAYED
+ * on the frontend. Joomla iterates over jcfields and renders each one with this layout.
  *
- * VARIABLES DISPONIBLES:
- * @var  array   $displayData['field']       Objeto del campo
- * @var  object  $displayData['item']        Objeto del artículo/ítem
- * @var  string  $displayData['value']       Valor procesado del campo
+ * AVAILABLE VARIABLES:
+ * @var  array   $displayData['field']       Field object
+ * @var  object  $displayData['item']        Article/item object
+ * @var  string  $displayData['value']       Processed field value
  *
- * TIPOS DE CAMPO:
+ * FIELD TYPES:
  * - text, textarea, editor
  * - radio, checkbox, list
  * - url, email
@@ -20,53 +20,53 @@
  * - file
  *
  * JOOMLA: 5.x, 6.x
- * FECHA: 2024-03-06
+ * DATE: 2024-03-06
  */
 
 defined('_JEXEC') or die;
 
-// Extraer variables de displayData
+// Extract variables from displayData
 $field = $displayData['field'] ?? null;
 $item = $displayData['item'] ?? null;
 $value = $displayData['value'] ?? null;
 
-// Validación: si no hay campo o valor, no mostrar nada
+// Validation: if no field or value, display nothing
 if (!$field || empty($value)):
     return;
 endif;
 
-// Datos adicionales del campo
+// Additional field data
 $fieldType = $field->type ?? '';
 $fieldId = $field->id ?? '';
 $fieldLabel = $field->label ?? '';
 $fieldName = $field->name ?? '';
 ?>
 
-<!-- CONTENEDOR DEL CAMPO -->
+<!-- FIELD CONTAINER -->
 <div class="field-item field-type-<?php echo htmlspecialchars($fieldType); ?>"
      data-field-id="<?php echo (int)$fieldId; ?>"
      data-field-name="<?php echo htmlspecialchars($fieldName); ?>">
 
-    <!-- ETIQUETA/LABEL -->
+    <!-- LABEL -->
     <div class="field-label-wrapper">
         <label class="field-label" for="field-<?php echo (int)$fieldId; ?>">
             <?php echo htmlspecialchars($fieldLabel); ?>
 
-            <!-- INDICADOR REQUERIDO (si aplica) -->
+            <!-- REQUIRED INDICATOR (if applicable) -->
             <?php if (!empty($field->required)): ?>
-                <span class="required-indicator" title="Campo requerido" aria-label="requerido">
+                <span class="required-indicator" title="Required field" aria-label="required">
                     <i class="fas fa-asterisk"></i>
                 </span>
             <?php endif; ?>
         </label>
     </div>
 
-    <!-- VALOR DEL CAMPO - RENDIMIENTO POR TIPO -->
+    <!-- FIELD VALUE - RENDERING BY TYPE -->
     <div class="field-value" id="field-<?php echo (int)$fieldId; ?>">
 
         <?php switch ($fieldType):
 
-            // CAMPOS DE TEXTO SIMPLE
+            // SIMPLE TEXT FIELDS
             case 'text':
             case 'email':
             case 'url':
@@ -79,7 +79,7 @@ $fieldName = $field->name ?? '';
                 <?php
                 break;
 
-            // CAMPOS DE TEXTO LARGO
+            // LONG TEXT FIELDS
             case 'textarea':
                 ?>
                 <div class="field-value-textarea">
@@ -88,20 +88,20 @@ $fieldName = $field->name ?? '';
                 <?php
                 break;
 
-            // CAMPOS TIPO EDITOR (HTML)
+            // EDITOR TYPE FIELDS (HTML)
             case 'editor':
                 ?>
                 <div class="field-value-editor">
-                    <?php echo $value; // El editor ya escapa su contenido ?>
+                    <?php echo $value; // The editor already escapes its content ?>
                 </div>
                 <?php
                 break;
 
-            // CAMPOS DE SELECCIÓN MÚLTIPLE
+            // MULTIPLE SELECTION FIELDS
             case 'radio':
             case 'checkbox':
             case 'list':
-                // El value puede ser array o string
+                // The value can be array or string
                 $values = is_array($value) ? $value : [$value];
                 ?>
                 <ul class="field-value-list">
@@ -114,10 +114,10 @@ $fieldName = $field->name ?? '';
                 <?php
                 break;
 
-            // CAMPOS DE FECHA
+            // DATE FIELDS
             case 'calendar':
             case 'date':
-                // Intentar parsear como fecha
+                // Try to parse as date
                 $timestamp = strtotime($value);
                 if ($timestamp !== false):
                     $formattedDate = date('d/m/Y', $timestamp);
@@ -131,9 +131,9 @@ $fieldName = $field->name ?? '';
                 <?php
                 break;
 
-            // CAMPOS DE ARCHIVO
+            // FILE FIELDS
             case 'file':
-                // El value es una URL de archivo
+                // The value is a file URL
                 $filename = basename($value);
                 $extension = strtoupper(pathinfo($filename, PATHINFO_EXTENSION));
                 ?>
@@ -147,7 +147,7 @@ $fieldName = $field->name ?? '';
                 <?php
                 break;
 
-            // CAMPOS DE IMAGEN
+            // IMAGE FIELDS
             case 'image':
                 ?>
                 <figure class="field-value-image">
@@ -159,7 +159,7 @@ $fieldName = $field->name ?? '';
                 <?php
                 break;
 
-            // VALOR POR DEFECTO (para tipos desconocidos)
+            // DEFAULT VALUE (for unknown types)
             default:
                 ?>
                 <div class="field-value-default">
@@ -177,16 +177,16 @@ $fieldName = $field->name ?? '';
 <?php
 /**
  * ============================================
- * ALTERNATIVA: LAYOUT MINIMALISTAA
+ * ALTERNATIVE: MINIMALIST LAYOUT
  * ============================================
  *
- * Archivo: /templates/cassiopeia/html/layouts/com_fields/field/minimal.php
+ * File: /templates/cassiopeia/html/layouts/com_fields/field/minimal.php
  *
- * Si quieres un campo sin etiqueta y más compacto:
+ * If you want a field without label and more compact:
  */
 ?>
 
-<?php if (false): // Comentado para este ejemplo ?>
+<?php if (false): // Commented out for this example ?>
 
     <div class="field-minimal">
         <span class="field-content">
@@ -199,16 +199,16 @@ $fieldName = $field->name ?? '';
 <?php
 /**
  * ============================================
- * ALTERNATIVA: LAYOUT EN TARJETA
+ * ALTERNATIVE: CARD LAYOUT
  * ============================================
  *
- * Archivo: /templates/cassiopeia/html/layouts/com_fields/field/card.php
+ * File: /templates/cassiopeia/html/layouts/com_fields/field/card.php
  *
- * Si quieres mostrar campos en formato tarjeta:
+ * If you want to display fields in card format:
  */
 ?>
 
-<?php if (false): // Comentado para este ejemplo ?>
+<?php if (false): // Commented out for this example ?>
 
     <div class="field-card">
         <div class="field-card-header">
@@ -228,48 +228,48 @@ $fieldName = $field->name ?? '';
 <?php
 /**
  * ============================================
- * NOTAS DE IMPLEMENTACIÓN
+ * IMPLEMENTATION NOTES
  * ============================================
  *
- * 1. VALIDACIÓN: Siempre validar $field y $value
- * 2. ESCAPADO: Usar htmlspecialchars() para strings
- * 3. SWITCH: Diferentes rendimientos por tipo de campo
- * 4. ATRIBUTOS: Usar data-* para atributos personalizados
- * 5. TIPOS: Soportar todos los tipos de Joomla
- * 6. ALTERNATIVAS: Crear layouts alternativos para diferentes estilos
+ * 1. VALIDATION: Always validate $field and $value
+ * 2. ESCAPING: Use htmlspecialchars() for strings
+ * 3. SWITCH: Different rendering by field type
+ * 4. ATTRIBUTES: Use data-* for custom attributes
+ * 5. TYPES: Support all Joomla field types
+ * 6. ALTERNATIVES: Create alternative layouts for different styles
  *
  * ============================================
- * CÓMO CREAR LAYOUT ALTERNATIVO
+ * HOW TO CREATE AN ALTERNATIVE LAYOUT
  * ============================================
  *
- * 1. Copiar este archivo a:
+ * 1. Copy this file to:
  *    /templates/cassiopeia/html/layouts/com_fields/field/card.php
  *
- * 2. Modificar el HTML según necesites
+ * 2. Modify the HTML as needed
  *
- * 3. En el backend:
- *    - Ir a Content > Fields > [Editar Campo]
+ * 3. In the backend:
+ *    - Go to Content > Fields > [Edit Field]
  *    - Tab "Render Options"
- *    - Seleccionar layout "card" en el dropdown
+ *    - Select layout "card" in the dropdown
  *
- * 4. El campo ahora renderiza con ese layout
+ * 4. The field now renders with that layout
  *
  * ============================================
- * ACCESO A DATOS DEL CAMPO
+ * ACCESSING FIELD DATA
  * ============================================
  *
- * $field->id               ID del campo
- * $field->name             Nombre interno
- * $field->label            Etiqueta visible
- * $field->description      Descripción
- * $field->type             Tipo (text, email, etc.)
- * $field->required         ¿Requerido?
- * $field->default          Valor por defecto
+ * $field->id               Field ID
+ * $field->name             Internal name
+ * $field->label            Visible label
+ * $field->description      Description
+ * $field->type             Type (text, email, etc.)
+ * $field->required         Required?
+ * $field->default          Default value
  * $field->hint             Hint/placeholder
- * $field->rawvalue         Valor sin procesar
+ * $field->rawvalue         Unprocessed value
  *
  * ============================================
- * CSS RECOMENDADO
+ * RECOMMENDED CSS
  * ============================================
  *
  * .field-item {
@@ -296,15 +296,15 @@ $fieldName = $field->name ?? '';
  * .field-type-text,
  * .field-type-email,
  * .field-type-url {
- *     /* Campos de texto */
+ *     /* Text fields */
  * }
  *
  * .field-type-textarea {
- *     /* Campos de área de texto */
+ *     /* Textarea fields */
  * }
  *
  * .field-type-editor {
- *     /* Campos de editor HTML */
+ *     /* HTML editor fields */
  * }
  *
  * .field-type-list .field-value-list {

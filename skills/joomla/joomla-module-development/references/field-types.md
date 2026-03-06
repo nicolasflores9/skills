@@ -1,20 +1,20 @@
-# Referencia Completa de Tipos de Campos en Joomla 5/6
+# Complete Field Types Reference for Joomla 5/6
 
-## Campos de Texto
+## Text Fields
 
 ### text
 ```xml
 <field name="titulo" type="text"
     label="MOD_LABEL_TITULO"
     description="MOD_DESC_TITULO"
-    default="Mi Título"
+    default="My Title"
     size="50"
     maxlength="255"
-    placeholder="Ingrese un título"
+    placeholder="Enter a title"
     readonly="false"
     disabled="false"
     class="input-large"
-    hint="Texto de ayuda"
+    hint="Help text"
     required="false"
     validate="Text"
 />
@@ -64,7 +64,7 @@
 />
 ```
 
-## Campos Numéricos
+## Numeric Fields
 
 ### integer
 ```xml
@@ -92,7 +92,7 @@
 />
 ```
 
-## Campos de Lista
+## List Fields
 
 ### list
 ```xml
@@ -103,9 +103,9 @@
     multiple="false"
     size="1"
     class="input-medium">
-    <option value="1">Publicado</option>
-    <option value="0">No Publicado</option>
-    <option value="-2">Papelera</option>
+    <option value="1">Published</option>
+    <option value="0">Unpublished</option>
+    <option value="-2">Trashed</option>
 </field>
 ```
 
@@ -116,34 +116,34 @@
     description="MOD_DESC_VISTA"
     default="lista"
     class="btn-group">
-    <option value="lista">Lista</option>
+    <option value="lista">List</option>
     <option value="grid">Grid</option>
-    <option value="tabla">Tabla</option>
+    <option value="tabla">Table</option>
 </field>
 ```
 
 ### checkbox
 ```xml
 <field name="caracteristicas" type="checkbox"
-    label="MOD_LABEL_CARACTERÍSTICAS"
-    description="MOD_DESC_CARACTERÍSTICAS"
+    label="MOD_LABEL_FEATURES"
+    description="MOD_DESC_FEATURES"
     default="1"
 />
 
-<!-- Múltiples checkboxes -->
+<!-- Multiple checkboxes -->
 <field name="opciones" type="checkboxes"
-    label="MOD_LABEL_OPCIONES"
-    description="MOD_DESC_OPCIONES"
+    label="MOD_LABEL_OPTIONS"
+    description="MOD_DESC_OPTIONS"
     default="">
-    <option value="1">Opción 1</option>
-    <option value="2">Opción 2</option>
-    <option value="3">Opción 3</option>
+    <option value="1">Option 1</option>
+    <option value="2">Option 2</option>
+    <option value="3">Option 3</option>
 </field>
 ```
 
-## Campos de Selección
+## Selection Fields
 
-### category - Categorías de Contenido
+### category - Content Categories
 ```xml
 <field name="categoria" type="category"
     label="MOD_LABEL_CATEGORIA"
@@ -156,7 +156,7 @@
 />
 ```
 
-### article - Artículos
+### article - Articles
 ```xml
 <field name="articulo" type="article"
     label="MOD_LABEL_ARTICULO"
@@ -165,7 +165,7 @@
 />
 ```
 
-### user - Usuarios
+### user - Users
 ```xml
 <field name="usuario" type="user"
     label="MOD_LABEL_USUARIO"
@@ -175,7 +175,7 @@
 />
 ```
 
-### usergroup - Grupos de Usuarios
+### usergroup - User Groups
 ```xml
 <field name="grupo" type="usergroup"
     label="MOD_LABEL_GRUPO"
@@ -186,7 +186,7 @@
 />
 ```
 
-### menu - Elementos de Menú
+### menu - Menu Elements
 ```xml
 <field name="menu" type="menu"
     label="MOD_LABEL_MENU"
@@ -196,7 +196,7 @@
 />
 ```
 
-### menuitem - Elementos de Menú Específicos
+### menuitem - Specific Menu Items
 ```xml
 <field name="menuitem" type="menuitem"
     label="MOD_LABEL_MENUITEM"
@@ -205,9 +205,9 @@
 />
 ```
 
-## Campos Especiales
+## Special Fields
 
-### sql - Consulta SQL
+### sql - SQL Query
 ```xml
 <field name="opcion_sql" type="sql"
     label="MOD_LABEL_OPTION_SQL"
@@ -219,7 +219,7 @@
 />
 ```
 
-### modulelayout - Layouts del Módulo
+### modulelayout - Module Layouts
 ```xml
 <field name="layout" type="modulelayout"
     label="JFIELD_ALT_LAYOUT_LABEL"
@@ -227,34 +227,34 @@
 />
 ```
 
-### spacer - Divisor Visual
+### spacer - Visual Divider
 ```xml
 <field name="separador1" type="spacer"
-    label="Sección Avanzada"
+    label="Advanced Section"
     description=""
 />
 ```
 
-### note - Nota de Información
+### note - Information Note
 ```xml
 <field name="nota" type="note"
-    label="Información Importante"
-    description="Este es un mensaje informativo para el administrador"
+    label="Important Information"
+    description="This is an informational message for the administrator"
     class="alert alert-info"
-    heading="Atención"
+    heading="Attention"
 />
 ```
 
-### hidden - Campo Oculto
+### hidden - Hidden Field
 ```xml
 <field name="id_oculto" type="hidden"
     default="0"
 />
 ```
 
-## Campos de Fecha y Hora
+## Date and Time Fields
 
-### calendar - Selector de Fecha
+### calendar - Date Picker
 ```xml
 <field name="fecha" type="calendar"
     label="MOD_LABEL_FECHA"
@@ -264,7 +264,7 @@
 />
 ```
 
-### text con tipo date
+### text with date type
 ```xml
 <field name="fecha_html5" type="text"
     label="MOD_LABEL_FECHA"
@@ -275,7 +275,7 @@
 />
 ```
 
-## Campos Avanzados
+## Advanced Fields
 
 ### color
 ```xml
@@ -298,7 +298,7 @@
 />
 ```
 
-### editor - Editor WYSIWYG
+### editor - WYSIWYG Editor
 ```xml
 <field name="contenido" type="editor"
     label="MOD_LABEL_CONTENIDO"
@@ -312,68 +312,68 @@
 />
 ```
 
-### subform - Formulario Anidado
+### subform - Nested Form
 ```xml
 <field name="items" type="subform"
     label="MOD_LABEL_ITEMS"
     description="MOD_DESC_ITEMS"
     multiple="true">
     <form>
-        <field name="titulo" type="text" label="Título" />
-        <field name="enlace" type="text" label="Enlace" />
-        <field name="icono" type="text" label="Icono" />
+        <field name="titulo" type="text" label="Title" />
+        <field name="enlace" type="text" label="Link" />
+        <field name="icono" type="text" label="Icon" />
     </form>
 </field>
 ```
 
-## Validación
+## Validation
 
 ```xml
-<!-- Atributos de validación -->
+<!-- Validation attributes -->
 <field name="ejemplo" type="text"
     validate="Text"              <!-- Text, Integer, Numeric, Email, URL, etc. -->
-    required="true"              <!-- Campo obligatorio -->
-    maxlength="100"              <!-- Longitud máxima -->
-    pattern="[a-z]+"             <!-- Expresión regular -->
-    filter="string"              <!-- Filtro: string, integer, float, boolean, etc. -->
+    required="true"              <!-- Required field -->
+    maxlength="100"              <!-- Maximum length -->
+    pattern="[a-z]+"             <!-- Regular expression -->
+    filter="string"              <!-- Filter: string, integer, float, boolean, etc. -->
 />
 
-<!-- Validadores disponibles -->
+<!-- Available validators -->
 <!-- Text, Integer, Numeric, Date, Email, URL, Alphanumeric, Username, Password -->
 ```
 
-## Atributos Comunes
+## Common Attributes
 
 ```xml
 <field
-    name="campo"                 <!-- Nombre del campo (key) -->
-    type="text"                  <!-- Tipo de campo -->
-    label="MOD_LABEL_CAMPO"      <!-- Etiqueta translatable -->
-    description="MOD_DESC_CAMPO" <!-- Descripción translatable -->
-    default="valor"              <!-- Valor por defecto -->
-    class="input-large"          <!-- Clases CSS -->
-    readonly="false"             <!-- Solo lectura -->
-    disabled="false"             <!-- Deshabilitado -->
-    required="false"             <!-- Campo obligatorio -->
-    hint="Sugerencia"            <!-- Texto de ayuda (placeholder) -->
-    validate="Type"              <!-- Validación -->
-    filter="filter_type"         <!-- Filtro de datos -->
-    size="50"                    <!-- Tamaño del campo -->
-    multiple="false"             <!-- Selección múltiple -->
-    onchange="javascript()"      <!-- Evento onChange -->
+    name="campo"                 <!-- Field name (key) -->
+    type="text"                  <!-- Field type -->
+    label="MOD_LABEL_CAMPO"      <!-- Translatable label -->
+    description="MOD_DESC_CAMPO" <!-- Translatable description -->
+    default="valor"              <!-- Default value -->
+    class="input-large"          <!-- CSS classes -->
+    readonly="false"             <!-- Read-only -->
+    disabled="false"             <!-- Disabled -->
+    required="false"             <!-- Required field -->
+    hint="Suggestion"            <!-- Help text (placeholder) -->
+    validate="Type"              <!-- Validation -->
+    filter="filter_type"         <!-- Data filter -->
+    size="50"                    <!-- Field size -->
+    multiple="false"             <!-- Multiple selection -->
+    onchange="javascript()"      <!-- onChange event -->
 />
 ```
 
-## Ejemplo Completo de Configuración
+## Complete Configuration Example
 
 ```xml
 <config>
     <fields name="params">
-        <!-- Fieldset Básico -->
+        <!-- Basic Fieldset -->
         <fieldset name="basic" label="MOD_FIELDSET_BASIC">
             <field name="titulo" type="text"
                 label="MOD_LABEL_TITULO"
-                default="Mi Módulo"
+                default="My Module"
                 size="50" />
 
             <field name="descripcion" type="textarea"
@@ -391,22 +391,22 @@
                 max="100" />
         </fieldset>
 
-        <!-- Fieldset Opciones de Visualización -->
+        <!-- Display Options Fieldset -->
         <fieldset name="display" label="MOD_FIELDSET_DISPLAY">
             <field name="orden" type="list"
                 label="MOD_LABEL_ORDEN"
                 default="fecha">
-                <option value="fecha">Por Fecha</option>
-                <option value="titulo">Por Título</option>
-                <option value="visitas">Por Visitas</option>
+                <option value="fecha">By Date</option>
+                <option value="titulo">By Title</option>
+                <option value="visitas">By Views</option>
             </field>
 
             <field name="direccion" type="radio"
                 label="MOD_LABEL_DIRECCION"
                 default="desc"
                 class="btn-group">
-                <option value="asc">Ascendente</option>
-                <option value="desc">Descendente</option>
+                <option value="asc">Ascending</option>
+                <option value="desc">Descending</option>
             </field>
 
             <field name="color" type="color"
@@ -414,7 +414,7 @@
                 default="#ffffff" />
         </fieldset>
 
-        <!-- Fieldset Avanzado -->
+        <!-- Advanced Fieldset -->
         <fieldset name="advanced" label="MOD_FIELDSET_ADVANCED">
             <field name="layout" type="modulelayout"
                 label="JFIELD_ALT_LAYOUT_LABEL" />
@@ -423,7 +423,7 @@
                 label="JFIELD_CACHING_LABEL"
                 default="1">
                 <option value="0">No</option>
-                <option value="1">Sí</option>
+                <option value="1">Yes</option>
             </field>
 
             <field name="cache_time" type="integer"
@@ -438,28 +438,28 @@
 </config>
 ```
 
-## Acceso a Parámetros en PHP
+## Accessing Parameters in PHP
 
 ```php
 <?php
-// En Dispatcher o Helper
+// In Dispatcher or Helper
 $params = $this->module->params;
 
-// Tipos básicos
+// Basic types
 $texto = $params->get('titulo', 'default');
 $numero = (int) $params->get('cantidad', 10);
 $booleano = (bool) $params->get('opcion', false);
 
-// Array (para campos múltiples)
+// Array (for multiple fields)
 $array = $params->get('opciones', array());
 
-// JSON (para subform)
+// JSON (for subform)
 $items = $params->get('items', array());
 if (is_string($items)) {
     $items = json_decode($items, true);
 }
 
-// Iterar parámetros
+// Iterate parameters
 foreach ($params as $key => $value) {
     echo "$key: $value";
 }
@@ -468,4 +468,4 @@ foreach ($params as $key => $value) {
 
 ---
 
-**Nota**: Los nombres de campos deben traducirse en archivos .ini usando la convención `MOD_[MODULO]_LABEL_[CAMPO]`
+**Note**: Field names must be translated in .ini files using the convention `MOD_[MODULE]_LABEL_[FIELD]`

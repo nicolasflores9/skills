@@ -1,12 +1,12 @@
 <?php
 /**
- * EJEMPLOS PRÁCTICOS DE CUSTOM FIELDS EN JOOMLA 5/6
+ * PRACTICAL EXAMPLES OF CUSTOM FIELDS IN JOOMLA 5/6
  * ====================================================
- * Implementaciones completas para componentes, módulos y templates
+ * Complete implementations for components, modules, and templates
  */
 
 // ============================================================================
-// EJEMPLO 1: CARGAR CAMPOS PERSONALIZADOS EN UN COMPONENTE
+// EXAMPLE 1: LOAD CUSTOM FIELDS IN A COMPONENT
 // ============================================================================
 
 namespace MyComponent\Site\Model;
@@ -21,7 +21,7 @@ class ArticleModel extends ItemModel {
         $item = parent::getItem($pk);
 
         if ($item) {
-            // Carga los campos personalizados del artículo
+            // Load the article's custom fields
             JLoader::register('FieldsHelper', JPATH_ADMINISTRATOR . '/components/com_fields/helpers/fields.php');
             $item->jcfields = FieldsHelper::getFields('com_content.article', $item, true);
         }
@@ -32,7 +32,7 @@ class ArticleModel extends ItemModel {
 
 
 // ============================================================================
-// EJEMPLO 2: PLUGIN QUE INYECTA CAMPOS EN UN COMPONENTE PERSONALIZADO
+// EXAMPLE 2: PLUGIN THAT INJECTS FIELDS INTO A CUSTOM COMPONENT
 // ============================================================================
 
 namespace MyPlugin\SystemCustomFields;
@@ -45,19 +45,19 @@ use Joomla\Component\Fields\Administrator\Helper\FieldsHelper;
 class SystemCustomFields extends CMSPlugin {
 
     /**
-     * Inyecta campos personalizados en formularios
+     * Injects custom fields into forms
      */
     public function onContentPrepareForm($form, $data) {
         if (!($form instanceof Form)) {
             return true;
         }
 
-        // Obtén el contexto
+        // Get the context
         $context = isset($data->context) ? $data->context :
                    Factory::getApplication()->input->getCmd('option') . '.' .
                    Factory::getApplication()->input->getCmd('view');
 
-        // Inyecta campos solo en contextos válidos
+        // Inject fields only in valid contexts
         if (in_array($context, ['com_content.article', 'com_users.user'])) {
             JLoader::register('FieldsHelper', JPATH_ADMINISTRATOR . '/components/com_fields/helpers/fields.php');
             FieldsHelper::getFields($context, $data, false);
@@ -67,14 +67,14 @@ class SystemCustomFields extends CMSPlugin {
     }
 
     /**
-     * Prepara datos para renderizar campos
+     * Prepares data for field rendering
      */
     public function onContentPrepareData($context, $data) {
         if (empty($data)) {
             return true;
         }
 
-        // Convierte datos Registry a arrays si es necesario
+        // Convert Registry data to arrays if needed
         if (method_exists($data, 'toArray')) {
             $dataArray = $data->toArray();
             foreach ($dataArray as $key => $value) {
@@ -88,7 +88,7 @@ class SystemCustomFields extends CMSPlugin {
 
 
 // ============================================================================
-// EJEMPLO 3: MÓDULO QUE MUESTRA CAMPOS PERSONALIZADOS DE UN ARTÍCULO
+// EXAMPLE 3: MODULE THAT DISPLAYS CUSTOM FIELDS FROM AN ARTICLE
 // ============================================================================
 
 namespace MyModule\Site\Helper;
@@ -100,26 +100,26 @@ use Joomla\Component\Fields\Administrator\Helper\FieldsHelper;
 class ModCustomFieldsHelper {
 
     /**
-     * Obtén un artículo con sus campos personalizados
+     * Get an article with its custom fields
      */
     public static function getArticleWithFields($articleId) {
         try {
-            // Obtén la aplicación y el modelo
+            // Get the application and model
             $app = Factory::getApplication();
             $mvcFactory = $app->bootComponent('com_content')->getMVCFactory();
             $model = $mvcFactory->createModel('Article', 'Administrator');
 
-            // Carga el artículo
+            // Load the article
             $article = $model->getItem((int)$articleId);
 
             if (!$article) {
                 return null;
             }
 
-            // Registra y carga el helper de campos
+            // Register and load the fields helper
             JLoader::register('FieldsHelper', JPATH_ADMINISTRATOR . '/components/com_fields/helpers/fields.php');
 
-            // Obtén campos renderizados (HTML)
+            // Get rendered fields (HTML)
             $article->jcfields = FieldsHelper::getFields('com_content.article', $article, true);
 
             return $article;
@@ -129,7 +129,7 @@ class ModCustomFieldsHelper {
     }
 
     /**
-     * Obtén campos en array indexado por nombre
+     * Get fields in an array indexed by name
      */
     public static function getFieldsByName($fields) {
         $indexed = [];
@@ -146,7 +146,7 @@ class ModCustomFieldsHelper {
 
 
 // ============================================================================
-// EJEMPLO 4: CONSULTA DIRECTA A BASE DE DATOS PARA CAMPOS
+// EXAMPLE 4: DIRECT DATABASE QUERY FOR FIELDS
 // ============================================================================
 
 use Joomla\Database\DatabaseInterface;
@@ -160,7 +160,7 @@ class FieldValueRepository {
     }
 
     /**
-     * Obtén todos los valores de campos para un artículo
+     * Get all field values for an article
      */
     public function getArticleFieldValues($articleId) {
         $query = $this->db->getQuery(true)
@@ -178,7 +178,7 @@ class FieldValueRepository {
     }
 
     /**
-     * Obtén todos los campos disponibles para un contexto
+     * Get all available fields for a context
      */
     public function getFieldsForContext($context) {
         $query = $this->db->getQuery(true)
@@ -193,10 +193,10 @@ class FieldValueRepository {
     }
 
     /**
-     * Guarda un valor de campo
+     * Save a field value
      */
     public function saveFieldValue($fieldId, $itemId, $value) {
-        // Primero intenta actualizar
+        // First try to update
         $query = $this->db->getQuery(true)
             ->update($this->db->quoteName('#__fields_values'))
             ->set($this->db->quoteName('value') . ' = ' . $this->db->quote($value))
@@ -206,7 +206,7 @@ class FieldValueRepository {
         $this->db->setQuery($query);
         $this->db->execute();
 
-        // Si no fue actualizado, inserta
+        // If nothing was updated, insert
         if ($this->db->getAffectedRows() === 0) {
             $obj = new \stdClass();
             $obj->field_id = (int)$fieldId;
@@ -220,7 +220,7 @@ class FieldValueRepository {
     }
 
     /**
-     * Elimina todos los valores de un artículo
+     * Delete all values for an article
      */
     public function deleteArticleValues($articleId) {
         $query = $this->db->getQuery(true)
@@ -234,11 +234,11 @@ class FieldValueRepository {
 
 
 // ============================================================================
-// EJEMPLO 5: OVERRIDE DE TEMPLATE PARA RENDERIZAR CAMPOS
+// EXAMPLE 5: TEMPLATE OVERRIDE FOR RENDERING FIELDS
 // ============================================================================
 
-// Archivo: templates/mytemplate/html/layouts/com_content/fields/render.php
-// Este archivo se incluye cuando se renderizan campos personalizados
+// File: templates/mytemplate/html/layouts/com_content/fields/render.php
+// This file is included when custom fields are rendered
 
 defined('_JEXEC') or die;
 
@@ -251,7 +251,7 @@ if (!$field) {
     return;
 }
 
-// Determina si renderizar basado en tipo de campo
+// Determine whether to render based on field type
 $renderableTypes = ['text', 'textarea', 'editor', 'list', 'radio', 'checkbox', 'media', 'calendar'];
 
 if (!in_array($field->type, $renderableTypes)) {
@@ -270,15 +270,15 @@ if (!in_array($field->type, $renderableTypes)) {
 
     <div class="field-value">
         <?php
-        // Renderiza el valor según el tipo
+        // Render the value based on type
         if ($field->type === 'media') {
-            // Para campos multimedia
+            // For media fields
             echo '<img src="' . htmlspecialchars($field->value) . '" alt="' . htmlspecialchars($field->label) . '" />';
         } elseif ($field->type === 'list') {
-            // Para listas
+            // For lists
             echo htmlspecialchars($field->value);
         } else {
-            // Para otros campos
+            // For other fields
             echo $field->value;
         }
         ?>
@@ -303,10 +303,10 @@ if (!in_array($field->type, $renderableTypes)) {
 
 
 // ============================================================================
-// EJEMPLO 6: VALIDACIÓN PERSONALIZADA DE CAMPOS
+// EXAMPLE 6: CUSTOM FIELD VALIDATION
 // ============================================================================
 
-// Archivo: /components/com_mycomponent/models/rules/codigopostal.php
+// File: /components/com_mycomponent/models/rules/codigopostal.php
 
 use Joomla\CMS\Form\FormRule;
 use Joomla\Registry\Registry;
@@ -315,29 +315,29 @@ use SimpleXMLElement;
 class JFormRuleCodigopostal extends FormRule {
 
     /**
-     * Valida un código postal
-     * Formato esperado: ABC-123 (3 letras, guión, 3 números)
+     * Validates a postal code
+     * Expected format: ABC-123 (3 letters, hyphen, 3 numbers)
      */
     public function test(SimpleXMLElement $element, $value, $group = null, Registry $input = null, $form = null) {
-        // Si está vacío y no es requerido, es válido
+        // If empty and not required, it is valid
         if (empty($value) && $element['required'] !== 'true') {
             return true;
         }
 
-        // Valida formato
+        // Validate format
         return preg_match('/^[A-Z]{3}-\d{3}$/', $value) === 1;
     }
 }
 
-// En la definición del campo, usa:
-// <field name="codigo_postal" type="text" validate="codigopostal" message="Formato: ABC-123" />
+// In the field definition, use:
+// <field name="codigo_postal" type="text" validate="codigopostal" message="Format: ABC-123" />
 
 
 // ============================================================================
-// EJEMPLO 7: VISTA DE MÓDULO CON CAMPOS
+// EXAMPLE 7: MODULE VIEW WITH FIELDS
 // ============================================================================
 
-// Archivo: mod_custom_fields/tmpl/default.php
+// File: mod_custom_fields/tmpl/default.php
 
 defined('_JEXEC') or die;
 
@@ -392,11 +392,11 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 
 // ============================================================================
-// EJEMPLO 8: CREAR ÍNDICE DE CAMPOS POR NOMBRE EN TEMPLATE
+// EXAMPLE 8: CREATE FIELD INDEX BY NAME IN TEMPLATE
 // ============================================================================
 
 <?php
-// En tu template, crea un acceso rápido a campos
+// In your template, create quick access to fields
 $fields = [];
 
 if (!empty($this->item->jcfields)) {
@@ -405,7 +405,7 @@ if (!empty($this->item->jcfields)) {
     }
 }
 
-// Ahora accede directamente por nombre
+// Now access directly by name
 if (isset($fields['galeria_imagenes'])) {
     echo '<div class="gallery">' . $fields['galeria_imagenes']->value . '</div>';
 }

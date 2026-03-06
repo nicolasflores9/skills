@@ -1,18 +1,18 @@
-# Referencia Rápida: Plugins Joomla 5/6
+# Quick Reference: Joomla 5/6 Plugins
 
-## Checklist Rápido
+## Quick Checklist
 
 ```
-Crear plugin:
+Create plugin:
 1. mkdir plugins/[group]/[name]/
-2. Crear manifest.xml
-3. Crear services/provider.php
-4. Crear src/Extension/Name.php
-5. Crear language/en-GB/files.ini
-6. Panel Control > Extensiones > Plugins > Habilitar
+2. Create manifest.xml
+3. Create services/provider.php
+4. Create src/Extension/Name.php
+5. Create language/en-GB/files.ini
+6. Control Panel > Extensions > Plugins > Enable
 ```
 
-## Estructura Mínima
+## Minimal Structure
 
 ```php
 // manifest.xml
@@ -60,48 +60,48 @@ class Extension extends CMSPlugin implements SubscriberInterface {
     }
 
     public function onAfterInitialise(AfterInitialiseEvent $event) {
-        // Tu código
+        // Your code
     }
 }
 ```
 
-## Eventos Principales
+## Main Events
 
-### Sistema
-| Evento | Cuándo |
-|--------|--------|
-| onAfterInitialise | Después inicializar |
-| onAfterRoute | Después enrutar |
-| onAfterDispatch | Después despachar |
-| onBeforeRender | Antes renderizar |
-| onAfterRender | Después renderizar |
+### System
+| Event | When |
+|-------|------|
+| onAfterInitialise | After initialization |
+| onAfterRoute | After routing |
+| onAfterDispatch | After dispatching |
+| onBeforeRender | Before rendering |
+| onAfterRender | After rendering |
 
-### Contenido
-| Evento | Cuándo |
-|--------|--------|
-| onContentPrepare | Antes mostrar |
-| onContentBeforeSave | Validación previa |
-| onContentAfterSave | Post-procesamiento |
-| onContentBeforeDelete | Antes eliminar |
-| onContentAfterDelete | Después eliminar |
+### Content
+| Event | When |
+|-------|------|
+| onContentPrepare | Before display |
+| onContentBeforeSave | Pre-save validation |
+| onContentAfterSave | Post-processing |
+| onContentBeforeDelete | Before deletion |
+| onContentAfterDelete | After deletion |
 
-### Usuario
-| Evento | Cuándo |
-|--------|--------|
-| onUserLogin | Después login |
-| onUserLogout | Después logout |
-| onUserBeforeSave | Antes guardar |
-| onUserAfterSave | Después guardar |
+### User
+| Event | When |
+|-------|------|
+| onUserLogin | After login |
+| onUserLogout | After logout |
+| onUserBeforeSave | Before saving |
+| onUserAfterSave | After saving |
 
 ## Event Classes
 
 ```php
-// Importar
+// Import
 use Joomla\CMS\Event\Content\ContentPrepareEvent;
 use Joomla\CMS\Event\System\AfterInitialiseEvent;
 use Joomla\CMS\Event\User\UserLoginEvent;
 
-// Usar
+// Usage
 public function onContentPrepare(ContentPrepareEvent $event) {
     $article = $event->getArgument('0');
     $article->text = str_replace('foo', 'bar', $article->text);
@@ -109,27 +109,27 @@ public function onContentPrepare(ContentPrepareEvent $event) {
 }
 ```
 
-## Servicios Comunes
+## Common Services
 
 ```php
-// Importar
+// Import
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
 
-// Base de datos
+// Database
 $db = Factory::getDbo();
 $db = $this->getContainer()->get(DatabaseInterface::class);
 
-// Usuario
+// User
 $user = Factory::getUser();
 $user->id, $user->email, $user->name
 
-// Aplicación
+// Application
 $app = Factory::getApplication();
-$app->enqueueMessage('Texto', 'message'); // error, warning
+$app->enqueueMessage('Text', 'message'); // error, warning
 $app->getLogger()->info('Log');
 
-// Configuración
+// Configuration
 $config = Factory::getConfig();
 $config->get('sitename');
 $config->get('live_site');
@@ -137,18 +137,18 @@ $config->get('live_site');
 // Cache
 use Joomla\CMS\Cache\CacheFactory;
 $cache = CacheFactory::getCache('_system');
-$cache->get('key'); // leer
-$cache->store($data, 'key', '_system', 3600); // guardar
+$cache->get('key'); // read
+$cache->store($data, 'key', '_system', 3600); // store
 
-// Traducción
+// Translation
 use Joomla\CMS\Language\Text;
 $text = Text::_('PLG_PLUGIN_LABEL');
 ```
 
-## Parámetros
+## Parameters
 
 ```php
-// En manifest.xml
+// In manifest.xml
 <config>
     <fields name="params">
         <fieldset name="basic">
@@ -162,32 +162,32 @@ $text = Text::_('PLG_PLUGIN_LABEL');
     </fields>
 </config>
 
-// En PHP
+// In PHP
 $enabled = $this->params->get('enabled', true);
 $text = $this->params->get('text_option', 'default');
 $selected = $this->params->get('select_option', '1');
 ```
 
-## Validación y Filtrado
+## Validation and Filtering
 
 ```php
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\HTML\HTMLHelper;
 
-// Validar entrada
+// Validate input
 $filter = InputFilter::getInstance();
 $text = $filter->clean($_GET['text'], 'STRING');
 $id = $filter->clean($_GET['id'], 'INT');
 $email = $filter->clean($_GET['email'], 'EMAIL');
 
-// Escapar salida
+// Escape output
 echo htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
 echo HTMLHelper::_('common.escape', $text);
 
-// Verificar permisos
+// Check permissions
 $user = Factory::getUser();
 if (!$user->authorise('core.edit', 'com_content')) {
-    return; // No hacer nada
+    return; // Do nothing
 }
 ```
 
@@ -224,16 +224,16 @@ $db->setQuery($query);
 $db->execute();
 ```
 
-## Errores Comunes
+## Common Errors
 
-| Error | Solución |
+| Error | Solution |
 |-------|----------|
-| "Class not found" | Verificar namespace en manifest, provider y Extension |
-| Plugin no aparece | Limpiar cache, verificar manifest.xml |
-| Evento no dispara | getSubscribedEvents() correcto, plugin habilitado |
-| allowLegacyListeners | Debe ser false para Joomla 5/6 |
-| Parámetros no se guardan | Verificar sintaxis en manifest.xml |
-| Sin traducciones | $autoloadLanguage = true, archivo .ini correcto |
+| "Class not found" | Verify namespace in manifest, provider, and Extension |
+| Plugin does not appear | Clear cache, verify manifest.xml |
+| Event does not fire | Correct getSubscribedEvents(), plugin enabled |
+| allowLegacyListeners | Must be false for Joomla 5/6 |
+| Parameters not saving | Verify syntax in manifest.xml |
+| No translations | $autoloadLanguage = true, correct .ini file |
 
 ## Debugging
 
@@ -241,31 +241,31 @@ $db->execute();
 // Log
 $app = Factory::getApplication();
 $logger = $app->getLogger();
-$logger->info('Mensaje');
+$logger->info('Message');
 $logger->error('Error: ' . $e->getMessage());
 
-// Revisar
+// Review
 tail -f logs/joomla.log
 
-// Mensaje al usuario
-$app->enqueueMessage('Texto', 'message');
+// Message to user
+$app->enqueueMessage('Text', 'message');
 
 // Exception
 try {
-    // código
+    // code
 } catch (\Exception $e) {
     $app->enqueueMessage('Error: ' . $e->getMessage(), 'error');
-    $logger->error('Detalle', ['exception' => $e]);
+    $logger->error('Detail', ['exception' => $e]);
 }
 ```
 
-## Inyección de Dependencias
+## Dependency Injection
 
 ```php
-// En services/provider.php
+// In services/provider.php
 $plugin->setContainer($c);
 
-// En Extension.php
+// In Extension.php
 use Joomla\DI\Traits\ContainerAwareTrait;
 
 class Extension extends CMSPlugin {
@@ -277,7 +277,7 @@ class Extension extends CMSPlugin {
 }
 ```
 
-## Archivos Necesarios
+## Required Files
 
 ```
 plg_system_example/
@@ -287,32 +287,32 @@ plg_system_example/
 ├── language/en-GB/
 │   ├── plg_system_example.ini
 │   └── plg_system_example.sys.ini
-└── (opcional) src/Helper/Helper.php
+└── (optional) src/Helper/Helper.php
 ```
 
-## Instalación
+## Installation
 
-1. Crear carpeta en `plugins/[group]/[name]/`
-2. Copiar todos los archivos
-3. Panel Control > Extensiones > Plugins
-4. Buscar plugin por nombre
-5. Hacer clic en estado para habilitar
-6. Verificar en logs: `logs/joomla.log`
+1. Create folder at `plugins/[group]/[name]/`
+2. Copy all files
+3. Control Panel > Extensions > Plugins
+4. Search plugin by name
+5. Click on status to enable
+6. Verify in logs: `logs/joomla.log`
 
-## Prioridades de Eventos
+## Event Priorities
 
 ```php
 public static function getSubscribedEvents(): array
 {
     return [
-        'onAfterInitialise' => ['handler', 0], // 0 = ejecuta primero
+        'onAfterInitialise' => ['handler', 0], // 0 = executes first
         'onAfterRoute' => ['handler', 5],      // 5 = normal
-        'onAfterDispatch' => ['handler', 10],  // 10 = ejecuta último
+        'onAfterDispatch' => ['handler', 10],  // 10 = executes last
     ];
 }
 ```
 
-## Múltiples Handlers
+## Multiple Handlers
 
 ```php
 public static function getSubscribedEvents(): array
@@ -326,35 +326,35 @@ public static function getSubscribedEvents(): array
 }
 
 public function primaryHandler(ContentPrepareEvent $event) {
-    // Se ejecuta primero
+    // Executes first
 }
 
 public function secondaryHandler(ContentPrepareEvent $event) {
-    // Se ejecuta segundo
+    // Executes second
 }
 ```
 
-## Métodos de Event Classes
+## Event Class Methods
 
 ```php
-// Acceder a argumentos
+// Access arguments
 $article = $event->getArgument('0');
-$article = $event->getArgument('article'); // si está nombrado
+$article = $event->getArgument('article'); // if named
 
-// Modificar argumentos
+// Modify arguments
 $event->setArgument('0', $newValue);
 
-// Obtener todos los argumentos
+// Get all arguments
 $all = $event->getArguments();
 
-// Métodos específicos (si existen)
+// Specific methods (if available)
 $article = $event->getArticle();
 $event->setArticle($article);
 ```
 
-## Recursos
+## Resources
 
 - [Joomla Manual](https://manual.joomla.org/)
 - [Joomla Docs](https://docs.joomla.org/)
 - [Joomla API](https://api.joomla.org/)
-- [Forum Joomla](https://forum.joomla.org/)
+- [Joomla Forum](https://forum.joomla.org/)

@@ -1,89 +1,89 @@
-# Skill: Integración Frontend en Joomla 5/6 con Helix Framework
+# Skill: Frontend Integration in Joomla 5/6 with Helix Framework
 
-Domina CSS/JavaScript, WebAssetManager, Bootstrap 5 y responsive design en Joomla 5/6 con Helix Framework.
+Master CSS/JavaScript, WebAssetManager, Bootstrap 5, and responsive design in Joomla 5/6 with Helix Framework.
 
-## Contenido
+## Contents
 
-### SKILL.md (Archivo Principal)
-Guía técnica completa de ~500 líneas con:
-- WebAssetManager (conceptos, ciclo de vida, obtener instancia)
-- Estructura joomla.asset.json
-- Cargar CSS/JS correctamente
-- Bootstrap 5 con Helix
-- Módulos custom con assets
-- SP Page Builder y addons
-- Diseño responsive con media queries
-- Custom Code en Helix
-- Dependencias entre assets
-- Inline scripts y styles
-- Defer/async y optimización
+### SKILL.md (Main File)
+Complete technical guide of ~500 lines covering:
+- WebAssetManager (concepts, lifecycle, getting an instance)
+- joomla.asset.json structure
+- Loading CSS/JS correctly
+- Bootstrap 5 with Helix
+- Custom modules with assets
+- SP Page Builder and addons
+- Responsive design with media queries
+- Custom Code in Helix
+- Dependencies between assets
+- Inline scripts and styles
+- Defer/async and optimization
 - Web Components
-- Troubleshooting común
-- Checklist desarrollo
-- Referencias oficiales
+- Common troubleshooting
+- Development checklist
+- Official references
 
-### References/ (Archivos Complementarios)
+### References/ (Supplementary Files)
 
 1. **01-joomla-asset-json-avanzado.json**
-   - Ejemplo completo con presets
-   - Múltiples dependencias
+   - Complete example with presets
+   - Multiple dependencies
    - Web Components
-   - Versionado automático
+   - Automatic versioning
 
 2. **02-modulo-testimonios-completo.php**
-   - Módulo custom funcional
-   - Integración de assets
-   - Parametrización
-   - Accesibilidad (ARIA)
+   - Functional custom module
+   - Asset integration
+   - Parameterization
+   - Accessibility (ARIA)
 
 3. **03-modulo-testimonios-joomla-asset.json**
-   - joomla.asset.json del módulo
-   - Dependencias correctas
-   - Versionado
+   - Module's joomla.asset.json
+   - Correct dependencies
+   - Versioning
 
 4. **04-carousel.js**
-   - JavaScript funcional para carousel
+   - Functional carousel JavaScript
    - jQuery compatible
-   - Autoplay, navegación keyboard
+   - Autoplay, keyboard navigation
    - Event dispatch
 
 5. **05-testimonios.css**
-   - CSS responsive completo
+   - Complete responsive CSS
    - Breakpoints (mobile, tablet, desktop)
-   - Gradientes, animaciones
-   - Dark mode, accesibilidad
-   - Impresión
+   - Gradients, animations
+   - Dark mode, accessibility
+   - Print styles
 
 6. **06-sp-page-builder-addon-plugin.php**
-   - Plugin custom para SP Page Builder
-   - Registrar assets desde plugin
-   - Parámetros de addon
-   - HTML renderizado
+   - Custom plugin for SP Page Builder
+   - Register assets from plugin
+   - Addon parameters
+   - Rendered HTML
 
 7. **07-web-component-custom.js**
    - Web Component Shadow DOM
-   - Propiedades observables
-   - Métodos públicos
-   - Eventos custom
-   - Responsive CSS encapsulado
+   - Observable properties
+   - Public methods
+   - Custom events
+   - Encapsulated responsive CSS
 
 8. **08-template-helix-custom.css**
-   - custom.css seguro para Helix
-   - Navbar, botones, cards, footer
-   - Variables CSS
-   - Responsive media queries completas
-   - Dark mode, accesibilidad, impresión
+   - Safe custom.css for Helix
+   - Navbar, buttons, cards, footer
+   - CSS variables
+   - Complete responsive media queries
+   - Dark mode, accessibility, print styles
 
 9. **09-checklist-desarrollo.md**
-   - Checklist pre-desarrollo
-   - Checklist durante desarrollo
-   - Testing & validación
-   - Pre-producción
-   - Producción
-   - Troubleshooting rápido
+   - Pre-development checklist
+   - During development checklist
+   - Testing & validation
+   - Pre-production
+   - Production
+   - Quick troubleshooting
 
 10. **10-ejemplos-codigo-rapido.md**
-    - Snippets PHP (WebAssetManager)
+    - PHP snippets (WebAssetManager)
     - JSON Assets
     - CSS (mobile-first, responsive, flexbox, grid)
     - JavaScript (DOM, events, AJAX, custom events)
@@ -92,70 +92,70 @@ Guía técnica completa de ~500 líneas con:
     - Helix Custom Code
     - Debugging
 
-## Triggers para Activar esta Skill
+## Triggers to Activate this Skill
 
-La skill se activa cuando preguntes sobre:
+The skill is activated when you ask about:
 - "css joomla"
 - "javascript joomla"
 - "WebAssetManager"
-- "cargar css joomla"
+- "load css joomla"
 - "assets joomla"
 - "bootstrap helix"
 - "frontend joomla"
 - "joomla.asset.json"
 - "helix custom code"
-- "componentes responsive joomla"
-- "módulos joomla css js"
+- "responsive components joomla"
+- "joomla modules css js"
 - "SP Page Builder addon"
 - "Web Components joomla"
-- "Helix Framework personalizar"
+- "Helix Framework customize"
 
-## Requisitos
+## Requirements
 
 - Joomla 5.6+
 - Helix Ultimate 2.x+
-- Navegador moderno
-- Conocimientos básicos HTML/CSS/JavaScript
+- Modern browser
+- Basic HTML/CSS/JavaScript knowledge
 
-## Cómo Usar esta Skill
+## How to Use this Skill
 
-1. **Lee SKILL.md** - Comprende los conceptos fundamentales
-2. **Consulta references/** - Ejemplos completos según tu caso
-3. **Copia código** - Los ejemplos están listos para producción
-4. **Adapta a tu proyecto** - Modifica según necesidades
-5. **Valida en DevTools** - Revisa console y network tab
+1. **Read SKILL.md** - Understand the fundamental concepts
+2. **Consult references/** - Complete examples for your use case
+3. **Copy code** - Examples are production-ready
+4. **Adapt to your project** - Modify as needed
+5. **Validate in DevTools** - Check console and network tab
 
-## Casos de Uso Principales
+## Main Use Cases
 
-- Crear módulos Joomla custom con CSS/JS
-- Agregar assets a templates Helix sin romper el framework
-- Crear addons SP Page Builder con JavaScript
-- Implementar diseño responsive con Bootstrap 5
-- Optimizar carga de assets (defer, async, lazy loading)
-- Debuggear problemas de assets y estilos
-- Migrar código legacy a WebAssetManager moderno
+- Create custom Joomla modules with CSS/JS
+- Add assets to Helix templates without breaking the framework
+- Create SP Page Builder addons with JavaScript
+- Implement responsive design with Bootstrap 5
+- Optimize asset loading (defer, async, lazy loading)
+- Debug asset and style issues
+- Migrate legacy code to modern WebAssetManager
 
-## Versión
+## Version
 
-- **Versión:** 1.0
-- **Última actualización:** Marzo 2026
+- **Version:** 1.0
+- **Last updated:** March 2026
 - **Joomla:** 5.6+
 - **Helix:** Ultimate 2.x+
 - **Bootstrap:** 5.2.3+
 
-## Documentación Oficial Referenciada
+## Official Documentation Referenced
 
 - [Joomla 5 Web Asset Manager](https://manual.joomla.org/docs/5.0/general-concepts/web-asset-manager/)
 - [Helix Framework](https://www.joomshaper.com/documentation/helix-framework/)
 - [Bootstrap 5 Docs](https://getbootstrap.com/docs/5.0/)
 - [SP Page Builder](https://www.joomshaper.com/documentation/sp-page-builder/)
 
-## Estructura de Carpetas
+## Folder Structure
 
 ```
 /joomla-frontend-integration/
-├── SKILL.md                                (Archivo principal - Guía completa)
-├── README.md                               (Este archivo)
+├── SKILL.md                                (Main file - Complete guide)
+├── README.md                               (This file)
 └── references/
     ├── 01-joomla-asset-json-avanzado.json
     ├── 02-modulo-testimonios-completo.php
@@ -171,6 +171,6 @@ La skill se activa cuando preguntes sobre:
 
 ---
 
-**Nota:** Todos los archivos de ejemplo incluyen comentarios explicativos en español y están listos para copiar y usar directamente en tus proyectos Joomla.
+**Note:** All example files include explanatory comments and are ready to copy and use directly in your Joomla projects.
 
-Creado con ❤️ para desarrolladores Joomla
+Created for Joomla developers

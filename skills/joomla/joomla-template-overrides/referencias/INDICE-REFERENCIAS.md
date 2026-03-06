@@ -1,380 +1,380 @@
-# Índice de Archivos de Referencia
+# Reference Files Index
 
-Documentación y ejemplos completos para la Skill de Joomla Template Overrides.
+Documentation and complete examples for the Joomla Template Overrides Skill.
 
 ---
 
-## Archivos Disponibles
+## Available Files
 
-### 1. SKILL.md (Archivo Principal)
+### 1. SKILL.md (Main File)
 
-**Ubicación**: `/SKILL.md`
+**Location**: `/SKILL.md`
 
-Documentación completa de 519 líneas cubriendo:
+Complete documentation of 519 lines covering:
 
-- Introducción y conceptos fundamentales
-- Estructura de carpetas /html/
-- Overrides de componentes (com_content)
-  - Artículo individual
-  - Categoría modo blog (blog_item.php)
-  - Categoría modo lista
-- Overrides de módulos (mod_login, etc.)
-- Layouts alternativos
-- JLayout y componentes reutilizables
+- Introduction and fundamental concepts
+- /html/ folder structure
+- Component overrides (com_content)
+  - Single article
+  - Category blog mode (blog_item.php)
+  - Category list mode
+- Module overrides (mod_login, etc.)
+- Alternative layouts
+- JLayout and reusable components
 - Child templates
-- Field overrides (campos personalizados)
+- Field overrides (custom fields)
 - Template Manager
-- Buenas prácticas
+- Best practices
 - Troubleshooting
-- Referencia rápida
+- Quick reference
 
-**Contenido**: Teoría + ejemplos integrados de código
+**Content**: Theory + integrated code examples
 
 ---
 
 ### 2. 01-com-content-article-completo.php
 
-**Ubicación**: `/referencias/01-com-content-article-completo.php`
+**Location**: `/referencias/01-com-content-article-completo.php`
 
-**Tipo**: Ejemplo de código completo
+**Type**: Complete code example
 
-**Propósito**: Override completo de artículo individual (com_content)
+**Purpose**: Complete single article override (com_content)
 
-**Ubicación en template**: `/templates/cassiopeia/html/com_content/article/default.php`
+**Template location**: `/templates/cassiopeia/html/com_content/article/default.php`
 
-**Contiene**:
-- Estructura semántica HTML5 (article, header, section)
+**Contains**:
+- Semantic HTML5 structure (article, header, section)
 - Breadcrumbs
-- Título con schema.org markup
-- Metadatos completos (autor, fecha, categoría)
-- Imagen destacada con figcaption
-- Contenido principal
-- Campos personalizados (jcfields)
-- Tags/etiquetas
-- Navegación anterior/siguiente
+- Title with schema.org markup
+- Complete metadata (author, date, category)
+- Featured image with figcaption
+- Main content
+- Custom fields (jcfields)
+- Tags/labels
+- Previous/next navigation
 - Plugin outputs
 
-**Cambios implementados**:
-- HTML semántico mejorado
-- Campos personalizados accesibles
-- Imagen responsiva
-- Metadatos bien organizados
-- SEO con schema.org
+**Implemented changes**:
+- Improved semantic HTML
+- Accessible custom fields
+- Responsive image
+- Well-organized metadata
+- SEO with schema.org
 
-**Longitud**: ~250 líneas con documentación
+**Length**: ~250 lines with documentation
 
-**Ideal para**: Personalizar artículos individuales
+**Ideal for**: Customizing single articles
 
 ---
 
 ### 3. 02-blog-item-personalizado.php
 
-**Ubicación**: `/referencias/02-blog-item-personalizado.php`
+**Location**: `/referencias/02-blog-item-personalizado.php`
 
-**Tipo**: Ejemplo de código completo
+**Type**: Complete code example
 
-**Propósito**: Override de artículo en listado de categoría (blog_item.php)
+**Purpose**: Category listing article override (blog_item.php)
 
-**Ubicación en template**: `/templates/cassiopeia/html/com_content/category/blog_item.php`
+**Template location**: `/templates/cassiopeia/html/com_content/category/blog_item.php`
 
-**Contiene**:
-- Estructura de artículo individual en blog
-- Imagen destacada responsiva
-- Categoría con link
-- Título con link
-- Metadatos compactos (autor, fecha, visitas)
-- Texto introductorio
-- Campos personalizados (resumido, primeros 2)
-- Botón "Leer más"
-- Tags (resumido, primeros 3)
+**Contains**:
+- Individual article structure in blog
+- Responsive featured image
+- Category with link
+- Title with link
+- Compact metadata (author, date, views)
+- Introductory text
+- Custom fields (summarized, first 2)
+- "Read more" button
+- Tags (summarized, first 3)
 
-**Cambios implementados**:
-- Diseño de tarjeta
-- Metadatos en una línea
-- Campos y tags limitados (resumido)
-- UX mejorada con iconos
-- Responsivo
+**Implemented changes**:
+- Card design
+- Single-line metadata
+- Limited fields and tags (summarized)
+- Improved UX with icons
+- Responsive
 
-**Longitud**: ~200 líneas con documentación
+**Length**: ~200 lines with documentation
 
-**Ideal para**: Personalizar listados de blog
+**Ideal for**: Customizing blog listings
 
-**Nota**: Este archivo se incluye DENTRO de blog.php en un loop
+**Note**: This file is included WITHIN blog.php in a loop
 
 ---
 
 ### 4. 03-mod-login-avanzado.php
 
-**Ubicación**: `/referencias/03-mod-login-avanzado.php`
+**Location**: `/referencias/03-mod-login-avanzado.php`
 
-**Tipo**: Ejemplo de código completo
+**Type**: Complete code example
 
-**Propósito**: Override de módulo de login con funcionalidades avanzadas
+**Purpose**: Login module override with advanced features
 
-**Ubicación en template**: `/templates/cassiopeia/html/mod_login/default.php`
+**Template location**: `/templates/cassiopeia/html/mod_login/default.php`
 
-**Contiene**:
-- Renderizado condicional: usuario logueado vs no logueado
-- Formulario de login moderno
-  - Validación HTML5
-  - Labels con aria-*
+**Contains**:
+- Conditional rendering: logged-in vs not logged-in user
+- Modern login form
+  - HTML5 validation
+  - Labels with aria-*
   - Placeholders
   - Autocomplete
-- Usuario logueado: menú personalizado
-- Recordar usuario (checkbox)
-- Mensajes de error/éxito
-- Enlace recuperar contraseña
-- Enlace registro
-- Enlace recuperar usuario
-- Tokens CSRF
+- Logged-in user: custom menu
+- Remember user (checkbox)
+- Error/success messages
+- Password recovery link
+- Registration link
+- Username recovery link
+- CSRF tokens
 
-**Cambios implementados**:
-- Accesibilidad mejorada
-- Validación moderna
-- UI diferente si está logueado
-- Parámetros configurables
-- Iconos fontawesome
+**Implemented changes**:
+- Improved accessibility
+- Modern validation
+- Different UI when logged in
+- Configurable parameters
+- Fontawesome icons
 
-**Longitud**: ~200 líneas con documentación
+**Length**: ~200 lines with documentation
 
-**Ideal para**: Personalizar login y UX de usuario
+**Ideal for**: Customizing login and user UX
 
 ---
 
 ### 5. 04-jlayout-custom-card.php
 
-**Ubicación**: `/referencias/04-jlayout-custom-card.php`
+**Location**: `/referencias/04-jlayout-custom-card.php`
 
-**Tipo**: Ejemplo de JLayout reutilizable
+**Type**: Reusable JLayout example
 
-**Propósito**: Componente de tarjeta de artículo reutilizable en múltiples vistas
+**Purpose**: Reusable article card component for multiple views
 
-**Ubicación en template**: `/templates/cassiopeia/html/layouts/joomla/custom/article-card.php`
+**Template location**: `/templates/cassiopeia/html/layouts/joomla/custom/article-card.php`
 
-**Contiene**:
-- Estructura reutilizable de tarjeta
-- Imagen con badge de categoría
-- Título con link
-- Metadatos (autor, fecha)
-- Contenido introductorio
-- Botón "Leer más"
+**Contains**:
+- Reusable card structure
+- Image with category badge
+- Title with link
+- Metadata (author, date)
+- Introductory content
+- "Read more" button
 
-**Variables esperadas**:
+**Expected variables**:
 - title, content, image, link
 - category, author, date
 - cssClass
 
-**Uso**:
+**Usage**:
 ```php
 echo JLayoutHelper::render('joomla.custom.article-card', [
     'title' => $item->title,
     'content' => $item->introtext,
-    // ... más variables
+    // ... more variables
 ]);
 ```
 
-**Ventajas**:
-- Reutilizar en blog_item.php, featured.php, módulos
-- Cambiar diseño en un solo lugar
-- Consistencia en todo el sitio
+**Advantages**:
+- Reuse in blog_item.php, featured.php, modules
+- Change design in one place
+- Consistency across the entire site
 
-**Longitud**: ~300 líneas (incluye documentación y ejemplos de uso)
+**Length**: ~300 lines (includes documentation and usage examples)
 
-**Ideal para**: Crear componentes reutilizables
+**Ideal for**: Creating reusable components
 
 ---
 
 ### 6. 05-child-template-config.xml
 
-**Ubicación**: `/referencias/05-child-template-config.xml`
+**Location**: `/referencias/05-child-template-config.xml`
 
-**Tipo**: Configuración XML
+**Type**: XML configuration
 
-**Propósito**: Archivo de configuración completo para child template
+**Purpose**: Complete configuration file for child template
 
-**Ubicación en template**: `/templates/cassiopeia-child/templateDetails.xml`
+**Template location**: `/templates/cassiopeia-child/templateDetails.xml`
 
-**Contiene**:
-- Metadata del template (nombre, versión, autor)
-- Definición de parent template
-- Lista de archivos del child
-- Posiciones de módulos
-- Parámetros configurables
-  - Fieldset básico (logo, colores)
-  - Fieldset layout (ancho, sidebar)
-  - Fieldset componentes (breadcrumbs, títulos)
-  - Fieldset avanzado (caché, compresión)
-- Variables CSS
+**Contains**:
+- Template metadata (name, version, author)
+- Parent template definition
+- Child file list
+- Module positions
+- Configurable parameters
+  - Basic fieldset (logo, colors)
+  - Layout fieldset (width, sidebar)
+  - Components fieldset (breadcrumbs, titles)
+  - Advanced fieldset (cache, compression)
+- CSS variables
 
-**Configuración de ejemplo**:
-- Logo personalizable
-- Colores del sitio
-- Anchos de página
-- Mostrar/ocultar elementos
-- Caché y compresión
+**Configuration example**:
+- Customizable logo
+- Site colors
+- Page widths
+- Show/hide elements
+- Cache and compression
 
-**Ventajas**:
-- Hereda automáticamente de parent
-- Solo almacena cambios
-- Parámetros sin tocar código
-- Múltiples child templates del mismo parent
+**Advantages**:
+- Automatically inherits from parent
+- Only stores changes
+- Parameters without touching code
+- Multiple child templates from the same parent
 
-**Longitud**: ~200 líneas con documentación
+**Length**: ~200 lines with documentation
 
-**Ideal para**: Crear child templates profesionales
+**Ideal for**: Creating professional child templates
 
 ---
 
 ### 7. 06-field-override-ejemplo.php
 
-**Ubicación**: `/referencias/06-field-override-ejemplo.php`
+**Location**: `/referencias/06-field-override-ejemplo.php`
 
-**Tipo**: Ejemplo de código completo
+**Type**: Complete code example
 
-**Propósito**: Override de campos personalizados con renderizado por tipo
+**Purpose**: Custom fields override with type-based rendering
 
-**Ubicación en template**: `/templates/cassiopeia/html/layouts/com_fields/field/render.php`
+**Template location**: `/templates/cassiopeia/html/layouts/com_fields/field/render.php`
 
-**Contiene**:
-- Renderizado condicional por tipo de campo:
+**Contains**:
+- Conditional rendering by field type:
   - text, email, url, integer, decimal
   - textarea, editor
   - radio, checkbox, list
   - calendar, date
   - file, image
-- Etiqueta con indicador requerido
-- Escapado seguro
-- Validaciones
+- Label with required indicator
+- Secure escaping
+- Validations
 
-**Alternativas**:
-- minimal.php: sin etiqueta, compacto
-- card.php: en formato tarjeta
+**Alternatives**:
+- minimal.php: no label, compact
+- card.php: in card format
 
-**Cómo usar**:
-1. Copiar a `/templates/cassiopeia/html/layouts/com_fields/field/render.php`
-2. En backend: Field Edit > Render Options > seleccionar layout
+**How to use**:
+1. Copy to `/templates/cassiopeia/html/layouts/com_fields/field/render.php`
+2. In backend: Field Edit > Render Options > select layout
 
-**Longitud**: ~250 líneas con documentación
+**Length**: ~250 lines with documentation
 
-**Ideal para**: Personalizar presentación de custom fields
+**Ideal for**: Customizing custom field presentation
 
 ---
 
 ### 8. GUIA-RAPIDA.md
 
-**Ubicación**: `/referencias/GUIA-RAPIDA.md`
+**Location**: `/referencias/GUIA-RAPIDA.md`
 
-**Tipo**: Guía de referencia rápida
+**Type**: Quick reference guide
 
-**Propósito**: Consulta rápida sin necesidad de leer SKILL.md completo
+**Purpose**: Quick lookup without needing to read the full SKILL.md
 
-**Contiene**:
-- Pasos básicos (4 pasos simples)
-- Rutas comunes (componentes, módulos, JLayout)
-- Variables útiles ($this->item, $this->params)
-- Seguridad (escapado BUENO vs MALO)
-- Layouts alternativos
-- JLayout - crear y usar
-- Troubleshooting común
-- Child template estructura mínima
-- Campos personalizados
-- Documentar override
-- Checklist de verificación
-- Recursos útiles
-- Errores comunes
-- Comandos útiles
-- Versiones soportadas
+**Contains**:
+- Basic steps (4 simple steps)
+- Common paths (components, modules, JLayout)
+- Useful variables ($this->item, $this->params)
+- Security (GOOD vs BAD escaping)
+- Alternative layouts
+- JLayout - create and use
+- Common troubleshooting
+- Child template minimum structure
+- Custom fields
+- Documenting overrides
+- Verification checklist
+- Useful resources
+- Common errors
+- Useful commands
+- Supported versions
 
-**Formato**: Markdown con tablas y ejemplos código cortos
+**Format**: Markdown with tables and short code examples
 
-**Longitud**: ~400 líneas
+**Length**: ~400 lines
 
-**Ideal para**: Referencia rápida mientras trabajas
+**Ideal for**: Quick reference while working
 
 ---
 
 ### 9. README.md
 
-**Ubicación**: `/README.md`
+**Location**: `/README.md`
 
-**Tipo**: Documentación del conjunto completo
+**Type**: Documentation of the complete set
 
-**Propósito**: Explicar estructura y contenido de la skill
+**Purpose**: Explain structure and content of the skill
 
-**Contiene**:
-- Descripción general
-- Estructura de archivos
-- Temas cubiertos
-- Cómo usar (por nivel: principiante, intermedio, avanzado)
-- Características
-- Puntos clave
-- Casos de uso comunes
-- Recursos externos
-- FAQ (preguntas frecuentes)
+**Contains**:
+- General description
+- File structure
+- Topics covered
+- How to use (by level: beginner, intermediate, advanced)
+- Features
+- Key points
+- Common use cases
+- External resources
+- FAQ (frequently asked questions)
 
-**Longitud**: ~300 líneas
+**Length**: ~300 lines
 
-**Ideal para**: Entender la estructura completa
-
----
-
-## Cómo Navegar los Archivos
-
-### Por Tema
-
-**Quiero personalizar artículos**
-- Leer: SKILL.md sección "Overrides de Componentes - com_content"
-- Ver: `/referencias/01-com-content-article-completo.php`
-- Referencia: GUIA-RAPIDA.md sección "Componentes"
-
-**Quiero modificar el listado de blog**
-- Leer: SKILL.md sección "Categoría Modo Blog - blog_item.php"
-- Ver: `/referencias/02-blog-item-personalizado.php`
-- Referencia: GUIA-RAPIDA.md sección "Rutas Comunes"
-
-**Quiero personalizar login**
-- Leer: SKILL.md sección "Overrides de Módulos"
-- Ver: `/referencias/03-mod-login-avanzado.php`
-- Referencia: GUIA-RAPIDA.md sección "Módulos"
-
-**Quiero crear componente reutilizable**
-- Leer: SKILL.md sección "JLayout"
-- Ver: `/referencias/04-jlayout-custom-card.php`
-- Referencia: GUIA-RAPIDA.md sección "JLayout - Reutilizable"
-
-**Quiero crear child template**
-- Leer: SKILL.md sección "Child Templates"
-- Ver: `/referencias/05-child-template-config.xml`
-- Referencia: GUIA-RAPIDA.md sección "Child Template"
-
-**Quiero personalizar campos**
-- Leer: SKILL.md sección "Field Overrides"
-- Ver: `/referencias/06-field-override-ejemplo.php`
-- Referencia: GUIA-RAPIDA.md sección "Campos Personalizados"
-
-### Por Experiencia
-
-**Principiante**: GUIA-RAPIDA.md → SKILL.md → Ejemplo 01 → SKILL.md completo
-
-**Intermedio**: SKILL.md → Ejemplos 02-03 → Aplicar en proyecto
-
-**Avanzado**: Ejemplos 04-06 → Combinar técnicas → Crear soluciones personalizadas
-
-### Por Urgencia
-
-**Necesito ya**: GUIA-RAPIDA.md
-**Necesito en 5 min**: SKILL.md (escanear índice)
-**Necesito código listo**: Copiar ejemplo relevante
-**Necesito entender bien**: Leer SKILL.md + ver ejemplo + hacer checklist
+**Ideal for**: Understanding the complete structure
 
 ---
 
-## Estructura de Directorios
+## How to Navigate the Files
+
+### By Topic
+
+**I want to customize articles**
+- Read: SKILL.md section "Component Overrides - com_content"
+- See: `/referencias/01-com-content-article-completo.php`
+- Reference: GUIA-RAPIDA.md section "Components"
+
+**I want to modify the blog listing**
+- Read: SKILL.md section "Category Blog Mode - blog_item.php"
+- See: `/referencias/02-blog-item-personalizado.php`
+- Reference: GUIA-RAPIDA.md section "Common Paths"
+
+**I want to customize login**
+- Read: SKILL.md section "Module Overrides"
+- See: `/referencias/03-mod-login-avanzado.php`
+- Reference: GUIA-RAPIDA.md section "Modules"
+
+**I want to create a reusable component**
+- Read: SKILL.md section "JLayout"
+- See: `/referencias/04-jlayout-custom-card.php`
+- Reference: GUIA-RAPIDA.md section "JLayout - Reusable"
+
+**I want to create a child template**
+- Read: SKILL.md section "Child Templates"
+- See: `/referencias/05-child-template-config.xml`
+- Reference: GUIA-RAPIDA.md section "Child Template"
+
+**I want to customize fields**
+- Read: SKILL.md section "Field Overrides"
+- See: `/referencias/06-field-override-ejemplo.php`
+- Reference: GUIA-RAPIDA.md section "Custom Fields"
+
+### By Experience
+
+**Beginner**: GUIA-RAPIDA.md → SKILL.md → Example 01 → Full SKILL.md
+
+**Intermediate**: SKILL.md → Examples 02-03 → Apply to project
+
+**Advanced**: Examples 04-06 → Combine techniques → Create custom solutions
+
+### By Urgency
+
+**Need it now**: GUIA-RAPIDA.md
+**Need it in 5 min**: SKILL.md (scan the index)
+**Need ready code**: Copy relevant example
+**Need to understand well**: Read SKILL.md + see example + do checklist
+
+---
+
+## Directory Structure
 
 ```
 joomla-template-overrides/
-├── SKILL.md                              Archivo principal (519 líneas)
-├── README.md                             Descripción del conjunto
+├── SKILL.md                              Main file (519 lines)
+├── README.md                             Set description
 └── referencias/
     ├── 01-com-content-article-completo.php
     ├── 02-blog-item-personalizado.php
@@ -382,66 +382,66 @@ joomla-template-overrides/
     ├── 04-jlayout-custom-card.php
     ├── 05-child-template-config.xml
     ├── 06-field-override-ejemplo.php
-    ├── GUIA-RAPIDA.md                   Este archivo
-    └── INDICE-REFERENCIAS.md            Este archivo
+    ├── GUIA-RAPIDA.md                   This file
+    └── INDICE-REFERENCIAS.md            This file
 ```
 
 ---
 
-## Información de Archivos
+## File Information
 
-| Archivo | Líneas | Tipo | Propósito |
-|---------|--------|------|-----------|
-| SKILL.md | 519 | MD + Código | Documentación completa |
-| 01-*.php | 250 | PHP | Artículo individual |
+| File | Lines | Type | Purpose |
+|------|-------|------|---------|
+| SKILL.md | 519 | MD + Code | Complete documentation |
+| 01-*.php | 250 | PHP | Single article |
 | 02-*.php | 200 | PHP | Blog item |
-| 03-*.php | 200 | PHP | Módulo login |
-| 04-*.php | 300 | PHP | JLayout reutilizable |
+| 03-*.php | 200 | PHP | Login module |
+| 04-*.php | 300 | PHP | Reusable JLayout |
 | 05-*.xml | 200 | XML | Child template config |
 | 06-*.php | 250 | PHP | Field override |
-| GUIA-RAPIDA.md | 400 | MD | Referencia rápida |
-| README.md | 300 | MD | Descripción general |
-| INDICE-REFERENCIAS.md | Este | MD | Este índice |
+| GUIA-RAPIDA.md | 400 | MD | Quick reference |
+| README.md | 300 | MD | General description |
+| INDICE-REFERENCIAS.md | This | MD | This index |
 
-**Total**: ~2,500+ líneas de documentación y código
-
----
-
-## Características de Todos los Archivos
-
-✓ Código completamente comentado
-✓ Ejemplos prácticos
-✓ Casos de uso reales
-✓ Buenas prácticas integradas
-✓ Seguridad (escapado, validación)
-✓ Accesibilidad mejorada
-✓ Responsive design
-✓ Compatible con Joomla 5/6
+**Total**: ~2,500+ lines of documentation and code
 
 ---
 
-## Próximos Pasos
+## Features of All Files
 
-1. **Lee**: GUIA-RAPIDA.md para entender estructura
-2. **Mira**: Ejemplo relevante a tu necesidad
-3. **Copia**: Código del ejemplo
-4. **Adapta**: A tu proyecto específico
-5. **Testea**: En navegador y mobile
-6. **Documenta**: Cambios realizados
-7. **Controla versiones**: Con git
-
----
-
-## ¿Dónde Empezar?
-
-**Por primera vez**: `/referencias/GUIA-RAPIDA.md` + ejemplo 01
-**Experiencia media**: SKILL.md + ejemplo relevante
-**Usuario avanzado**: Ejemplo 04/05/06 + combinar técnicas
+- Fully commented code
+- Practical examples
+- Real use cases
+- Integrated best practices
+- Security (escaping, validation)
+- Improved accessibility
+- Responsive design
+- Compatible with Joomla 5/6
 
 ---
 
-**Última actualización**: Marzo 2024
-**Versiones**: Joomla 5.x, 6.x
-**Idioma**: Español
+## Next Steps
 
-**¡Empieza ahora con la guía rápida!**
+1. **Read**: GUIA-RAPIDA.md to understand the structure
+2. **Look**: At the example relevant to your need
+3. **Copy**: Code from the example
+4. **Adapt**: To your specific project
+5. **Test**: In browser and mobile
+6. **Document**: Changes made
+7. **Version control**: With git
+
+---
+
+## Where to Start?
+
+**First time**: `/referencias/GUIA-RAPIDA.md` + example 01
+**Medium experience**: SKILL.md + relevant example
+**Advanced user**: Example 04/05/06 + combine techniques
+
+---
+
+**Last updated**: March 2024
+**Versions**: Joomla 5.x, 6.x
+**Language**: English
+
+**Start now with the quick guide!**

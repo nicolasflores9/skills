@@ -1,212 +1,212 @@
-# Skill: Desarrollo de Módulos Personalizados en Joomla 5/6
+# Skill: Custom Module Development in Joomla 5/6
 
-## Descripción
+## Description
 
-Skill completo sobre desarrollo moderno de módulos en Joomla 5 y 6. Cubre arquitectura moderna, PSR-4, namespaces, inyección de dependencias, manifest.xml, templates y ejemplos prácticos.
+Complete skill on modern module development in Joomla 5 and 6. Covers modern architecture, PSR-4, namespaces, dependency injection, manifest.xml, templates, and practical examples.
 
-## Contenido del Skill
+## Skill Contents
 
-### Archivo Principal
-- **SKILL.md** (440 líneas): Guía completa con fundamentos, estructura, inyección de dependencias, configuración XML y templates.
+### Main File
+- **SKILL.md** (440 lines): Complete guide with fundamentals, structure, dependency injection, XML configuration, and templates.
 
-### Archivos de Referencia
+### Reference Files
 
 #### references/cheat-sheet.md
-- Estructura rápida de carpetas
-- Templates PHP lista para copiar-pegar
-- Campos comunes en manifest.xml
-- Ejemplos de acceso a datos
-- Escapado seguro de HTML
-- Comandos útiles
-- Errores comunes y soluciones
-- Testing rápido y debugging
+- Quick folder structure
+- Ready-to-copy-paste PHP templates
+- Common fields in manifest.xml
+- Data access examples
+- Safe HTML escaping
+- Useful commands
+- Common errors and solutions
+- Quick testing and debugging
 
 #### references/field-types.md
-- Referencia completa de todos los tipos de campos
-- Atributos disponibles para cada tipo
-- Ejemplo completo de configuración con todos los fieldsets
-- Acceso a parámetros en PHP
+- Complete reference of all field types
+- Available attributes for each type
+- Complete configuration example with all fieldsets
+- Accessing parameters in PHP
 
 #### references/troubleshooting.md
-- Problemas de instalación y soluciones
-- Renderizado del módulo
-- Base de datos
-- Parámetros
-- Seguridad (XSS, inyección SQL)
-- Compatibilidad entre versiones
+- Installation problems and solutions
+- Module rendering
+- Database
+- Parameters
+- Security (XSS, SQL injection)
+- Cross-version compatibility
 - Performance
 - Testing
 
-### Ejemplos de Código
+### Code Examples
 
 #### examples/mod_latest_articles_full.php
-Módulo completo funcional con:
-- Archivo principal (mod_latest_articles.php)
-- manifest.xml con parámetros avanzados
+Complete functional module with:
+- Main file (mod_latest_articles.php)
+- manifest.xml with advanced parameters
 - Service Provider (services/provider.php)
 - Dispatcher (src/Dispatcher/Dispatcher.php)
-- Helper con queries BD complejas (src/Helper/ArticlesHelper.php)
-- Templates con escapado seguro (tmpl/default.php)
-- Archivos de idioma en inglés y español
+- Helper with complex DB queries (src/Helper/ArticlesHelper.php)
+- Templates with safe escaping (tmpl/default.php)
+- Language files in English and Spanish
 
-**Características**:
-- Inyección de dependencias
-- Acceso a base de datos con join
-- Parámetros configurables
-- Caché integrado
-- Validación de datos
-- Seguridad implementada
-- Internacionalización (i18n)
+**Features**:
+- Dependency injection
+- Database access with joins
+- Configurable parameters
+- Built-in caching
+- Data validation
+- Implemented security
+- Internationalization (i18n)
 
-## Requisitos Previos
+## Prerequisites
 
-- Conocimiento básico de PHP (clases, namespaces)
-- Joomla 5 o 6 instalado
-- Editor de texto/IDE (VS Code, PhpStorm, etc.)
-- Acceso a administrador de Joomla
+- Basic PHP knowledge (classes, namespaces)
+- Joomla 5 or 6 installed
+- Text editor/IDE (VS Code, PhpStorm, etc.)
+- Joomla administrator access
 
-## Cómo Usar Este Skill
+## How to Use This Skill
 
-### 1. Lectura Principal
-Comenzar por **SKILL.md** para entender:
-- Conceptos fundamentales de módulos
-- Estructura moderna de archivos
-- Namespace PSR-4
-- Inyección de dependencias
+### 1. Main Reading
+Start with **SKILL.md** to understand:
+- Module fundamentals
+- Modern file structure
+- PSR-4 namespaces
+- Dependency injection
 
-### 2. Consulta Rápida
-Para desarrollo rápido, usar:
-- **cheat-sheet.md**: Copiar templates
-- **field-types.md**: Buscar tipos de campos
-- **troubleshooting.md**: Resolver problemas
+### 2. Quick Reference
+For rapid development, use:
+- **cheat-sheet.md**: Copy templates
+- **field-types.md**: Look up field types
+- **troubleshooting.md**: Solve problems
 
-### 3. Ejemplo Funcional
-Estudiar **mod_latest_articles_full.php**:
-- Adaptar estructura a tu módulo
-- Copiar patrón de servicios
-- Modificar queries según necesidades
+### 3. Functional Example
+Study **mod_latest_articles_full.php**:
+- Adapt the structure to your module
+- Copy the services pattern
+- Modify queries as needed
 
-## Estructura de Carpetas
+## Folder Structure
 
 ```
 joomla-module-development/
-├── SKILL.md                                    (Guía principal)
-├── README.md                                   (Este archivo)
+├── SKILL.md                                    (Main guide)
+├── README.md                                   (This file)
 ├── references/
-│   ├── cheat-sheet.md                         (Templates rápidos)
-│   ├── field-types.md                         (Referencia de campos)
-│   └── troubleshooting.md                     (Problemas y soluciones)
+│   ├── cheat-sheet.md                         (Quick templates)
+│   ├── field-types.md                         (Field reference)
+│   └── troubleshooting.md                     (Problems and solutions)
 └── examples/
-    └── mod_latest_articles_full.php           (Ejemplo completo funcional)
+    └── mod_latest_articles_full.php           (Complete functional example)
 ```
 
-## Contenido por Tema
+## Content by Topic
 
-### Fundamentos
-- Qué es un módulo en Joomla
-- Diferencia módulos vs componentes vs plugins
-- Ciclo de vida
-- Convenciones de nombres
+### Fundamentals
+- What is a module in Joomla
+- Difference between modules vs components vs plugins
+- Lifecycle
+- Naming conventions
 
-### Arquitectura Moderna
-- Estructura PSR-4
-- Directorios: src/, tmpl/, language/, services/
-- Archivos obligatorios vs opcionales
-- Buenas prácticas
+### Modern Architecture
+- PSR-4 structure
+- Directories: src/, tmpl/, language/, services/
+- Required vs optional files
+- Best practices
 
-### Lenguaje PHP
+### PHP Language
 - Namespaces
-- Inyección de dependencias (DI)
-- Contenedor DI de Joomla
+- Dependency Injection (DI)
+- Joomla DI container
 - Service Provider pattern
 
-### Configuración
-- manifest.xml completo
-- Parámetros y campos
-- Validación
-- Internacionalización
+### Configuration
+- Complete manifest.xml
+- Parameters and fields
+- Validation
+- Internationalization
 
-### Vistas y Rendering
+### Views and Rendering
 - Templates (tmpl/)
 - Layouts (default.xml)
-- Variables disponibles
-- Escapado y seguridad
+- Available variables
+- Escaping and security
 
-### Base de Datos
-- Acceso con DatabaseInterface
-- Queries con Query Builder
-- Joins y condiciones
-- Seguridad ante inyección SQL
+### Database
+- Access with DatabaseInterface
+- Queries with Query Builder
+- Joins and conditions
+- SQL injection security
 
-### Ejemplos Prácticos
-- Módulo Hello World
-- Módulo con acceso a BD
-- Módulo con parámetros avanzados
-- Internacionalización multiidioma
+### Practical Examples
+- Hello World module
+- Module with DB access
+- Module with advanced parameters
+- Multi-language internationalization
 
-## Características Cubiertas
+## Features Covered
 
 - ✅ PSR-4 Autoloading
-- ✅ Inyección de Dependencias
-- ✅ Namespaces correcto
+- ✅ Dependency Injection
+- ✅ Correct Namespaces
 - ✅ ModuleDispatcherFactory
 - ✅ HelperFactory
-- ✅ Parámetros XML avanzados
-- ✅ Templates seguras
-- ✅ Acceso a base de datos
-- ✅ Caché integrado
-- ✅ Internacionalización (i18n)
-- ✅ Validación de datos
-- ✅ Escapado de HTML
-- ✅ Compatibilidad J5/J6
+- ✅ Advanced XML Parameters
+- ✅ Secure Templates
+- ✅ Database Access
+- ✅ Built-in Caching
+- ✅ Internationalization (i18n)
+- ✅ Data Validation
+- ✅ HTML Escaping
+- ✅ J5/J6 Compatibility
 
-## Guía Rápida para Crear un Módulo
+## Quick Guide to Create a Module
 
-1. **Crear estructura**: Usar templates en cheat-sheet.md
-2. **Configurar manifest.xml**: Copiar estructura, adaptar nombres
-3. **Implementar Service Provider**: Registrar servicios
-4. **Crear Dispatcher**: Preparar datos para template
-5. **Escribir Helper**: Lógica de negocio
-6. **Diseñar Template**: HTML seguro con escapado
-7. **Traducir**: Archivos .ini en language/
-8. **Empaquetar**: Crear ZIP con la estructura
-9. **Instalar**: Subir en Joomla admin
-10. **Probar y depurar**: Usar troubleshooting.md
+1. **Create structure**: Use templates in cheat-sheet.md
+2. **Configure manifest.xml**: Copy structure, adapt names
+3. **Implement Service Provider**: Register services
+4. **Create Dispatcher**: Prepare data for template
+5. **Write Helper**: Business logic
+6. **Design Template**: Secure HTML with escaping
+7. **Translate**: .ini files in language/
+8. **Package**: Create ZIP with the structure
+9. **Install**: Upload in Joomla admin
+10. **Test and debug**: Use troubleshooting.md
 
-## Diferencias Joomla 4 → 5 → 6
+## Differences Joomla 4 → 5 → 6
 
-Todo el contenido de este skill es compatible con Joomla 5 y 6. Joomla 4 requiere adaptaciones menores en algunos comandos, pero la arquitectura es similar.
+All content in this skill is compatible with Joomla 5 and 6. Joomla 4 requires minor adaptations in some commands, but the architecture is similar.
 
-## Recursos Externos
+## External Resources
 
-### Documentación Oficial
+### Official Documentation
 - https://manual.joomla.org/docs/building-extensions/modules/
 - https://docs.joomla.org/Module_development_tutorial_(4.x)
 - https://github.com/joomla/joomla-cms
 
-### Estándares PHP
+### PHP Standards
 - https://www.php-fig.org/psr/psr-4/ (PSR-4)
 - https://www.php-fig.org/ (PHP-FIG)
 
-### Comunidad
-- https://forum.joomla.org/ (Foro oficial)
+### Community
+- https://forum.joomla.org/ (Official forum)
 - https://joomla.stackexchange.com/ (StackExchange)
 
-## Información del Skill
+## Skill Information
 
-- **Creado**: 6 de marzo de 2025
-- **Lenguaje**: Español
-- **Versiones Joomla**: 5.x, 6.x
-- **Nivel**: Intermedio a Avanzado
-- **Líneas SKILL.md**: 440 (bajo 500)
-- **Archivos de referencia**: 3
-- **Ejemplos código**: 1 completo + múltiples snippets
+- **Created**: March 6, 2025
+- **Language**: English
+- **Joomla Versions**: 5.x, 6.x
+- **Level**: Intermediate to Advanced
+- **SKILL.md Lines**: 440 (under 500)
+- **Reference files**: 3
+- **Code examples**: 1 complete + multiple snippets
 
 ## Trigger Keywords
 
-Este skill se activa con palabras clave como:
-- módulo joomla
-- crear módulo
+This skill is activated by keywords such as:
+- joomla module
+- create module
 - module joomla
 - mod_custom
 - ModuleDispatcherFactory
@@ -214,8 +214,8 @@ Este skill se activa con palabras clave como:
 - tmpl joomla
 - manifest joomla
 - PSR-4 joomla
-- inyección de dependencias
+- dependency injection
 
 ---
 
-**Nota**: Para instalar este skill en Claude Code, descargar la carpeta y usar la función de importar skills.
+**Note**: To install this skill in Claude Code, download the folder and use the import skills function.

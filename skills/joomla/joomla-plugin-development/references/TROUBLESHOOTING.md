@@ -1,88 +1,88 @@
-# Guía de Troubleshooting: Plugins Joomla 5/6
+# Troubleshooting Guide: Joomla 5/6 Plugins
 
-## Problemas de Instalación
+## Installation Problems
 
-### El plugin no aparece en la lista de extensiones
+### Plugin does not appear in the extensions list
 
-**Síntomas:**
-- El plugin está en la carpeta correcta pero no aparece en Panel Control > Extensiones > Plugins
-- La instalación no muestra errores
+**Symptoms:**
+- The plugin is in the correct folder but does not appear in Control Panel > Extensions > Plugins
+- The installation does not show errors
 
-**Soluciones:**
+**Solutions:**
 
-1. **Verificar manifest.xml**
-   - Asegurar que está en la raíz de la carpeta del plugin
-   - Validar que el XML es válido (sin caracteres especiales o acentos sin encoding)
-   - Verificar que tiene la declaración XML: `<?xml version="1.0" encoding="utf-8"?>`
+1. **Verify manifest.xml**
+   - Ensure it is in the root of the plugin folder
+   - Validate that the XML is valid (no special characters or unencoded accents)
+   - Verify it has the XML declaration: `<?xml version="1.0" encoding="utf-8"?>`
 
-2. **Verificar permisos**
+2. **Verify permissions**
    ```bash
    chmod 755 plugins/system/myplugin
    chmod 644 plugins/system/myplugin/manifest.xml
    ```
 
-3. **Limpiar cache**
-   - Panel Control > Sistema > Cache > Vaciar Cache
-   - O eliminar: `administrator/cache/autoload_psr4.php`
+3. **Clear cache**
+   - Control Panel > System > Cache > Clear Cache
+   - Or delete: `administrator/cache/autoload_psr4.php`
 
-4. **Verificar elemento type**
+4. **Verify the type element**
    ```xml
-   <!-- Correcto -->
+   <!-- Correct -->
    <extension type="plugin" group="system">
 
-   <!-- Incorrecto -->
+   <!-- Incorrect -->
    <extension type="plg" group="system">
    <plugin type="system">
    ```
 
 ### Error "Fatal error: Class not found"
 
-**Síntomas:**
-- Error al habilitar el plugin
-- Mensaje como "Class 'MyCompany\Plugin\System\Myexample\Extension' not found"
+**Symptoms:**
+- Error when enabling the plugin
+- Message like "Class 'MyCompany\Plugin\System\Myexample\Extension' not found"
 
-**Soluciones:**
+**Solutions:**
 
-1. **Verificar namespace en manifest.xml**
+1. **Verify namespace in manifest.xml**
    ```xml
-   <!-- DEBE coincidir exactamente con la clase -->
+   <!-- MUST match exactly with the class -->
    <namespace path="src">MyCompany\Plugin\System\Myexample</namespace>
    ```
 
-2. **Verificar namespace en services/provider.php**
+2. **Verify namespace in services/provider.php**
    ```php
-   // DEBE coincidir con manifest
+   // MUST match with manifest
    namespace MyCompany\Plugin\System\Myexample;
    ```
 
-3. **Verificar ruta en manifest.xml**
+3. **Verify path in manifest.xml**
    ```xml
-   <!-- El atributo plugin DEBE coincidir con el nombre del plugin -->
+   <!-- The plugin attribute MUST match the plugin name -->
    <folder plugin="myexample">services</folder>
 
-   <!-- Si el plugin se llama "plg_system_myexample", esto es correcto -->
-   <!-- Si se llama "plg_system_myexample2", debe ser plugin="myexample2" -->
+   <!-- If the plugin is called "plg_system_myexample", this is correct -->
+   <!-- If it is called "plg_system_myexample2", it should be plugin="myexample2" -->
    ```
 
-4. **Regenerar cache PSR-4**
+4. **Regenerate PSR-4 cache**
    ```bash
    rm administrator/cache/autoload_psr4.php
    ```
-   Luego acceder a la página y dejar que Joomla lo regenere.
+   Then access the page and let Joomla regenerate it.
 
-## Problemas de Eventos
+## Event Problems
 
-### El evento no se dispara
+### Event does not fire
 
-**Síntomas:**
-- El código en onContentPrepare no se ejecuta
-- El evento no se llama en absoluto
+**Symptoms:**
+- The code in onContentPrepare does not execute
+- The event is not called at all
 
-**Soluciones:**
+**Solutions:**
 
-1. **Verificar getSubscribedEvents()**
+1. **Verify getSubscribedEvents()**
    ```php
-   // Correcto
+   // Correct
    public static function getSubscribedEvents(): array
    {
        return [
@@ -90,101 +90,101 @@
        ];
    }
 
-   // Incorrecto: falta return type
+   // Incorrect: missing return type
    public static function getSubscribedEvents()
    {
        return ['onContentPrepare' => 'onContentPrepare'];
    }
    ```
 
-2. **Verificar que el plugin está habilitado**
-   - Panel Control > Extensiones > Plugins
-   - El estado debe ser verde (habilitado)
+2. **Verify the plugin is enabled**
+   - Control Panel > Extensions > Plugins
+   - Status must be green (enabled)
 
-3. **Verificar que el método existe**
+3. **Verify the method exists**
    ```php
-   // Debe existir este método exacto
+   // This exact method must exist
    public function onContentPrepare(ContentPrepareEvent $event)
    {
        // ...
    }
    ```
 
-4. **Verificar allowLegacyListeners**
+4. **Verify allowLegacyListeners**
    ```php
-   // Si está TRUE, intenta buscar métodos antiguos
-   protected $allowLegacyListeners = false; // Correcto para Joomla 5/6
+   // If TRUE, it tries to find legacy methods
+   protected $allowLegacyListeners = false; // Correct for Joomla 5/6
    ```
 
-5. **Revisar logs**
+5. **Check logs**
    ```bash
    tail -f logs/joomla.log
    ```
-   Buscar mensajes de error relacionados con el evento
+   Look for error messages related to the event
 
-### El evento se dispara pero con argumentos inválidos
+### Event fires but with invalid arguments
 
-**Síntomas:**
-- El evento se dispara pero los argumentos son null o vacíos
-- Error al acceder a propiedades del objeto del evento
+**Symptoms:**
+- The event fires but arguments are null or empty
+- Error when accessing event object properties
 
-**Soluciones:**
+**Solutions:**
 
-1. **Usar Event Classes correctas**
+1. **Use correct Event Classes**
    ```php
-   // Incorrecto: sin type hint
+   // Incorrect: without type hint
    public function onContentPrepare($event)
    {
-       $article = $event->getArgument('0'); // Puede ser null
+       $article = $event->getArgument('0'); // May be null
    }
 
-   // Correcto: con type hint
+   // Correct: with type hint
    use Joomla\CMS\Event\Content\ContentPrepareEvent;
 
    public function onContentPrepare(ContentPrepareEvent $event)
    {
-       $article = $event->getArgument('0'); // Acceso seguro
+       $article = $event->getArgument('0'); // Safe access
    }
    ```
 
-2. **Verificar índices correctos**
+2. **Verify correct indices**
    ```php
-   // Los índices pueden variar por evento
+   // Indices may vary by event
    // onContentPrepare: [0] = article, [1] = params
    $article = $event->getArgument('0');
    $params = $event->getArgument('1');
 
-   // Usar métodos específicos si existen
-   $article = $event->getArticle(); // Más seguro
+   // Use specific methods if available
+   $article = $event->getArticle(); // Safer
    ```
 
-3. **Validar argumentos antes de usar**
+3. **Validate arguments before use**
    ```php
    public function onContentPrepare(ContentPrepareEvent $event)
    {
        $article = $event->getArgument('0');
 
-       // Validar SIEMPRE
+       // ALWAYS validate
        if (!$article || !property_exists($article, 'text')) {
            return;
        }
 
-       // Ahora es seguro usar
+       // Now safe to use
        $article->text = $this->process($article->text);
    }
    ```
 
-## Problemas de Configuración
+## Configuration Problems
 
-### Los parámetros no se guardan
+### Parameters are not saving
 
-**Síntomas:**
-- Los campos de configuración no aparecen
-- Los parámetros se resetean al deshabilitar/habilitar
+**Symptoms:**
+- Configuration fields do not appear
+- Parameters reset when disabling/enabling
 
-**Soluciones:**
+**Solutions:**
 
-1. **Verificar sintaxis en manifest.xml**
+1. **Verify syntax in manifest.xml**
    ```xml
    <config>
        <fields name="params">
@@ -200,29 +200,29 @@
    </config>
    ```
 
-2. **Verificar tipos de campos válidos**
+2. **Verify valid field types**
    - text, textarea, checkbox, radio, select, list, etc.
-   - Usar `type="checkbox"` no `type="check"`
+   - Use `type="checkbox"` not `type="check"`
 
-3. **Acceder a parámetros correctamente**
+3. **Access parameters correctly**
    ```php
-   // Correcto
+   // Correct
    $value = $this->params->get('param_name', 'default_value');
 
-   // Incorrecto
+   // Incorrect
    $value = $this->params['param_name'];
    $value = $this->params->param_name;
    ```
 
-### Las traducciones no se cargan
+### Translations are not loading
 
-**Síntomas:**
-- Los labels muestran "PLG_MYPLUGIN_LABEL" en lugar del texto
-- Los idiomas no se aplican correctamente
+**Symptoms:**
+- Labels show "PLG_MYPLUGIN_LABEL" instead of the text
+- Languages are not applied correctly
 
-**Soluciones:**
+**Solutions:**
 
-1. **Verificar estructura de directorios**
+1. **Verify directory structure**
    ```
    language/
    └── en-GB/
@@ -230,45 +230,45 @@
        └── plg_system_myplugin.sys.ini
    ```
 
-2. **Verificar nombre exacto del archivo**
+2. **Verify exact file name**
    ```
-   Correcto: plg_system_myplugin.ini
-   Incorrecto: plg_system_myplugin.php
-   Incorrecto: plg_system_my_plugin.ini (con guion bajo en nombre)
+   Correct: plg_system_myplugin.ini
+   Incorrect: plg_system_myplugin.php
+   Incorrect: plg_system_my_plugin.ini (with underscore in name)
    ```
 
-3. **Habilitar autoload de idiomas**
+3. **Enable language autoloading**
    ```php
    class Extension extends CMSPlugin
    {
-       protected $autoloadLanguage = true; // DEBE ser true
+       protected $autoloadLanguage = true; // MUST be true
    }
    ```
 
-4. **Verificar que el prefix de strings es correcto**
+4. **Verify the string prefix is correct**
    ```ini
-   <!-- En manifest.xml y archivos .ini, usar PLG_TIPO_NOMBRE -->
+   <!-- In manifest.xml and .ini files, use PLG_TYPE_NAME -->
    PLG_SYSTEM_MYPLUGIN="My Plugin"
    PLG_SYSTEM_MYPLUGIN_LABEL="Label"
 
-   <!-- Si el plugin se llama "plg_content_example", usar -->
+   <!-- If the plugin is called "plg_content_example", use -->
    PLG_CONTENT_EXAMPLE="Example Plugin"
    PLG_CONTENT_EXAMPLE_LABEL="Label"
    ```
 
-## Problemas de Rendimiento
+## Performance Problems
 
-### El sitio se vuelve lento
+### The site becomes slow
 
-**Síntomas:**
-- Las páginas cargan más lentamente después de habilitar el plugin
-- Alto uso de CPU/Memoria
+**Symptoms:**
+- Pages load more slowly after enabling the plugin
+- High CPU/Memory usage
 
-**Soluciones:**
+**Solutions:**
 
-1. **Limitar eventos suscritos**
+1. **Limit subscribed events**
    ```php
-   // Malo: suscribirse a muchos eventos
+   // Bad: subscribing to many events
    public static function getSubscribedEvents(): array
    {
        return [
@@ -280,7 +280,7 @@
        ];
    }
 
-   // Mejor: solo eventos necesarios
+   // Better: only necessary events
    public static function getSubscribedEvents(): array
    {
        return [
@@ -289,7 +289,7 @@
    }
    ```
 
-2. **Usar cache**
+2. **Use cache**
    ```php
    use Joomla\CMS\Cache\CacheFactory;
 
@@ -300,25 +300,25 @@
        return $result;
    }
 
-   // Procesamiento costoso
+   // Expensive processing
    $result = $this->expensiveOperation();
 
-   // Guardar por 1 hora (3600 segundos)
+   // Store for 1 hour (3600 seconds)
    $cache->store($result, $key, '_system', 3600);
    ```
 
-3. **Evitar consultas innecesarias**
+3. **Avoid unnecessary queries**
    ```php
-   // Malo: consulta en cada evento
+   // Bad: query on every event
    public function onContentPrepare($event)
    {
        $db = Factory::getDbo();
        $query = $db->getQuery(true)->select('*')->from('#__articles');
        $db->setQuery($query);
-       // Esto se ejecuta para CADA artículo
+       // This executes for EVERY article
    }
 
-   // Mejor: cachear o limitar
+   // Better: cache or limit
    public function onContentPrepare($event)
    {
        static $articles = null;
@@ -332,63 +332,63 @@
    }
    ```
 
-## Problemas de Seguridad
+## Security Problems
 
-### Acceso denegado o errores de permisos
+### Access denied or permission errors
 
-**Síntomas:**
-- "Access Denied" aunque el usuario tiene permisos
-- El plugin intenta hacer cosas que no puede
+**Symptoms:**
+- "Access Denied" even though the user has permissions
+- The plugin tries to do things it cannot
 
-**Soluciones:**
+**Solutions:**
 
-1. **Verificar permisos de usuario**
+1. **Verify user permissions**
    ```php
    use Joomla\CMS\Factory;
 
    $user = Factory::getUser();
 
    if (!$user->authorise('core.edit', 'com_content')) {
-       // Usuario no tiene permisos
+       // User does not have permissions
        return;
    }
    ```
 
-2. **Validar entrada siempre**
+2. **Always validate input**
    ```php
    use Joomla\CMS\Filter\InputFilter;
 
    $filter = InputFilter::getInstance();
 
-   // Validar por tipo
+   // Validate by type
    $text = $filter->clean($_GET['text'], 'STRING');
    $number = $filter->clean($_GET['number'], 'INT');
    $html = $filter->clean($_GET['html'], 'HTML');
    ```
 
-3. **Escapar salida**
+3. **Escape output**
    ```php
    use Joomla\CMS\HTML\HTMLHelper;
 
-   // Para texto plano
+   // For plain text
    echo HTMLHelper::_('common.escape', $userContent);
 
-   // Para HTML
+   // For HTML
    echo htmlspecialchars($userContent, ENT_QUOTES, 'UTF-8');
    ```
 
-### Consultas SQL inseguras
+### Insecure SQL queries
 
-**Síntomas:**
-- Errors SQL inesperados
-- Comportamiento extraño en la base de datos
-- Posible SQL injection
+**Symptoms:**
+- Unexpected SQL errors
+- Strange database behavior
+- Possible SQL injection
 
-**Soluciones:**
+**Solutions:**
 
-1. **Usar query binding**
+1. **Use query binding**
    ```php
-   // Correcto
+   // Correct
    $db = Factory::getDbo();
    $query = $db->getQuery(true)
        ->select('*')
@@ -399,89 +399,89 @@
    $db->setQuery($query);
    $result = $db->loadObject();
 
-   // Incorrecto
+   // Incorrect
    $query = $db->getQuery(true)
        ->select('*')
        ->from($db->quoteName('#__articles'))
        ->where('id = ' . $articleId); // SQL INJECTION!
    ```
 
-2. **Usar quoteName para identificadores**
+2. **Use quoteName for identifiers**
    ```php
-   // Correcto
+   // Correct
    $query = $db->getQuery(true)
        ->select($db->quoteName('title'))
        ->from($db->quoteName('#__articles'));
 
-   // Incorrecto
+   // Incorrect
    $query = $db->getQuery(true)
        ->select('title')
        ->from('#__articles');
    ```
 
-## Problemas de Compatibilidad
+## Compatibility Problems
 
 ### Error "Undefined class 'SubscriberInterface'"
 
-**Síntomas:**
-- Error durante instalación
-- Versión de Joomla demasiado antigua
+**Symptoms:**
+- Error during installation
+- Joomla version too old
 
-**Soluciones:**
+**Solutions:**
 
-1. **Verificar versión mínima**
+1. **Verify minimum version**
    ```xml
-   <!-- En manifest.xml -->
+   <!-- In manifest.xml -->
    <targetPlatform version="5.0" />
 
-   <!-- Significa que requiere Joomla 5.0 o superior -->
+   <!-- Means it requires Joomla 5.0 or higher -->
    ```
 
-2. **Para Joomla 4.4 o superior:**
+2. **For Joomla 4.4 or higher:**
    ```php
    use Joomla\Event\SubscriberInterface;
    ```
 
-3. **Para versiones anteriores, usar patrón antiguo:**
+3. **For earlier versions, use the legacy pattern:**
    ```php
    class Extension extends CMSPlugin
    {
        public function onContentPrepare($context, &$article, &$params, $page = 0)
        {
-           // Patrón antiguo para Joomla 3-4
+           // Legacy pattern for Joomla 3-4
        }
    }
    ```
 
-### Event Classes no disponibles
+### Event Classes not available
 
-**Síntomas:**
+**Symptoms:**
 - "Undefined class 'ContentPrepareEvent'"
-- Event Classes solo disponibles en Joomla 5.2+
+- Event Classes only available in Joomla 5.2+
 
-**Soluciones:**
+**Solutions:**
 
-1. **Verificar versión de Joomla**
-   - Event Classes disponibles a partir de Joomla 5.2
-   - Para versiones anteriores, usar argumentos por índice
+1. **Verify Joomla version**
+   - Event Classes available starting from Joomla 5.2
+   - For earlier versions, use arguments by index
 
-2. **Fallback para versiones anteriores**
+2. **Fallback for earlier versions**
    ```php
    public function onContentPrepare($event)
    {
-       // Soporta Event Classes (Joomla 5.2+)
+       // Supports Event Classes (Joomla 5.2+)
        if ($event instanceof \Joomla\CMS\Event\EventInterface) {
            $article = $event->getArgument('0');
        } else {
-           // Fallback para versiones antiguas
+           // Fallback for older versions
            $article = func_get_arg(0);
        }
    }
    ```
 
-## Debugging Efectivo
+## Effective Debugging
 
-### Habilitar logging
+### Enable logging
 
 ```php
 use Joomla\CMS\Factory;
@@ -495,23 +495,23 @@ $logger->info('Message', ['category' => 'plugin']);
 // Log error
 $logger->error('Error message', ['exception' => $e]);
 
-// Revisar logs
+// Check logs
 tail -f logs/joomla.log
 ```
 
-### Usar Xdebug
+### Using Xdebug
 
-1. Instalar Xdebug en el servidor
-2. Configurar IDE (VS Code, PhpStorm)
-3. Añadir breakpoints en el código del plugin
-4. Navegar por el sitio para activar puntos de ruptura
+1. Install Xdebug on the server
+2. Configure IDE (VS Code, PhpStorm)
+3. Add breakpoints in the plugin code
+4. Browse the site to trigger breakpoints
 
-### Verificar estado del plugin
+### Verify plugin status
 
 ```bash
-# En la carpeta de Joomla
+# In the Joomla folder
 php bin/joomla list:plugins
 
-# O en Panel Control
-Extensions > Plugins > Buscar plugin > Verificar estado
+# Or in Control Panel
+Extensions > Plugins > Search plugin > Verify status
 ```

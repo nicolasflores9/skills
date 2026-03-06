@@ -1,62 +1,62 @@
 ---
 name: sppagebuilder-custom-addon
-description: Crea addons personalizados para SP Page Builder. Triggers - addon sp page builder, addon sppb, SP Page Builder custom, addon personalizado page builder, plg_sppagebuilder, admin.php site.php addon
+description: Create custom addons for SP Page Builder. Triggers - addon sp page builder, addon sppb, SP Page Builder custom, custom addon page builder, plg_sppagebuilder, admin.php site.php addon
 ---
 
 # SP Page Builder - Custom Addon Development
 
-Domina la creación de addons personalizados para SP Page Builder (v5/6). Aprenderás arquitectura, estructura de archivos, tipos de campos, renderizado dinámico y acceso a base de datos.
+Master the creation of custom addons for SP Page Builder (v5/6). Learn architecture, file structure, field types, dynamic rendering, and database access.
 
-## Tabla de Contenidos
+## Table of Contents
 
-1. Arquitectura Fundamental
-2. Estructura de Plugin
-3. Archivos Principales
-4. Tipos de Campos
-5. Implementación Frontend
-6. Acceso a Base de Datos
-7. Ejemplo Completo
-8. Instalación y Testing
+1. Fundamental Architecture
+2. Plugin Structure
+3. Main Files
+4. Field Types
+5. Frontend Implementation
+6. Database Access
+7. Complete Example
+8. Installation and Testing
 
 ---
 
-## 1. ARQUITECTURA FUNDAMENTAL
+## 1. FUNDAMENTAL ARCHITECTURE
 
-Los addons se instalan como **plugins Joomla** con convención:
+Addons are installed as **Joomla plugins** following the convention:
 
 ```
-plg_sppagebuilder_{nombre}
+plg_sppagebuilder_{name}
 ```
 
-Ejemplos válidos: `plg_sppagebuilder_demo`, `plg_sppagebuilder_testimonios`, `plg_sppagebuilder_gallery`
+Valid examples: `plg_sppagebuilder_demo`, `plg_sppagebuilder_testimonials`, `plg_sppagebuilder_gallery`
 
-Estructura de directorios:
+Directory structure:
 ```
 plg_sppagebuilder_demo/
-├── demo.php                    (Archivo principal plugin)
-├── demo.xml                    (Manifest XML)
+├── demo.php                    (Main plugin file)
+├── demo.xml                    (XML Manifest)
 ├── language/
 │   └── en-GB/
 │       └── en-GB.plg_sppagebuilder_demo.ini
 └── addons/
     └── demo/
-        ├── admin.php          (Configuración campos)
-        ├── site.php           (Renderizado frontend)
+        ├── admin.php          (Field configuration)
+        ├── site.php           (Frontend rendering)
         └── assets/
             └── images/icon.png (76x76 px)
 ```
 
-Ciclo de carga:
-1. Plugin principal (demo.php) registra addon
-2. Manifest (demo.xml) define metadatos
-3. admin.php define campos editables
-4. site.php renderiza HTML en frontend
+Loading cycle:
+1. Main plugin (demo.php) registers addon
+2. Manifest (demo.xml) defines metadata
+3. admin.php defines editable fields
+4. site.php renders HTML on the frontend
 
 ---
 
-## 2. ESTRUCTURA DE PLUGIN
+## 2. PLUGIN STRUCTURE
 
-**demo.php** - Punto de entrada del plugin:
+**demo.php** - Plugin entry point:
 
 ```php
 <?php
@@ -74,15 +74,15 @@ class PlgSppagebuilderDemo extends CMSPlugin {
 }
 ```
 
-**demo.xml** - Manifest del plugin:
+**demo.xml** - Plugin manifest:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="plugin" group="sppagebuilder" method="upgrade">
     <name>plg_sppagebuilder_demo</name>
-    <author>Tu Nombre</author>
+    <author>Your Name</author>
     <version>1.0.0</version>
-    <description>Custom addon demo para SP Page Builder</description>
+    <description>Custom addon demo for SP Page Builder</description>
     <license>GNU/GPLv2 or later</license>
 
     <files>
@@ -98,9 +98,9 @@ class PlgSppagebuilderDemo extends CMSPlugin {
     <config>
         <fields name="params">
             <fieldset name="basic">
-                <field name="enabled" type="radio" label="Habilitado" default="1">
+                <field name="enabled" type="radio" label="Enabled" default="1">
                     <option value="0">No</option>
-                    <option value="1">Sí</option>
+                    <option value="1">Yes</option>
                 </field>
             </fieldset>
         </fields>
@@ -110,9 +110,9 @@ class PlgSppagebuilderDemo extends CMSPlugin {
 
 ---
 
-## 3. ARCHIVOS PRINCIPALES
+## 3. MAIN FILES
 
-**admin.php** - Define campos de configuración:
+**admin.php** - Defines configuration fields:
 
 ```php
 <?php
@@ -122,29 +122,29 @@ SpAddonsConfig::addonConfig(array(
     'type'       => 'content',
     'addon_name' => 'sp_demo',
     'title'      => 'Demo Card',
-    'desc'       => 'Addon card personalizado',
+    'desc'       => 'Custom card addon',
     'category'   => 'Custom',
     'icon'       => '',
     'attr'       => array(
         'general' => array(
             'title' => array(
                 'type'  => 'text',
-                'title' => 'Título',
+                'title' => 'Title',
                 'std'   => 'Card Title'
             ),
             'description' => array(
                 'type'  => 'textarea',
-                'title' => 'Descripción',
+                'title' => 'Description',
                 'std'   => ''
             ),
             'button_text' => array(
                 'type'  => 'text',
-                'title' => 'Texto Botón',
+                'title' => 'Button Text',
                 'std'   => 'Click Me'
             ),
             'button_url' => array(
                 'type'  => 'link',
-                'title' => 'URL Botón',
+                'title' => 'Button URL',
                 'std'   => ''
             ),
             'addon_color' => array(
@@ -156,7 +156,7 @@ SpAddonsConfig::addonConfig(array(
         'styling' => array(
             'alignment' => array(
                 'type'  => 'alignment',
-                'title' => 'Alineación',
+                'title' => 'Alignment',
                 'std'   => 'left'
             )
         )
@@ -166,26 +166,26 @@ SpAddonsConfig::addonConfig(array(
 
 ---
 
-## 4. TIPOS DE CAMPOS DISPONIBLES
+## 4. AVAILABLE FIELD TYPES
 
-| Tipo | Uso | Ejemplo |
-|------|-----|---------|
-| `text` | Texto simple | Títulos, nombres |
-| `textarea` | Texto multilínea | Descripciones |
-| `number` | Números | Tamaños, límites |
-| `color` | Selector color | Paletas cromáticas |
-| `media` | Upload imagen | Multimedia |
-| `link` | URL con opciones | Enlaces |
-| `select` | Dropdown | Selecciones |
-| `checkbox`/`radio` | Booleano/opción | Switches |
-| `repeatable` | Colecciones | Listas dinámicas |
-| `typography` | Estilos texto | Fuentes |
-| `padding`/`margin` | Espaciado | Márgenes |
-| `icon` | Font Awesome | Iconografía |
-| `slider` | Control deslizante | Rangos |
-| `animation` | Efectos CSS | Animaciones |
+| Type | Usage | Example |
+|------|-------|---------|
+| `text` | Simple text | Titles, names |
+| `textarea` | Multiline text | Descriptions |
+| `number` | Numbers | Sizes, limits |
+| `color` | Color picker | Color palettes |
+| `media` | Image upload | Multimedia |
+| `link` | URL with options | Links |
+| `select` | Dropdown | Selections |
+| `checkbox`/`radio` | Boolean/option | Switches |
+| `repeatable` | Collections | Dynamic lists |
+| `typography` | Text styles | Fonts |
+| `padding`/`margin` | Spacing | Margins |
+| `icon` | Font Awesome | Iconography |
+| `slider` | Slider control | Ranges |
+| `animation` | CSS effects | Animations |
 
-Campos repetibles para colecciones:
+Repeatable fields for collections:
 
 ```php
 'items' => array(
@@ -194,15 +194,15 @@ Campos repetibles para colecciones:
     'fields' => array(
         'item_title' => array(
             'type'  => 'text',
-            'title' => 'Título Item'
+            'title' => 'Item Title'
         ),
         'item_image' => array(
             'type'  => 'media',
-            'title' => 'Imagen Item'
+            'title' => 'Item Image'
         ),
         'item_url' => array(
             'type'  => 'link',
-            'title' => 'URL Item'
+            'title' => 'Item URL'
         )
     )
 )
@@ -210,9 +210,9 @@ Campos repetibles para colecciones:
 
 ---
 
-## 5. IMPLEMENTACIÓN FRONTEND
+## 5. FRONTEND IMPLEMENTATION
 
-**site.php** - Renderiza el HTML:
+**site.php** - Renders the HTML:
 
 ```php
 <?php
@@ -277,23 +277,23 @@ class SppagebuilderAddonSp_demo extends SppagebuilderAddons {
 }
 ```
 
-Métodos principales:
-- `render()` - Genera HTML para frontend
-- `css()` - Genera CSS dinámico según settings
-- `getTemplate()` - Template lodash para edición en tiempo real
-- `stylesheets()` - Registra archivos CSS externos
-- `scripts()` - Registra archivos JS externos
+Main methods:
+- `render()` - Generates HTML for the frontend
+- `css()` - Generates dynamic CSS based on settings
+- `getTemplate()` - Lodash template for real-time editing
+- `stylesheets()` - Registers external CSS files
+- `scripts()` - Registers external JS files
 
-Siempre escapar output:
-- `esc_html()` - Para texto
-- `esc_attr()` - Para atributos HTML
-- `esc_url()` - Para URLs
+Always escape output:
+- `esc_html()` - For text
+- `esc_attr()` - For HTML attributes
+- `esc_url()` - For URLs
 
 ---
 
-## 6. ACCESO A BASE DE DATOS
+## 6. DATABASE ACCESS
 
-Obtener artículos dinámicamente:
+Fetch articles dynamically:
 
 ```php
 public function render() {
@@ -327,16 +327,16 @@ public function render() {
 }
 ```
 
-Mejores prácticas DB:
-- Usar `JFactory::getDbo()` para instancia
-- Implementar control de acceso
-- Usar límites en queries
-- Escapar output siempre
-- Cachear resultados si es posible
+Database best practices:
+- Use `JFactory::getDbo()` to get the instance
+- Implement access control
+- Use limits in queries
+- Always escape output
+- Cache results when possible
 
 ---
 
-## 7. EJEMPLO COMPLETO - ADDON TESTIMONIOS
+## 7. COMPLETE EXAMPLE - TESTIMONIALS ADDON
 
 **admin.php:**
 
@@ -344,17 +344,17 @@ Mejores prácticas DB:
 <?php
 SpAddonsConfig::addonConfig(array(
     'addon_name' => 'sp_testimonios',
-    'title'      => 'Testimonios',
+    'title'      => 'Testimonials',
     'category'   => 'Custom',
     'attr'       => array(
         'general' => array(
             'testimonios' => array(
                 'type'   => 'repeatable',
                 'fields' => array(
-                    'nombre' => array('type' => 'text', 'title' => 'Nombre'),
-                    'cargo' => array('type' => 'text', 'title' => 'Cargo'),
-                    'texto' => array('type' => 'textarea', 'title' => 'Testimonio'),
-                    'foto' => array('type' => 'media', 'title' => 'Foto')
+                    'nombre' => array('type' => 'text', 'title' => 'Name'),
+                    'cargo' => array('type' => 'text', 'title' => 'Position'),
+                    'texto' => array('type' => 'textarea', 'title' => 'Testimonial'),
+                    'foto' => array('type' => 'media', 'title' => 'Photo')
                 )
             )
         )
@@ -395,9 +395,9 @@ class SppagebuilderAddonSp_testimonios extends SppagebuilderAddons {
 
 ---
 
-## 8. INSTALACIÓN Y TESTING
+## 8. INSTALLATION AND TESTING
 
-Crear ZIP con estructura correcta:
+Create a ZIP with the correct structure:
 
 ```
 plg_sppagebuilder_demo.zip
@@ -415,34 +415,34 @@ plg_sppagebuilder_demo.zip
                 └── images/icon.png
 ```
 
-Instalar en Joomla:
-1. Sistema → Instalar → Extensiones
-2. Cargar archivo ZIP
-3. Sistema → Administrar → Plugins
-4. Habilitar plugin `plg_sppagebuilder_demo`
-5. Editar página con SP Page Builder
-6. Addon aparecerá en categoría "Custom"
+Install in Joomla:
+1. System -> Install -> Extensions
+2. Upload the ZIP file
+3. System -> Manage -> Plugins
+4. Enable the `plg_sppagebuilder_demo` plugin
+5. Edit a page with SP Page Builder
+6. The addon will appear in the "Custom" category
 
 Testing checklist:
-- [ ] Plugin aparece en lista de plugins
-- [ ] Addon visible en SP Page Builder
-- [ ] Campos se cargan correctamente
-- [ ] Renderizado en frontend es correcto
-- [ ] No hay errores en error_log
-- [ ] CSS/JS cargan apropiadamente
-- [ ] Responsive en móvil
-- [ ] Compatibilidad navegadores
-- [ ] XSS protection (escapado)
-- [ ] Acceso a usuarios sin permisos
+- [ ] Plugin appears in the plugins list
+- [ ] Addon is visible in SP Page Builder
+- [ ] Fields load correctly
+- [ ] Frontend rendering is correct
+- [ ] No errors in error_log
+- [ ] CSS/JS load properly
+- [ ] Responsive on mobile
+- [ ] Browser compatibility
+- [ ] XSS protection (escaping)
+- [ ] Access for unauthorized users
 
 ---
 
-## REFERENCIAS
+## REFERENCES
 
-Documentación oficial:
+Official documentation:
 - [JoomShaper Custom Addon Creation](https://www.joomshaper.com/blog/how-to-create-custom-addon-in-sp-page-builder-4)
 - [SP Page Builder Admin File](https://www.joomshaper.com/documentation/sp-page-builder/the-admin-php-file)
 - [SP Page Builder Site File](https://www.joomshaper.com/documentation/sp-page-builder/the-site-php-file)
 - [Joomla Plugin Development](https://docs.joomla.org/Plugins)
 
-Ver `references/` para ejemplos completos, snippets y plantillas reutilizables.
+See `references/` for complete examples, snippets, and reusable templates.

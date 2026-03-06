@@ -1,48 +1,48 @@
-# Referencia Extendida: Joomla 5/6 - Consultas a Base de Datos
+# Extended Reference: Joomla 5/6 - Database Queries
 
-## APIs Completas
+## Complete APIs
 
-### DatabaseInterface - Métodos Principales
+### DatabaseInterface - Main Methods
 
 ```php
-// Obtención de instancia
+// Getting the instance
 $db = Factory::getContainer()->get(DatabaseInterface::class);
 
-// Métodos de Query
-$query = $db->getQuery(true);           // Nueva query
-$db->setQuery($query);                  // Establece query actual
-$db->execute();                         // Ejecuta query
+// Query Methods
+$query = $db->getQuery(true);           // New query
+$db->setQuery($query);                  // Sets current query
+$db->execute();                         // Executes query
 
-// Métodos de Resultado
-$results = $db->loadObjectList();       // Array de stdClass
-$result = $db->loadObject();            // Un objeto
-$assoc = $db->loadAssocList();          // Array asociativos
-$row = $db->loadAssoc();                // Un array asociativo
-$column = $db->loadColumn();            // Una columna
-$value = $db->loadResult();             // Un valor único
+// Result Methods
+$results = $db->loadObjectList();       // Array of stdClass
+$result = $db->loadObject();            // One object
+$assoc = $db->loadAssocList();          // Associative arrays
+$row = $db->loadAssoc();                // One associative array
+$column = $db->loadColumn();            // One column
+$value = $db->loadResult();             // A single value
 
-// Métodos de Conveniencia
-$db->insertObject($table, $object);     // Insertar objeto
-$db->updateObject($table, $object);     // Actualizar objeto
+// Convenience Methods
+$db->insertObject($table, $object);     // Insert object
+$db->updateObject($table, $object);     // Update object
 
-// Métodos de Seguridad
-$db->quoteName($identifier);            // Escapa identificadores
-$db->quote($value);                     // Escapa valores (legacy)
+// Security Methods
+$db->quoteName($identifier);            // Escapes identifiers
+$db->quote($value);                     // Escapes values (legacy)
 
-// Información
-$db->getPrefix();                       // Obtiene prefijo
-$db->countAffected();                   // Filas afectadas última query
-$db->getLastError();                    // Último error
+// Information
+$db->getPrefix();                       // Gets prefix
+$db->countAffected();                   // Rows affected by last query
+$db->getLastError();                    // Last error
 ```
 
-### QueryInterface - Métodos de Construcción
+### QueryInterface - Builder Methods
 
 ```php
 // SELECT
-$query->select($columns);               // Especifica columnas
+$query->select($columns);               // Specifies columns
 $query->distinct();                     // DISTINCT
 $query->from($table);                   // FROM
-$query->where($condition);              // WHERE (múltiple)
+$query->where($condition);              // WHERE (multiple)
 $query->group($columns);                // GROUP BY
 $query->having($condition);             // HAVING
 $query->order($columns);                // ORDER BY
@@ -59,25 +59,25 @@ $query->limit($limit);                  // LIMIT
 $query->offset($offset);                // OFFSET
 
 // INSERT
-$query->insert($table);                 // Inicia INSERT
-$query->columns($columns);              // Columnas INSERT
-$query->values($values);                // Valores INSERT
+$query->insert($table);                 // Starts INSERT
+$query->columns($columns);              // INSERT columns
+$query->values($values);                // INSERT values
 
 // UPDATE
-$query->update($table);                 // Inicia UPDATE
+$query->update($table);                 // Starts UPDATE
 $query->set($assignments);              // SET
 
 // DELETE
-$query->delete($table);                 // Inicia DELETE
+$query->delete($table);                 // Starts DELETE
 
-// Parámetros
-$query->bind($key, $value, $type);      // Vincula parámetro
-$query->bindArray($array);              // Vincula array
+// Parameters
+$query->bind($key, $value, $type);      // Binds parameter
+$query->bindArray($array);              // Binds array
 ```
 
 ---
 
-## Patrones de Código Recomendados
+## Recommended Code Patterns
 
 ### Pattern 1: Repository Pattern
 
@@ -134,7 +134,7 @@ class ArticleRepository
 ?>
 ```
 
-### Pattern 2: Query Builder con Filtros Dinámicos
+### Pattern 2: Query Builder with Dynamic Filters
 
 ```php
 <?php
@@ -197,7 +197,7 @@ class ArticleQueryBuilder
             ->select('COUNT(*)')
             ->from($this->db->quoteName('#__content'));
 
-        // Copiar condiciones WHERE desde query original
+        // Copy WHERE conditions from the original query
         $whereString = (string) $this->query->where;
         if ($whereString) {
             $countQuery->where($whereString);
@@ -208,7 +208,7 @@ class ArticleQueryBuilder
     }
 }
 
-// Uso:
+// Usage:
 $builder = new ArticleQueryBuilder($db);
 $articles = $builder
     ->withState(1)
@@ -224,46 +224,46 @@ $total = $builder->count();
 
 ---
 
-## Debugging y Logging
+## Debugging and Logging
 
-### Logging de Queries Ejecutadas
+### Logging Executed Queries
 
 ```php
-// En componente o modelo
+// In a component or model
 $query = $db->getQuery(true)
     ->select('*')
     ->from($db->quoteName('#__content'));
 
 $db->setQuery($query);
 
-// Ver SQL antes de ejecutar
+// View SQL before executing
 error_log("SQL: " . $query->__toString());
 
 $results = $db->loadObjectList();
 
-// Logging en Joomla
+// Joomla logging
 use Joomla\CMS\Log\Log;
 
-Log::add('Query SQL: ' . $query->__toString(), Log::INFO, 'joomla');
+Log::add('SQL Query: ' . $query->__toString(), Log::INFO, 'joomla');
 Log::add('Error: ' . $db->getLastError(), Log::ERROR, 'joomla');
 ```
 
-### Análisis de Rendimiento
+### Performance Analysis
 
 ```php
-// Medir tiempo de query
+// Measure query time
 $start = microtime(true);
 
 $db->setQuery($query);
 $results = $db->loadObjectList();
 
 $elapsed = microtime(true) - $start;
-error_log("Query executada en: " . $elapsed . " segundos");
+error_log("Query executed in: " . $elapsed . " seconds");
 
-// Registrar queries lentas
+// Log slow queries
 if ($elapsed > 0.5) {
     Log::add(
-        "Query lenta: " . $query->__toString() . " (" . $elapsed . "s)",
+        "Slow query: " . $query->__toString() . " (" . $elapsed . "s)",
         Log::WARNING,
         'joomla'
     );
@@ -272,36 +272,36 @@ if ($elapsed > 0.5) {
 
 ---
 
-## Diferencias entre Versiones
+## Version Differences
 
 ### Joomla 3.x vs 4.x vs 5.x
 
 | Feature | Joomla 3.x | Joomla 4.x | Joomla 5.x |
 |---------|-----------|-----------|-----------|
-| Factory::getDbo() | Estándar | Disponible | **Deprecated** |
-| Prepared Statements | Opcional | Recomendado | **Obligatorio** |
-| quoteName() | Disponible | Mejorado | Estándar |
-| bind() | No existe | Disponible | **Estándar** |
-| ParameterType | No existe | Disponible | **Recomendado** |
-| Query Chaining | Disponible | Estándar | Estándar |
-| Container/DI | No existe | Sí | Sí |
-| PHP Mínimo | 5.3 | 7.2 | **8.1** |
+| Factory::getDbo() | Standard | Available | **Deprecated** |
+| Prepared Statements | Optional | Recommended | **Mandatory** |
+| quoteName() | Available | Improved | Standard |
+| bind() | Does not exist | Available | **Standard** |
+| ParameterType | Does not exist | Available | **Recommended** |
+| Query Chaining | Available | Standard | Standard |
+| Container/DI | Does not exist | Yes | Yes |
+| Minimum PHP | 5.3 | 7.2 | **8.1** |
 
-### Migración de Joomla 3.x a 5.x
+### Migration from Joomla 3.x to 5.x
 
-**Viejo (Joomla 3.x):**
+**Old (Joomla 3.x):**
 ```php
 $db = JFactory::getDbo();
 $query = $db->getQuery(true);
 $query->select('*')
   ->from($db->quoteName('#__content'))
-  ->where('id = ' . $id); // Concatenación directa
+  ->where('id = ' . $id); // Direct concatenation
 
 $db->setQuery($query);
 $results = $db->loadObjectList();
 ```
 
-**Nuevo (Joomla 5.x):**
+**New (Joomla 5.x):**
 ```php
 use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseInterface;
@@ -320,86 +320,86 @@ $results = $db->loadObjectList();
 
 ---
 
-## Troubleshooting Común
+## Common Troubleshooting
 
 ### Error: "Call to undefined method bind()"
 
-**Causa:** Olvidar usar `getQuery(true)` o usar query vieja
+**Cause:** Forgetting to use `getQuery(true)` or using an old query
 
-**Solución:**
+**Solution:**
 ```php
-// INCORRECTO
+// INCORRECT
 $query = $db->getQuery();
 $query->bind(':id', 5); // Error
 
-// CORRECTO
+// CORRECT
 $query = $db->getQuery(true);
 $query->bind(':id', 5, ParameterType::INTEGER);
 ```
 
 ### Error: "Table '#__content' doesn't exist"
 
-**Causa:** Prefijo incorrecto o no usar `#__`
+**Cause:** Incorrect prefix or not using `#__`
 
-**Solución:**
+**Solution:**
 ```php
-// INCORRECTO - asume prefijo hardcoded
+// INCORRECT - assumes hardcoded prefix
 ->from($db->quoteName('joomla_content'))
 
-// CORRECTO - usa #__
+// CORRECT - uses #__
 ->from($db->quoteName('#__content'))
 ```
 
 ### Error: "Syntax error in SQL query"
 
-**Causa:** Concatenación de valores sin bind()
+**Cause:** Concatenating values without bind()
 
-**Solución:**
+**Solution:**
 ```php
-// INCORRECTO
+// INCORRECT
 $search = "test'; DROP TABLE users;--";
 ->where("title = '$search'")
 
-// CORRECTO
+// CORRECT
 ->where($db->quoteName('title') . ' = :search')
 ->bind(':search', $search, ParameterType::STRING)
 ```
 
 ### Error: "Access denied for user"
 
-**Causa:** Usuario BD sin permisos en tabla
+**Cause:** Database user without permissions on the table
 
-**Solución:**
-1. Verificar en phpMyAdmin permisos del usuario
-2. Asegurar que usuario BD tiene permisos SELECT/INSERT/UPDATE/DELETE
-3. Revisar configuración en `configuration.php`
-
----
-
-## Checklist de Seguridad
-
-Antes de usar query en producción:
-
-- [ ] ¿Se usa `bind()` para todos los valores dinámicos?
-- [ ] ¿Se usa `quoteName()` para todos los identificadores?
-- [ ] ¿Se especifica `ParameterType` en cada `bind()`?
-- [ ] ¿Se valida la entrada antes de pasar a query?
-- [ ] ¿Se maneja excepciones con try-catch?
-- [ ] ¿Se usa `getQuery(true)` para nueva query limpia?
-- [ ] ¿Se evita `Factory::getDbo()` (deprecated)?
-- [ ] ¿Se escapa HTML si se muestra en vista?
-- [ ] ¿Se registran errores en el log?
+**Solution:**
+1. Verify user permissions in phpMyAdmin
+2. Ensure the database user has SELECT/INSERT/UPDATE/DELETE permissions
+3. Review configuration in `configuration.php`
 
 ---
 
-## Recursos Oficiales
+## Security Checklist
 
-- Documentación Joomla 5: https://docs.joomla.org/
-- API Joomla: https://api.joomla.org/
-- Manual GitHub: https://github.com/joomla/Manual
-- Seguridad: https://manual.joomla.org/docs/5.0/security/
+Before using a query in production:
+
+- [ ] Is `bind()` used for all dynamic values?
+- [ ] Is `quoteName()` used for all identifiers?
+- [ ] Is `ParameterType` specified in every `bind()`?
+- [ ] Is input validated before passing to the query?
+- [ ] Are exceptions handled with try-catch?
+- [ ] Is `getQuery(true)` used for a new clean query?
+- [ ] Is `Factory::getDbo()` avoided (deprecated)?
+- [ ] Is HTML escaped if displayed in a view?
+- [ ] Are errors logged?
 
 ---
 
-**Última actualización:** Marzo 2024
-**Versión Joomla:** 5.x, 6.x
+## Official Resources
+
+- Joomla 5 Documentation: https://docs.joomla.org/
+- Joomla API: https://api.joomla.org/
+- GitHub Manual: https://github.com/joomla/Manual
+- Security: https://manual.joomla.org/docs/5.0/security/
+
+---
+
+**Last updated:** March 2024
+**Joomla Version:** 5.x, 6.x
