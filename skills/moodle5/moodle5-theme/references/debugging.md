@@ -1,113 +1,113 @@
-# Depuración y caché
+# Debugging and cache
 
-## Tabla de contenidos
-1. [Sistema de caché](#caché)
+## Table of contents
+1. [Cache system](#cache)
 2. [Theme Designer Mode](#designer-mode)
-3. [Comandos CLI](#cli)
-4. [Configuración de desarrollo](#config-desarrollo)
-5. [Depuración de SCSS](#debug-scss)
-6. [Depuración de templates](#debug-templates)
-7. [Monitorización de rendimiento](#rendimiento)
-8. [Errores frecuentes y soluciones](#errores)
+3. [CLI commands](#cli)
+4. [Development configuration](#dev-config)
+5. [SCSS debugging](#debug-scss)
+6. [Template debugging](#debug-templates)
+7. [Performance monitoring](#performance)
+8. [Common errors and solutions](#errors)
 
-## Caché
+## Cache
 
-| Tipo | Ubicación | Impacto |
+| Type | Location | Impact |
 |---|---|---|
-| CSS/SCSS compilado | `<moodledata>/localcache/theme/<themerev>/<theme>/css/` | Cambios SCSS invisibles sin purga |
-| Templates Mustache | `<moodledata>/localcache/mustache/<revision>/<theme>/` | Overrides no se aplican |
-| Cadenas de idioma | MUC (Moodle Universal Cache) | Nuevas cadenas no aparecen |
-| JavaScript | `theme/javascript.php` minificado | Cambios JS no reflejados |
-| Imágenes/Iconos | Caché navegador + `theme/image.php` | Iconos nuevos no visibles |
+| Compiled CSS/SCSS | `<moodledata>/localcache/theme/<themerev>/<theme>/css/` | SCSS changes invisible without purge |
+| Mustache templates | `<moodledata>/localcache/mustache/<revision>/<theme>/` | Overrides not applied |
+| Language strings | MUC (Moodle Universal Cache) | New strings do not appear |
+| JavaScript | `theme/javascript.php` minified | JS changes not reflected |
+| Images/Icons | Browser cache + `theme/image.php` | New icons not visible |
 
-La invalidación funciona con números de revisión en las URLs de assets. `theme_reset_all_caches()` incrementa `themerev`, forzando al navegador a descargar archivos nuevos.
+Invalidation works through revision numbers in asset URLs. `theme_reset_all_caches()` increments `themerev`, forcing the browser to download new files.
 
 ## Designer Mode
 
-Previene cacheado de CSS, templates e imágenes. Recompila SCSS en cada carga de página:
+Prevents caching of CSS, templates, and images. Recompiles SCSS on every page load:
 
 ```php
-// En config.php de Moodle — NUNCA en producción
+// In Moodle's config.php — NEVER in production
 $CFG->themedesignermode = true;
 ```
 
-El binario `sassc` reduce el tiempo de compilación >50%:
+The `sassc` binary reduces compilation time by >50%:
 ```bash
-# Instalar en Debian/Ubuntu
+# Install on Debian/Ubuntu
 apt install sassc
-# Configurar en: Administración → Experimental → Path to SassC
+# Configure at: Administration → Experimental → Path to SassC
 ```
 
 ## CLI
 
 ```bash
-# Purgar todo
+# Purge everything
 php admin/cli/purge_caches.php
 
-# Solo caché de themes
+# Theme cache only
 php admin/cli/purge_caches.php --theme
 
-# Solo JavaScript
+# JavaScript only
 php admin/cli/purge_caches.php --js
 
-# Solo cadenas de idioma
+# Language strings only
 php admin/cli/purge_caches.php --lang
 
-# Combinar
+# Combine
 php admin/cli/purge_caches.php --theme --js --lang
 
-# Compilar CSS de un theme específico (sin purgar todo)
+# Compile CSS for a specific theme (without purging everything)
 php admin/cli/build_theme_css.php --themes=mytheme --verbose
 ```
 
-`build_theme_css.php` es especialmente útil: compila CSS e incrementa solo el sub-revision del theme específico.
+`build_theme_css.php` is especially useful: it compiles CSS and only increments the sub-revision of the specific theme.
 
-## Config desarrollo
+## Dev config
 
 ```php
-// config.php de Moodle — SOLO para desarrollo
+// Moodle's config.php — ONLY for development
 @error_reporting(E_ALL | E_STRICT);
 @ini_set('display_errors', '1');
 $CFG->debug = (E_ALL | E_STRICT);          // DEBUG_DEVELOPER
 $CFG->debugdisplay = 1;
-$CFG->themedesignermode = true;             // Recompila SCSS en cada carga
-$CFG->cachejs = false;                      // No cachear JavaScript
-$CFG->cachetemplates = false;               // No cachear templates Mustache
-$CFG->langstringcache = false;              // No cachear cadenas de idioma
-$CFG->debugtemplateinfo = true;             // Nombres de templates en comentarios HTML
-$CFG->debugstringids = 1;                   // Mostrar identificadores de cadenas
-$CFG->noemailever = true;                   // No enviar emails reales
+$CFG->themedesignermode = true;             // Recompile SCSS on every load
+$CFG->cachejs = false;                      // Do not cache JavaScript
+$CFG->cachetemplates = false;               // Do not cache Mustache templates
+$CFG->langstringcache = false;              // Do not cache language strings
+$CFG->debugtemplateinfo = true;             // Template names in HTML comments
+$CFG->debugstringids = 1;                   // Show string identifiers
+$CFG->noemailever = true;                   // Do not send real emails
 ```
 
 ## Debug SCSS
 
-Los errores de compilación SCSS no se muestran en el navegador por defecto (MDL-62542). Para diagnosticar:
+SCSS compilation errors are not shown in the browser by default (MDL-62542). To diagnose:
 
-1. Activar debug DEVELOPER en `config.php`
-2. Purgar cachés (el error aparece como output PHP)
-3. Revisar logs: `tail -f /var/log/apache2/error.log`
-4. Usar CLI: `php admin/cli/build_theme_css.php --themes=mytheme --verbose`
+1. Enable DEVELOPER debug in `config.php`
+2. Purge caches (the error appears as PHP output)
+3. Check logs: `tail -f /var/log/apache2/error.log`
+4. Use CLI: `php admin/cli/build_theme_css.php --themes=mytheme --verbose`
 
-Directivas de debug en SCSS:
+Debug directives in SCSS:
 ```scss
 $primary: #0073aa;
-@debug "Valor actual de primary: #{$primary}";  // Escribe en log del servidor
-@warn "Variable podría cambiar";                 // Warning en log
-@error "Valor inválido para primary";            // Detiene compilación
+@debug "Current value of primary: #{$primary}";  // Writes to server log
+@warn "Variable may change";                      // Warning in log
+@error "Invalid value for primary";               // Stops compilation
 ```
 
 ## Debug templates
 
-`$CFG->debugtemplateinfo = true` inyecta comentarios HTML:
+`$CFG->debugtemplateinfo = true` injects HTML comments:
 ```html
 <!-- template(PHP): core/pix_icon_fontawesome -->
 <i class="icon fa fa-window-close fa-fw" aria-hidden="true"></i>
 <!-- /template(PHP): core/pix_icon_fontawesome -->
 ```
 
-El Template Library (Administración → Desarrollo → Template Library) previsualiza templates con anotaciones `@template` y contextos JSON de ejemplo.
+The Template Library (Administration → Development → Template Library) previews templates with `@template` annotations and example JSON contexts.
 
-## Rendimiento
+## Performance
 
 ```php
 define('MDL_PERF', true);
@@ -115,15 +115,15 @@ define('MDL_PERFDB', true);
 define('MDL_PERFTOFOOT', true);
 ```
 
-Muestra en el pie: tiempo de carga, uso de memoria, queries a BD, tiempos de compilación SCSS.
+Shows in the footer: load time, memory usage, DB queries, SCSS compilation times.
 
-## Errores
+## Errors
 
-| Problema | Causa | Solución |
+| Problem | Cause | Solution |
 |---|---|---|
-| Cambios no aparecen | Caché no purgada | `php admin/cli/purge_caches.php --theme` |
-| CSS funciona en designer mode pero no sin él | SCSS inválido que pasa compilador pero rompe minificador | Verificar SCSS con CLI verbose |
-| Override de template sin efecto | Ruta incorrecta o caché | Verificar ruta: `theme/<nombre>/templates/<componente>/<template>.mustache`, usar `$CFG->cachetemplates = false` |
-| Cadenas de idioma no se actualizan | Caché de idioma | `$CFG->langstringcache = false` |
-| Theme hijo no hereda estilos | SCSS no se hereda automáticamente | Importar explícitamente: `theme_boost_get_main_scss_content($theme)` en `get_main_scss_content` |
-| Página sin estilos tras editar SCSS | Error de compilación silencioso | Usar `build_theme_css.php --verbose` |
+| Changes not appearing | Cache not purged | `php admin/cli/purge_caches.php --theme` |
+| CSS works in designer mode but not without it | Invalid SCSS that passes the compiler but breaks the minifier | Verify SCSS with verbose CLI |
+| Template override has no effect | Incorrect path or cache | Verify path: `theme/<name>/templates/<component>/<template>.mustache`, use `$CFG->cachetemplates = false` |
+| Language strings not updating | Language cache | `$CFG->langstringcache = false` |
+| Child theme not inheriting styles | SCSS is not inherited automatically | Import explicitly: `theme_boost_get_main_scss_content($theme)` in `get_main_scss_content` |
+| Page unstyled after editing SCSS | Silent compilation error | Use `build_theme_css.php --verbose` |
