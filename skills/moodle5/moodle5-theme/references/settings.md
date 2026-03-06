@@ -1,37 +1,37 @@
-# Gestión de ajustes del theme (settings.php)
+# Theme settings management (settings.php)
 
-## Tabla de contenidos
-1. [Estructura de settings.php](#estructura)
-2. [Tipos de setting disponibles](#tipos)
-3. [Ejemplo completo con pestañas](#ejemplo)
-4. [Acceso a valores desde PHP y templates](#acceso)
-5. [Servir archivos subidos (pluginfile)](#pluginfile)
+## Table of contents
+1. [Structure of settings.php](#structure)
+2. [Available setting types](#types)
+3. [Full example with tabs](#example)
+4. [Accessing values from PHP and templates](#access)
+5. [Serving uploaded files (pluginfile)](#pluginfile)
 
-## Estructura
+## Structure
 
-Los ajustes se definen en `settings.php` y se almacenan en `mdl_config_plugins`. Boost proporciona `theme_boost_admin_settingspage_tabs` para organizarlos en pestañas.
+Settings are defined in `settings.php` and stored in `mdl_config_plugins`. Boost provides `theme_boost_admin_settingspage_tabs` to organize them into tabs.
 
-Regla crítica: cada setting que afecte CSS/SCSS **debe** incluir:
+Critical rule: every setting that affects CSS/SCSS **must** include:
 ```php
 $setting->set_updatedcallback('theme_reset_all_caches');
 ```
-Sin esto, los cambios de estilo no se reflejarán hasta la siguiente purga manual de caché.
+Without this, style changes will not be reflected until the next manual cache purge.
 
-## Tipos
+## Types
 
-| Tipo | Uso | Ejemplo |
+| Type | Usage | Example |
 |---|---|---|
-| `admin_setting_configtext` | Texto libre corto | Pie de página, URL externa |
-| `admin_setting_configtextarea` | Texto multilínea | Código HTML adicional |
-| `admin_setting_confightmleditor` | Editor HTML | Contenido rich text |
-| `admin_setting_configcolourpicker` | Selector de color | Color de marca |
-| `admin_setting_configcheckbox` | Toggle on/off | Mostrar/ocultar sección |
-| `admin_setting_configselect` | Dropdown | Selección de preset |
-| `admin_setting_configstoredfile` | Subida de archivo | Logo, imagen de fondo |
-| `admin_setting_scsscode` | Editor SCSS | CSS personalizado |
-| `admin_setting_heading` | Encabezado visual | Separador de secciones |
+| `admin_setting_configtext` | Short free text | Footer text, external URL |
+| `admin_setting_configtextarea` | Multiline text | Additional HTML code |
+| `admin_setting_confightmleditor` | HTML editor | Rich text content |
+| `admin_setting_configcolourpicker` | Color picker | Brand color |
+| `admin_setting_configcheckbox` | On/off toggle | Show/hide section |
+| `admin_setting_configselect` | Dropdown | Preset selection |
+| `admin_setting_configstoredfile` | File upload | Logo, background image |
+| `admin_setting_scsscode` | SCSS editor | Custom CSS |
+| `admin_setting_heading` | Visual heading | Section separator |
 
-## Ejemplo
+## Example
 
 ```php
 <?php
@@ -43,23 +43,23 @@ if ($ADMIN->fulltree) {
         get_string('configtitle', 'theme_mytheme')
     );
 
-    // === PESTAÑA: Ajustes generales ===
+    // === TAB: General settings ===
     $page = new admin_settingpage('theme_mytheme_general',
         get_string('generalsettings', 'theme_mytheme'));
 
-    // Encabezado visual (sin valor almacenado)
+    // Visual heading (no stored value)
     $page->add(new admin_setting_heading('theme_mytheme/brandingheading',
         get_string('branding', 'theme_mytheme'),
         get_string('branding_desc', 'theme_mytheme')));
 
-    // Selector de color
+    // Color picker
     $setting = new admin_setting_configcolourpicker('theme_mytheme/brandcolor',
         get_string('brandcolor', 'theme_mytheme'),
         get_string('brandcolor_desc', 'theme_mytheme'), '#0f6cbf');
     $setting->set_updatedcallback('theme_reset_all_caches');
     $page->add($setting);
 
-    // Subida de logo
+    // Logo upload
     $setting = new admin_setting_configstoredfile('theme_mytheme/logo',
         get_string('logo', 'theme_mytheme'),
         get_string('logodesc', 'theme_mytheme'), 'logo', 0,
@@ -73,7 +73,7 @@ if ($ADMIN->fulltree) {
         get_string('showfooter_desc', 'theme_mytheme'), 1);
     $page->add($setting);
 
-    // Selector dropdown
+    // Dropdown selector
     $setting = new admin_setting_configselect('theme_mytheme/preset',
         get_string('preset', 'theme_mytheme'),
         get_string('preset_desc', 'theme_mytheme'), 'default.scss',
@@ -81,14 +81,14 @@ if ($ADMIN->fulltree) {
     $setting->set_updatedcallback('theme_reset_all_caches');
     $page->add($setting);
 
-    // Textarea para SCSS personalizado
+    // Textarea for custom SCSS
     $setting = new admin_setting_scsscode('theme_mytheme/scss',
         get_string('rawscss', 'theme_mytheme'),
         get_string('rawscss_desc', 'theme_mytheme'), '', PARAM_RAW);
     $setting->set_updatedcallback('theme_reset_all_caches');
     $page->add($setting);
 
-    // Texto libre
+    // Free text
     $setting = new admin_setting_configtext('theme_mytheme/footnote',
         get_string('footnote', 'theme_mytheme'),
         get_string('footnotedesc', 'theme_mytheme'), '', PARAM_NOTAGS, 50);
@@ -96,7 +96,7 @@ if ($ADMIN->fulltree) {
 
     $settings->add($page);
 
-    // === PESTAÑA: Imágenes ===
+    // === TAB: Images ===
     $page = new admin_settingpage('theme_mytheme_images',
         get_string('imagessettings', 'theme_mytheme'));
 
@@ -112,27 +112,27 @@ if ($ADMIN->fulltree) {
 }
 ```
 
-## Acceso
+## Access
 
-### Desde PHP (lib.php y layouts)
+### From PHP (lib.php and layouts)
 
 ```php
-// Vía get_config
+// Via get_config
 $brandcolor = get_config('theme_mytheme', 'brandcolor');
 
-// Vía el objeto $theme (dentro de callbacks de lib.php)
+// Via the $theme object (inside lib.php callbacks)
 $value = $theme->settings->brandcolor;
 
-// URL de archivos subidos
+// URL for uploaded files
 $logourl = $theme->setting_file_url('logo', 'logo');
 ```
 
-### Desde templates Mustache
+### From Mustache templates
 
-Los templates no tienen acceso directo a settings. Los valores deben pasarse como contexto desde el archivo de layout PHP:
+Templates do not have direct access to settings. Values must be passed as context from the PHP layout file:
 
 ```php
-// En layout/drawers.php
+// In layout/drawers.php
 $templatecontext = [
     'showfooter' => get_config('theme_mytheme', 'showfooter'),
     'footnote'   => format_text(get_config('theme_mytheme', 'footnote'), FORMAT_HTML),
@@ -145,7 +145,7 @@ echo $OUTPUT->render_from_template('theme_mytheme/drawers', $templatecontext);
 
 ## Pluginfile
 
-Para que los archivos subidos con `configstoredfile` funcionen, `lib.php` debe implementar:
+For uploaded files with `configstoredfile` to work, `lib.php` must implement:
 
 ```php
 function theme_mytheme_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = []) {

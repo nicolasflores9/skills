@@ -1,21 +1,21 @@
-# Renderers y componentes de output
+# Renderers and output components
 
-## Tabla de contenidos
-1. [Patrón renderable + renderer + template](#patrón)
-2. [Crear un componente de output personalizado](#componente-personalizado)
-3. [Sobreescribir renderers del core](#override-core)
-4. [Sobreescribir renderers de plugins](#override-plugins)
-5. [Interface named_templatable](#named-templatable)
+## Table of contents
+1. [Renderable + renderer + template pattern](#pattern)
+2. [Creating a custom output component](#custom-component)
+3. [Overriding core renderers](#override-core)
+4. [Overriding plugin renderers](#override-plugins)
+5. [The named_templatable interface](#named-templatable)
 
-## Patrón
+## Pattern
 
-El sistema de renderers conecta datos PHP con templates Mustache:
+The renderer system connects PHP data with Mustache templates:
 
-1. **Renderable**: Clase de datos que implementa `renderable` + `templatable`
-2. **Renderer**: Invoca `export_for_template()` y `render_from_template()`
-3. **Template Mustache**: La vista
+1. **Renderable**: Data class that implements `renderable` + `templatable`
+2. **Renderer**: Invokes `export_for_template()` and `render_from_template()`
+3. **Mustache Template**: The view
 
-## Componente personalizado
+## Custom component
 
 ```php
 // classes/output/hero_section.php
@@ -38,8 +38,8 @@ class hero_section implements renderable, templatable {
     }
 
     /**
-     * Retorna solo tipos simples: arrays, stdClass, bool, int, float, string.
-     * Nunca objetos complejos.
+     * Returns only simple types: arrays, stdClass, bool, int, float, string.
+     * Never complex objects.
      */
     public function export_for_template(renderer_base $output): stdClass {
         $data = new stdClass();
@@ -52,15 +52,15 @@ class hero_section implements renderable, templatable {
 }
 ```
 
-Uso desde un layout:
+Usage from a layout:
 ```php
-$hero = new \theme_mytheme\output\hero_section('Bienvenido', 'Plataforma de aprendizaje', $imageurl);
+$hero = new \theme_mytheme\output\hero_section('Welcome', 'Learning platform', $imageurl);
 echo $OUTPUT->render($hero);
 ```
 
 ## Override core
 
-Requiere `$THEME->rendererfactory = 'theme_overridden_renderer_factory'` en `config.php`.
+Requires `$THEME->rendererfactory = 'theme_overridden_renderer_factory'` in `config.php`.
 
 ```php
 // classes/output/core_renderer.php
@@ -79,11 +79,11 @@ class core_renderer extends \core_renderer {
 }
 ```
 
-Regla importante: dentro de renderers, usar siempre `$this->output` y `$this->page` en lugar de los globales `$OUTPUT` o `$PAGE`.
+Important rule: inside renderers, always use `$this->output` and `$this->page` instead of the globals `$OUTPUT` or `$PAGE`.
 
 ## Override plugins
 
-La clase debe extender el renderer original:
+The class must extend the original renderer:
 
 ```php
 // classes/output/mod_quiz_renderer.php
@@ -94,13 +94,13 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/mod/quiz/renderer.php');
 
 class mod_quiz_renderer extends \mod_quiz_renderer {
-    // Override de métodos específicos
+    // Override specific methods
 }
 ```
 
 ## Named templatable
 
-Si un renderable implementa `named_templatable` con `get_template_name()`, no se necesita un método explícito en el renderer — Moodle enruta automáticamente al template correcto:
+If a renderable implements `named_templatable` with `get_template_name()`, no explicit renderer method is needed — Moodle automatically routes to the correct template:
 
 ```php
 class hero_section implements renderable, named_templatable {

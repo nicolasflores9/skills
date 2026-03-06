@@ -1,13 +1,13 @@
-# Migración Bootstrap 4 → Bootstrap 5.3
+# Bootstrap 4 → Bootstrap 5.3 migration
 
-## Tabla de contenidos
-1. [Equivalencias de clases CSS](#clases-css)
+## Table of contents
+1. [CSS class equivalences](#css-classes)
 2. [Data attributes](#data-attributes)
-3. [Cambios en SCSS/mixins](#scss)
-4. [JavaScript sin jQuery](#javascript)
-5. [Capa de compatibilidad BS4](#compatibilidad)
+3. [SCSS/mixin changes](#scss)
+4. [JavaScript without jQuery](#javascript)
+5. [BS4 compatibility layer](#compatibility)
 
-## Clases CSS
+## CSS classes
 
 | Bootstrap 4 | Bootstrap 5 |
 |---|---|
@@ -24,7 +24,7 @@
 
 ## Data attributes
 
-Todos los data-attributes de componentes Bootstrap ahora llevan prefijo `bs`:
+All Bootstrap component data-attributes now use the `bs` prefix:
 
 | Bootstrap 4 | Bootstrap 5 |
 |---|---|
@@ -43,43 +43,43 @@ Todos los data-attributes de componentes Bootstrap ahora llevan prefijo `bs`:
 |---|---|
 | `theme-color-level($color, $level)` | `shift-color($color, $percentage)` |
 | `@include hover-focus()` | `&:hover, &:focus` |
-| `media-breakpoint-down(sm)` | `media-breakpoint-down(md)` (desplazamiento de un breakpoint) |
+| `media-breakpoint-down(sm)` | `media-breakpoint-down(md)` (shifted by one breakpoint) |
 
 ## JavaScript
 
-Bootstrap 5 ya no requiere jQuery. Los componentes se importan directamente:
+Bootstrap 5 no longer requires jQuery. Components are imported directly:
 
 ```javascript
-// Antes (BS4 + jQuery)
+// Before (BS4 + jQuery)
 $('#my-dropdown').dropdown('toggle');
 
-// Ahora (BS5 vanilla)
+// Now (BS5 vanilla)
 import Dropdown from 'theme_boost/bootstrap/dropdown';
 const dd = new Dropdown('#my-dropdown');
 dd.toggle();
 
-// Otros componentes
+// Other components
 import Modal from 'theme_boost/bootstrap/modal';
 import Tooltip from 'theme_boost/bootstrap/tooltip';
 import Collapse from 'theme_boost/bootstrap/collapse';
 ```
 
-## Compatibilidad
+## Compatibility
 
-Moodle incluye una capa de compatibilidad BS4 que estará disponible hasta **Moodle 6.0**:
+Moodle includes a BS4 compatibility layer that will be available until **Moodle 6.0**:
 
 ```javascript
 import * as BS4compat from 'theme_boost/bs4-compat';
 BS4compat.init(document.querySelector('[data-region="my-region"]'));
 ```
 
-Toda lógica nueva debe escribirse con sintaxis Bootstrap 5.3 para evitar deuda técnica.
+All new logic should be written with Bootstrap 5.3 syntax to avoid technical debt.
 
-### Tabla de deprecaciones
+### Deprecation table
 
-| Elemento | Disponible hasta |
+| Element | Available until |
 |---|---|
-| Clases CSS de Bootstrap 4 | Moodle 6.0 |
-| Data-attributes sin prefijo `bs` | Moodle 6.0 |
-| Módulos YUI de edición de cursos | Moodle 6.0 |
-| `$THEME->javascripts` / `$THEME->javascripts_footer` | Moodle 6.0 (usar AMD) |
+| Bootstrap 4 CSS classes | Moodle 6.0 |
+| Data-attributes without `bs` prefix | Moodle 6.0 |
+| Course editing YUI modules | Moodle 6.0 |
+| `$THEME->javascripts` / `$THEME->javascripts_footer` | Moodle 6.0 (use AMD) |

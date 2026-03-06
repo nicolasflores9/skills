@@ -1,96 +1,96 @@
-# Sistema de Templates Mustache
+# Mustache template system
 
-## Tabla de contenidos
-1. [Sintaxis Mustache en Moodle](#sintaxis)
-2. [Helpers propios de Moodle](#helpers)
-3. [Bloques y herencia de templates](#bloques)
-4. [Cómo sobreescribir templates](#sobreescribir)
-5. [Buenas prácticas](#buenas-prácticas)
-6. [Renderizado desde JavaScript](#renderizado-js)
+## Table of contents
+1. [Mustache syntax in Moodle](#syntax)
+2. [Moodle-specific helpers](#helpers)
+3. [Blocks and template inheritance](#blocks)
+4. [How to override templates](#overriding)
+5. [Best practices](#best-practices)
+6. [Rendering from JavaScript](#js-rendering)
 
-## Sintaxis
+## Syntax
 
-Los templates residen en `templates/` de cada componente y se identifican por nombre Frankenstyle: `mod_lesson/timer` → `mod/lesson/templates/timer.mustache`.
+Templates reside in `templates/` of each component and are identified by Frankenstyle name: `mod_lesson/timer` → `mod/lesson/templates/timer.mustache`.
 
 ```mustache
-{{variable}}          {{! Escapado HTML }}
-{{{variable}}}        {{! Sin escapar — solo para contenido ya procesado con format_text() }}
-{{#variable}}...{{/variable}}   {{! Condicional / bucle }}
-{{^variable}}...{{/variable}}   {{! Sección invertida (si variable es falsy/vacía) }}
-{{> core/loading}}              {{! Partial — incluir otro template }}
+{{variable}}          {{! HTML-escaped }}
+{{{variable}}}        {{! Unescaped — only for content already processed with format_text() }}
+{{#variable}}...{{/variable}}   {{! Conditional / loop }}
+{{^variable}}...{{/variable}}   {{! Inverted section (if variable is falsy/empty) }}
+{{> core/loading}}              {{! Partial — include another template }}
 ```
 
 ## Helpers
 
-Moodle extiende Mustache con helpers fundamentales:
+Moodle extends Mustache with essential helpers:
 
 ```mustache
-{{! Cadenas de idioma — equivale a get_string() }}
+{{! Language strings — equivalent to get_string() }}
 {{#str}} helloworld, mod_greeting {{/str}}
 {{#str}} backto, core, {{name}} {{/str}}
 
-{{! Iconos pix }}
-{{#pix}} t/edit, core, Editar esta sección {{/pix}}
+{{! Pix icons }}
+{{#pix}} t/edit, core, Edit this section {{/pix}}
 
-{{! JavaScript diferido al footer }}
+{{! JavaScript deferred to footer }}
 {{#js}}
 require(['theme_boost/form-display-errors'], function(module) {
     module.enhance({{#quote}}{{element.id}}{{/quote}});
 });
 {{/js}}
 
-{{! Formateo de fechas con zona horaria del usuario }}
+{{! Date formatting with user's timezone }}
 {{#userdate}} {{time}}, {{#str}} strftimedate, core_langconfig {{/str}} {{/userdate}}
 
-{{! Truncar texto preservando palabras }}
+{{! Truncate text preserving words }}
 {{#shortentext}} 15, {{{description}}} {{/shortentext}}
 
-{{! IDs únicos para hooks JS }}
-<div id="{{uniqid}}-mi-widget"></div>
+{{! Unique IDs for JS hooks }}
+<div id="{{uniqid}}-my-widget"></div>
 ```
 
-El helper `{{#quote}}` es necesario cuando se pasan valores no escalares al helper `{{#str}}`:
+The `{{#quote}}` helper is required when passing non-scalar values to the `{{#str}}` helper:
 
 ```mustache
 {{#str}} counteditems, core, { "count": {{count}}, "items": {{#quote}} {{itemname}} {{/quote}} } {{/str}}
 ```
 
-## Bloques
+## Blocks
 
-Moodle habilita el pragma BLOCKS de Mustache para herencia de templates:
+Moodle enables the Mustache BLOCKS pragma for template inheritance:
 
 ```mustache
-{{! Template padre: tool_demo/section }}
+{{! Parent template: tool_demo/section }}
 <section>
-    <h1>{{$heading}} Encabezado por defecto {{/heading}}</h1>
-    <div>{{$content}} Contenido por defecto {{/content}}</div>
+    <h1>{{$heading}} Default heading {{/heading}}</h1>
+    <div>{{$content}} Default content {{/content}}</div>
 </section>
 
-{{! Template hijo que extiende al padre }}
+{{! Child template that extends the parent }}
 {{< tool_demo/section}}
-    {{$heading}} Últimas noticias {{/heading}}
-    {{$content}} Contenido personalizado {{/content}}
+    {{$heading}} Latest news {{/heading}}
+    {{$content}} Custom content {{/content}}
 {{/ tool_demo/section}}
 ```
 
-Usado extensivamente en el core (ej: `core/notification_error` extiende `core/notification_base`).
+Used extensively in core (e.g., `core/notification_error` extends `core/notification_base`).
 
-## Sobreescribir
+## Overriding
 
-Para sobreescribir un template, crear el archivo con la misma estructura dentro de `templates/` del theme, usando el nombre del componente como subdirectorio:
+To override a template, create the file with the same structure inside the theme's `templates/` directory, using the component name as a subdirectory:
 
-| Template original | Ruta de override en el theme |
+| Original template | Override path in the theme |
 |---|---|
 | `lib/templates/modal.mustache` | `theme/mytheme/templates/core/modal.mustache` |
 | `blocks/myoverview/templates/view-summary.mustache` | `theme/mytheme/templates/block_myoverview/view-summary.mustache` |
 | `theme/boost/templates/navbar.mustache` | `theme/mytheme/templates/theme_boost/navbar.mustache` |
 | `mod/wiki/templates/ratingui.mustache` | `theme/mytheme/templates/mod_wiki/ratingui.mustache` |
 
-Los templates están cacheados agresivamente. Activar Theme Designer Mode o usar `$CFG->cachetemplates = false` durante el desarrollo.
+Templates are aggressively cached. Enable Theme Designer Mode or use `$CFG->cachetemplates = false` during development.
 
-### Boilerplate obligatorio
+### Required boilerplate
 
-Todo template debe incluir licencia GPL, anotación `@template`, descripción de variables y ejemplo JSON:
+Every template must include a GPL license, `@template` annotation, variable descriptions, and a JSON example:
 
 ```mustache
 {{!
@@ -103,8 +103,8 @@ Todo template debe incluir licencia GPL, anotación `@template`, descripción de
 
     @template  theme_mytheme/hero_section
     @context   {
-        "title": "Bienvenido",
-        "subtitle": "Plataforma de aprendizaje",
+        "title": "Welcome",
+        "subtitle": "Learning platform",
         "hasimage": true,
         "imageurl": "https://example.com/hero.jpg"
     }
@@ -118,23 +118,23 @@ Todo template debe incluir licencia GPL, anotación `@template`, descripción de
 </div>
 ```
 
-## Buenas prácticas
+## Best practices
 
-- **Un único nodo raíz** por template, con clase que coincida con el nombre del template
-- **Data-attributes** para hooks de JS, no clases ni IDs: `data-region="hero-section"`
-- **Clases de Bootstrap** directamente en los templates
-- **Nunca** reutilizar nombres de helpers (`str`, `js`, `pix`, `quote`) como nombres de variables — fallarán silenciosamente
-- Arrays PHP sin clave `[0]` o con huecos no son iterables en Mustache → usar `array_values()`
-- Para testear arrays no vacíos, agregar un flag booleano como `hasusers` al contexto
-- Activar `$CFG->debugtemplateinfo = true` para ver qué template se renderiza en cada sección (comentarios HTML)
+- **A single root node** per template, with a class matching the template name
+- **Data-attributes** for JS hooks, not classes or IDs: `data-region="hero-section"`
+- **Bootstrap classes** directly in templates
+- **Never** reuse helper names (`str`, `js`, `pix`, `quote`) as variable names — they will silently fail
+- PHP arrays without key `[0]` or with gaps are not iterable in Mustache → use `array_values()`
+- To test for non-empty arrays, add a boolean flag like `hasusers` to the context
+- Enable `$CFG->debugtemplateinfo = true` to see which template renders each section (HTML comments)
 
-## Renderizado JS
+## JS rendering
 
 ```javascript
 import Templates from 'core/templates';
 import {exception as displayException} from 'core/notification';
 
-const context = { title: 'Bienvenido', subtitle: 'A nuestra plataforma' };
+const context = { title: 'Welcome', subtitle: 'To our platform' };
 Templates.renderForPromise('theme_mytheme/hero_section', context)
     .then(({html, js}) => {
         Templates.appendNodeContents('.hero-container', html, js);

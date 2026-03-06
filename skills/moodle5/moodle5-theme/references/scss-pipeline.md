@@ -1,53 +1,54 @@
-# Pipeline de compilación SCSS y presets
+# SCSS compilation pipeline and presets
 
-## Tabla de contenidos
-1. [Las tres fases del pipeline](#las-tres-fases)
-2. [Implementación de lib.php](#implementación-de-libphp)
-3. [Cómo sobreescribir variables Bootstrap](#sobreescribir-variables)
-4. [Presets y Bootswatch](#presets)
-5. [Archivos SCSS del theme](#archivos-scss)
+## Table of contents
+1. [The three pipeline phases](#the-three-phases)
+2. [lib.php implementation](#libphp-implementation)
+3. [How to override Bootstrap variables](#override-variables)
+4. [Presets and Bootswatch](#presets)
+5. [Theme SCSS files](#theme-scss-files)
 
-## Las tres fases
+## The three phases
 
-Moodle usa `scssphp/scssphp` (o el binario `sassc` si está configurado). La compilación sigue un orden estricto:
+Moodle uses `scssphp/scssphp` (or the `sassc` binary if configured). Compilation follows a strict order:
 
 ```
 ┌────────────────────────────────────────────────────┐
 │  1. prescsscallback (get_pre_scss)                  │
-│     → Variables SCSS sin !default: $primary: #e74c3c│
-│     → SCSS crudo del textarea de admin               │
+│     → SCSS variables without !default: $primary:    │
+│       #e74c3c                                       │
+│     → Raw SCSS from admin textarea                  │
 │                                                      │
 │  2. $THEME->scss (get_main_scss_content)             │
-│     → Preset con variables (!default)                │
+│     → Preset with variables (!default)              │
 │     → @import "moodle" (Bootstrap + Moodle)          │
-│     → Reglas CSS del preset                          │
+│     → CSS rules from the preset                     │
 │                                                      │
 │  3. extrascsscallback (get_extra_scss)               │
-│     → SCSS dinámico (imágenes de fondo, etc.)        │
-│     → SCSS crudo del textarea de admin               │
+│     → Dynamic SCSS (background images, etc.)        │
+│     → Raw SCSS from admin textarea                  │
 ├────────────────────────────────────────────────────┤
-│  Concatenado → Compilador SCSS → CSS en disco        │
+│  Concatenated → SCSS compiler → CSS on disk         │
 └────────────────────────────────────────────────────┘
 ```
 
-El orden es crítico: las variables en fase 1 (sin `!default`) sobreescriben las de Bootstrap (con `!default`). La fase 3 tiene la mayor prioridad por cascada CSS.
+The order is critical: variables in phase 1 (without `!default`) override those from Bootstrap (with `!default`). Phase 3 has the highest priority due to CSS cascade.
 
-## Implementación de lib.php
+## lib.php implementation
 
-Estas son las tres funciones principales que todo theme hijo de Boost necesita:
+These are the three main functions every Boost child theme needs:
 
 ```php
 <?php
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Fase 2: Retorna el SCSS principal (preset + pre/post propios).
+ * Phase 2: Returns the main SCSS (preset + own pre/post).
  */
 function theme_mytheme_get_main_scss_content($theme) {
     global $CFG;
     $scss = '';
 
-    // Seleccionar preset (por defecto el de Boost)
+    // Select preset (defaults to Boost's)
     $filename = !empty($theme->settings->preset) ? $theme->settings->preset : null;
     $fs = get_file_storage();
     $context = context_system::instance();
@@ -58,24 +59,24 @@ function theme_mytheme_get_main_scss_content($theme) {
             $context->id, 'theme_mytheme', 'preset', 0, '/', $filename))) {
         $scss .= $presetfile->get_content();
     } else {
-        // Fallback al preset por defecto de Boost
+        // Fallback to Boost's default preset
         $scss .= file_get_contents($CFG->dirroot . '/theme/boost/scss/preset/default.scss');
     }
 
-    // Envolver con pre.scss y post.scss propios
+    // Wrap with own pre.scss and post.scss
     $pre = file_get_contents($CFG->dirroot . '/theme/mytheme/scss/pre.scss');
     $post = file_get_contents($CFG->dirroot . '/theme/mytheme/scss/post.scss');
     return $pre . "\n" . $scss . "\n" . $post;
 }
 
 /**
- * Fase 1: Variables SCSS que sobreescriben los !default de Bootstrap.
- * Se inyecta ANTES del preset.
+ * Phase 1: SCSS variables that override Bootstrap's !default values.
+ * Injected BEFORE the preset.
  */
 function theme_mytheme_get_pre_scss($theme) {
     $scss = '';
 
-    // Mapeo setting → variable SCSS
+    // Setting → SCSS variable mapping
     $configurable = [
         'brandcolor'     => ['primary'],
         'secondarycolor' => ['secondary'],
@@ -89,7 +90,7 @@ function theme_mytheme_get_pre_scss($theme) {
         }
     }
 
-    // SCSS crudo del textarea de admin (pre)
+    // Raw SCSS from admin textarea (pre)
     if (!empty($theme->settings->scsspre)) {
         $scss .= $theme->settings->scsspre;
     }
@@ -98,17 +99,17 @@ function theme_mytheme_get_pre_scss($theme) {
 }
 
 /**
- * Fase 3: SCSS adicional después de todo (mayor prioridad por cascada).
+ * Phase 3: Additional SCSS after everything (highest priority due to cascade).
  */
 function theme_mytheme_get_extra_scss($theme) {
     $content = '';
 
-    // SCSS crudo del textarea de admin (post)
+    // Raw SCSS from admin textarea (post)
     if (!empty($theme->settings->scss)) {
         $content .= $theme->settings->scss;
     }
 
-    // Imagen de fondo de login desde settings
+    // Login background image from settings
     $loginbgurl = $theme->setting_file_url('loginbackgroundimage', 'loginbackgroundimage');
     if (!empty($loginbgurl)) {
         $content .= "body.pagelayout-login #page {
@@ -120,32 +121,32 @@ function theme_mytheme_get_extra_scss($theme) {
 }
 ```
 
-## Sobreescribir variables
+## Override variables
 
-El mecanismo de override de variables funciona así:
+The variable override mechanism works as follows:
 
-1. **En pre-SCSS**: Definir sin `!default` → fuerza el valor
+1. **In pre-SCSS**: Define without `!default` → forces the value
    ```scss
-   $primary: #e74c3c;  // Sobreescribe el default de Bootstrap
+   $primary: #e74c3c;  // Overrides Bootstrap's default
    ```
 
-2. **En el preset**: Bootstrap define con `!default` → solo aplica si no está definida
+2. **In the preset**: Bootstrap defines with `!default` → only applies if not already defined
    ```scss
-   $primary: #0d6efd !default;  // Se ignora porque ya existe de fase 1
+   $primary: #0d6efd !default;  // Ignored because it already exists from phase 1
    ```
 
-**Flujo cuando un admin cambia el color de marca**:
-1. Se guarda `#e74c3c` en `mdl_config_plugins`
-2. `theme_reset_all_caches` incrementa `themerev`
-3. Siguiente carga dispara recompilación
-4. `get_pre_scss()` emite `$primary: #e74c3c;`
-5. Bootstrap omite su `!default`
-6. Todos los componentes con `$primary` se renderizan en el nuevo color
+**Flow when an admin changes the brand color**:
+1. `#e74c3c` is saved in `mdl_config_plugins`
+2. `theme_reset_all_caches` increments `themerev`
+3. Next page load triggers recompilation
+4. `get_pre_scss()` emits `$primary: #e74c3c;`
+5. Bootstrap skips its `!default`
+6. All components using `$primary` render in the new color
 
-### Variables Bootstrap útiles para themes
+### Useful Bootstrap variables for themes
 
 ```scss
-// Colores principales
+// Main colors
 $primary: #0d6efd !default;
 $secondary: #6c757d !default;
 $success: #198754 !default;
@@ -155,17 +156,17 @@ $danger: #dc3545 !default;
 $light: #f8f9fa !default;
 $dark: #212529 !default;
 
-// Tipografía
+// Typography
 $font-family-base: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !default;
 $font-size-base: 1rem !default;
 $headings-font-weight: 500 !default;
 
-// Espaciado y bordes
+// Spacing and borders
 $border-radius: 0.375rem !default;
 $border-radius-lg: 0.5rem !default;
 $spacer: 1rem !default;
 
-// Colores de actividad de Moodle (novedad 5.x)
+// Moodle activity colors (new in 5.x)
 $activity-icon-assessment-bg: #17857f !default;
 $activity-icon-collaboration-bg: #f7634d !default;
 $activity-icon-communication-bg: #eb66a2 !default;
@@ -175,10 +176,10 @@ $activity-icon-interactivecontent-bg: #a378b4 !default;
 
 ## Presets
 
-Un preset es un archivo `.scss` con tres secciones: variables → `@import "moodle"` → reglas personalizadas.
+A preset is a `.scss` file with three sections: variables → `@import "moodle"` → custom rules.
 
 ```scss
-// Ejemplo de preset personalizado: mytheme/scss/preset/campus.scss
+// Custom preset example: mytheme/scss/preset/campus.scss
 $primary: #1a5276;
 $secondary: #2e86c1;
 $body-bg: #fafafa;
@@ -186,24 +187,24 @@ $navbar-light-bg: #1a5276;
 
 @import "moodle";
 
-// Reglas posteriores al import
+// Rules after import
 .navbar {
     box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
 }
 ```
 
-Los presets pueden subirse desde la interfaz de admin usando `admin_setting_configstoredfile`.
+Presets can be uploaded from the admin interface using `admin_setting_configstoredfile`.
 
-## Archivos SCSS del theme
+## Theme SCSS files
 
-Organiza el SCSS del theme en dos archivos principales:
+Organize the theme's SCSS in two main files:
 
-- **`scss/pre.scss`**: Imports, mixins y variables propias que deben estar disponibles antes del preset
-- **`scss/post.scss`**: Reglas CSS personalizadas que se aplican después del preset
+- **`scss/pre.scss`**: Imports, mixins, and custom variables that must be available before the preset
+- **`scss/post.scss`**: Custom CSS rules applied after the preset
 
-Ejemplo de `post.scss`:
+Example `post.scss`:
 ```scss
-// Personalización del header
+// Header customization
 .navbar {
     background-color: $primary;
     .nav-link {
@@ -212,14 +213,14 @@ Ejemplo de `post.scss`:
     }
 }
 
-// Personalización del footer
+// Footer customization
 #page-footer {
     background-color: $dark;
     color: $light;
     padding: 2rem 0;
 }
 
-// Card de curso personalizado
+// Custom course card
 .card.dashboard-card {
     border: none;
     border-radius: $border-radius-lg;

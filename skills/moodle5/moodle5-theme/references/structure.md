@@ -1,59 +1,59 @@
-# Estructura de directorios y archivos obligatorios
+# Directory structure and required files
 
-## Tabla de contenidos
-1. [Estructura completa de un theme hijo de Boost](#estructura-completa)
-2. [Archivos obligatorios](#archivos-obligatorios)
-3. [Herencia de themes](#herencia-de-themes)
-4. [Scaffolding de un theme nuevo](#scaffolding)
+## Table of contents
+1. [Full structure of a Boost child theme](#full-structure)
+2. [Required files](#required-files)
+3. [Theme inheritance](#theme-inheritance)
+4. [Scaffolding a new theme](#scaffolding)
 
-## Estructura completa
+## Full structure
 
-En Moodle 5.1+, los themes residen bajo `public/theme/` (el DocumentRoot apunta a `/public/`):
+In Moodle 5.1+, themes reside under `public/theme/` (the DocumentRoot points to `/public/`):
 
 ```
 public/theme/mytheme/
 ├── amd/
-│   └── src/                    # Módulos JavaScript AMD (ES6)
+│   └── src/                    # AMD JavaScript modules (ES6)
 ├── classes/
-│   └── output/                 # Renderers personalizados
-├── fonts/                      # Fuentes personalizadas
-├── fonts_core/                 # Sobreescritura de fuentes del core
+│   └── output/                 # Custom renderers
+├── fonts/                      # Custom fonts
+├── fonts_core/                 # Core font overrides
 ├── fonts_plugins/
 │   └── plugintype/pluginname/
 ├── lang/
 │   └── en/
-│       └── theme_mytheme.php   # Cadenas de idioma (OBLIGATORIO)
-├── layout/                     # Archivos PHP de layout
+│       └── theme_mytheme.php   # Language strings (REQUIRED)
+├── layout/                     # PHP layout files
 ├── pix/
 │   ├── favicon.ico
-│   └── screenshot.png          # ~500x400px para el selector de themes
-├── pix_core/                   # Override de iconos del core
-├── pix_plugins/                # Override de iconos de plugins
-├── scss/                       # Archivos fuente SCSS
-├── style/                      # CSS compilado (solo si no se usa SCSS)
-├── templates/                  # Overrides de templates Mustache
+│   └── screenshot.png          # ~500x400px for the theme selector
+├── pix_core/                   # Core icon overrides
+├── pix_plugins/                # Plugin icon overrides
+├── scss/                       # SCSS source files
+├── style/                      # Compiled CSS (only if SCSS is not used)
+├── templates/                  # Mustache template overrides
 │   └── core/
 │       └── templatename.mustache
-├── config.php                  # OBLIGATORIO
-├── lib.php                     # OBLIGATORIO
-├── settings.php                # Opcional: ajustes de admin
-└── version.php                 # OBLIGATORIO
+├── config.php                  # REQUIRED
+├── lib.php                     # REQUIRED
+├── settings.php                # Optional: admin settings
+└── version.php                 # REQUIRED
 ```
 
-## Archivos obligatorios
+## Required files
 
 ### version.php
 
-Declara metadatos del plugin. `$plugin->supported` limita ramas compatibles, `$plugin->dependencies` garantiza que el theme padre esté presente:
+Declares plugin metadata. `$plugin->supported` limits compatible branches, `$plugin->dependencies` ensures the parent theme is present:
 
 ```php
 <?php
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2025100600;        // Formato YYYYMMDDXX
-$plugin->requires  = 2025041600;        // Versión mínima de Moodle (5.0)
-$plugin->supported = [501, 501];        // Ramas soportadas
-$plugin->component = 'theme_mytheme';   // Nombre Frankenstyle
+$plugin->version   = 2025100600;        // Format YYYYMMDDXX
+$plugin->requires  = 2025041600;        // Minimum Moodle version (5.0)
+$plugin->supported = [501, 501];        // Supported branches
+$plugin->component = 'theme_mytheme';   // Frankenstyle name
 $plugin->maturity  = MATURITY_STABLE;
 $plugin->release   = '1.0.0';
 $plugin->dependencies = [
@@ -63,7 +63,7 @@ $plugin->dependencies = [
 
 ### config.php
 
-El archivo más importante. Define herencia, layouts, compilación SCSS y comportamiento:
+The most important file. Defines inheritance, layouts, SCSS compilation, and behavior:
 
 ```php
 <?php
@@ -76,7 +76,7 @@ $THEME->sheets = [];
 $THEME->editor_scss = ['editor'];
 $THEME->usefallback = true;
 
-// Callbacks SCSS (tres fases del pipeline)
+// SCSS callbacks (three pipeline phases)
 $THEME->scss = function($theme) {
     return theme_mytheme_get_main_scss_content($theme);
 };
@@ -84,7 +84,7 @@ $THEME->prescsscallback = 'theme_mytheme_get_pre_scss';
 $THEME->extrascsscallback = 'theme_mytheme_get_extra_scss';
 $THEME->precompiledcsscallback = 'theme_mytheme_get_precompiled_css';
 
-// Comportamiento del theme
+// Theme behavior
 $THEME->rendererfactory = 'theme_overridden_renderer_factory';
 $THEME->iconsystem = \core\output\icon_system::FONTAWESOME;
 $THEME->haseditswitch = true;
@@ -93,8 +93,8 @@ $THEME->enable_dock = false;
 $THEME->requiredblocks = '';
 $THEME->addblockposition = BLOCK_ADDBLOCK_POSITION_FLATNAV;
 
-// Layouts — en 5.1+ heredan automáticamente del padre
-// Solo es necesario redefinir los que se quieran personalizar
+// Layouts — in 5.1+ they inherit automatically from the parent
+// Only redefine those you want to customize
 $THEME->layouts = [
     'base'      => ['file' => 'drawers.php', 'regions' => []],
     'standard'  => ['file' => 'drawers.php', 'regions' => ['side-pre'],
@@ -113,40 +113,40 @@ $THEME->layouts = [
 ];
 ```
 
-**Layouts disponibles en Boost**: `drawers.php` (principal con nav lateral), `columns1.php` (columna única), `login.php`, `embedded.php`, `maintenance.php`, `secure.php`.
+**Available Boost layouts**: `drawers.php` (main with side navigation), `columns1.php` (single column), `login.php`, `embedded.php`, `maintenance.php`, `secure.php`.
 
-**Novedad 5.1 (MDL-79319)**: Los layouts heredan automáticamente del padre. Ya no necesitas redeclararlos todos.
+**New in 5.1 (MDL-79319)**: Layouts inherit automatically from the parent. You no longer need to redeclare them all.
 
 ### lang/en/theme_mytheme.php
 
-Cadenas mínimas requeridas:
+Minimum required strings:
 
 ```php
 <?php
 $string['pluginname'] = 'My Theme';
-$string['choosereadme'] = 'My Theme es un theme hijo de Boost personalizado.';
+$string['choosereadme'] = 'My Theme is a custom Boost child theme.';
 $string['configtitle'] = 'My Theme';
 ```
 
-## Herencia de themes
+## Theme inheritance
 
-`$THEME->parents = ['boost']` activa la herencia en cinco niveles:
+`$THEME->parents = ['boost']` enables inheritance at five levels:
 
-1. **SCSS**: Se inyecta antes y después del SCSS del padre mediante callbacks
-2. **Templates Mustache**: Se busca primero en el hijo, luego en la cadena de padres
-3. **Layouts PHP**: Heredan automáticamente del padre (5.1+)
-4. **Iconos**: Se sobreescriben colocándolos en `pix_core/` y `pix_plugins/`
-5. **Renderers**: `theme_overridden_renderer_factory` busca clases en el theme primero
+1. **SCSS**: Injected before and after the parent's SCSS via callbacks
+2. **Mustache Templates**: Looked up first in the child, then up the parent chain
+3. **PHP Layouts**: Inherit automatically from the parent (5.1+)
+4. **Icons**: Overridden by placing them in `pix_core/` and `pix_plugins/`
+5. **Renderers**: `theme_overridden_renderer_factory` looks for classes in the theme first
 
-El SCSS **no** se hereda automáticamente — se debe importar explícitamente el SCSS del padre via `theme_boost_get_main_scss_content($theme)` en la función `get_main_scss_content`.
+SCSS is **not** inherited automatically — you must explicitly import the parent's SCSS via `theme_boost_get_main_scss_content($theme)` in the `get_main_scss_content` function.
 
 ## Scaffolding
 
-Al generar un theme nuevo, crear como mínimo estos archivos:
+When generating a new theme, create at minimum these files:
 
-1. `version.php` — con `$plugin->component = 'theme_<nombre>'`
-2. `config.php` — con herencia de Boost y callbacks SCSS
-3. `lib.php` — con las tres funciones del pipeline SCSS
-4. `lang/en/theme_<nombre>.php` — con las tres cadenas mínimas
-5. `scss/pre.scss` — archivo vacío o con imports personalizados
-6. `scss/post.scss` — archivo vacío o con reglas personalizadas
+1. `version.php` — with `$plugin->component = 'theme_<name>'`
+2. `config.php` — with Boost inheritance and SCSS callbacks
+3. `lib.php` — with the three SCSS pipeline functions
+4. `lang/en/theme_<name>.php` — with the three minimum strings
+5. `scss/pre.scss` — empty file or with custom imports
+6. `scss/post.scss` — empty file or with custom rules
