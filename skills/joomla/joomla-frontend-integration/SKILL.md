@@ -242,3 +242,241 @@ Sistema automático de resolución de orden de carga.
   "name": "advanced-plugin",
   "type": "script",
   "uri": "js/advanced.js",
+  "dependencies": [
+    "jquery",
+    "bootstrap.util",
+    "popper"
+  ]
+}
+```
+
+### Dependencia con tipo específico
+```json
+{
+  "name": "my-component",
+  "type": "script",
+  "uri": "js/component.js",
+  "dependencies": [
+    "jquery#script",
+    "bootstrap.util#script",
+    "theme-dark#style"
+  ]
+}
+```
+
+### Preset (grupo de dependencias)
+```json
+{
+  "name": "admin-bundle",
+  "type": "preset",
+  "uri": "",
+  "dependencies": [
+    "jquery#script",
+    "popper#script",
+    "bootstrap#script",
+    "bootstrap#style"
+  ]
+}
+```
+
+---
+
+## 8. Inline Scripts y Styles
+
+Para código pequeño o dinámico.
+
+### Inline Script
+```php
+$wa = Factory::getApplication()
+      ->getDocument()
+      ->getWebAssetManager();
+
+$wa->addInlineScript('
+  document.addEventListener("DOMContentLoaded", function() {
+    console.log("Inline script ejecutado");
+  });
+');
+```
+
+### Inline Style
+```php
+$wa->addInlineStyle('
+  .banner-custom {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+  }
+');
+```
+
+### Inline nombrado (como dependencia)
+```php
+$wa->registerAndUseScript(
+    'my-init',
+    'document.addEventListener("DOMContentLoaded", function() { /* init */ });'
+);
+
+// Usar como dependencia
+$wa->registerAndUseScript(
+    'my-app',
+    'js/app.js',
+    ['dependencies' => ['my-init']]
+);
+```
+
+---
+
+## 9. Defer, Async y Optimización
+
+Atributos críticos para rendimiento.
+
+### Defer
+Se ejecuta DESPUÉS de cargar HTML. **Recomendado para la mayoría.**
+
+```json
+{
+  "name": "my-script",
+  "type": "script",
+  "uri": "js/my-script.js",
+  "attributes": {
+    "defer": true,
+    "async": false
+  }
+}
+```
+
+**Usar para:**
+- jQuery
+- Bootstrap
+- Scripts custom que dependen de jQuery
+
+### Async
+Se ejecuta CUANDO está listo. **Para código independiente.**
+
+```json
+{
+  "name": "analytics",
+  "type": "script",
+  "uri": "https://analytics.example.com/track.js",
+  "attributes": {
+    "defer": false,
+    "async": true
+  }
+}
+```
+
+**Usar para:**
+- Google Analytics
+- Tracking scripts
+- Chat widgets
+- Code independiente
+
+### Matriz de decisión
+```
+jQuery / Bootstrap          → defer: true, async: false
+Custom JS que usa jQuery    → defer: true, async: false
+Analytics / Tracking        → defer: false, async: true
+3rd party widget           → async: true
+```
+
+---
+
+## 10. Web Components
+
+Estándar W3C nativo. Joomla incluye `joomla-core-loader`.
+
+```javascript
+// Crear Web Component
+class MiComponente extends HTMLElement {
+  connectedCallback() {
+    this.innerHTML = `<div>${this.getAttribute('titulo')}</div>`;
+  }
+}
+customElements.define('mi-componente', MiComponente);
+
+// Registrar en joomla.asset.json
+// {"name": "mi-comp", "type": "script", "uri": "js/mi-comp.js",
+//  "attributes": {"type": "module", "defer": true}}
+```
+
+Ver ejemplo completo en `references/07-web-component-custom.js`.
+
+---
+
+## 11. Custom Code en Helix
+
+Admin → Templates → [Tu Template] → Template Options → Custom Code tab.
+
+**CSS Global:**
+```css
+.site-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+.custom-button {
+  padding: 12px 24px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+```
+
+**JS Global & Google Fonts:** Ver ejemplos en `references/08-template-helix-custom.css` y `references/10-ejemplos-codigo-rapido.md`.
+
+---
+
+## 12. Buenas Prácticas: No Romper Helix
+
+### NUNCA editar
+```
+/template/css/template.css        ✗
+/template/css/bootstrap.css        ✗
+/template/js/template.js           ✗
+```
+
+### SIEMPRE crear/usar
+```
+/template/css/custom.css           ✓
+/template/scss/custom.scss         ✓
+/template/js/custom.js             ✓
+Custom Code section en admin       ✓
+```
+
+### CSS Cascade seguro
+```css
+/* template.css carga primero */
+.btn { padding: 8px 12px; }
+
+/* custom.css carga al final - tiene prioridad */
+.btn { padding: 10px 16px; }
+```
+
+### Preservar clases Bootstrap
+```css
+/* INCORRECTO: modifica clase Bootstrap */
+.btn { background: purple; }
+
+/* CORRECTO: crea clase custom */
+.btn-primary-custom { background: purple; }
+
+<!-- Usar clase custom -->
+<button class="btn btn-primary-custom">Botón</button>
+```
+
+---
+
+## 13. Troubleshooting Rápido
+
+**Assets no cargan:** Revisar `<jdoc:include type="head" />` en template, path en joomla.asset.json, permisos (755), cache Joomla.
+
+**Orden incorrecto:** Verificar dependencias, revisar Network tab en DevTools.
+
+**Bootstrap no funciona:** Confirmar `$wa->useStyle('bootstrap')`, no sobrescribir variables, usar clases correctamente.
+
+**Helix se rompe:** No editar archivos core, usar custom.css, revisar Custom Code.
+
+Más detalles en `references/09-checklist-desarrollo.md`.
+
+---
+
+## 14. Referencias Rápidas y Recursos
+
+Ver `references/09-checklist-desarrollo.md` y `references/10-ejemplos-codigo-rapido.md` para guías detalladas y ejemplos adicionales.
