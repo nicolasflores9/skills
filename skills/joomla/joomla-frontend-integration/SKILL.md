@@ -28,33 +28,3 @@ $wa = \Joomla\CMS\Factory::getApplication()
 // Cargar assets
 $wa->useScript('jquery');
 $wa->useStyle('bootstrap');
-```
-
-### Niveles de carga en Joomla
-```
-1. media/vendor/joomla.asset.json
-2. media/system/joomla.asset.json
-3. media/legacy/joomla.asset.json
-4. media/com_active/joomla.asset.json
-5. templates/active_template/joomla.asset.json
-```
-
----
-
-## 2. Estructura joomla.asset.json
-
-Archivo JSON que declara todos los assets de forma centralizada. Se carga automáticamente.
-
-### Estructura Básica
-```json
-{
-  "$schema": "https://json.schemastore.org/joomla-manifest-schema.json",
-  "name": "myext",
-  "version": "1.0.0",
-  "assets": [
-    {
-      "name": "my-script",
-      "type": "script",
-      "uri": "js/myfile.js",
-      "dependencies": ["jquery"],
-      "attributes": {
