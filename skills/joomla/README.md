@@ -20,11 +20,14 @@ These skills cover modern Joomla development patterns including PSR-4 autoloadin
 ## Quick Install
 
 ```bash
-# Install all Joomla skills
-npx skills add nicolasflores9/skills
-
-# Install a specific skill
+npx skills add nicolasflores9/skills -s helix-child-template
+npx skills add nicolasflores9/skills -s joomla-custom-fields
+npx skills add nicolasflores9/skills -s joomla-database-queries
+npx skills add nicolasflores9/skills -s joomla-frontend-integration
 npx skills add nicolasflores9/skills -s joomla-module-development
+npx skills add nicolasflores9/skills -s joomla-plugin-development
+npx skills add nicolasflores9/skills -s joomla-template-overrides
+npx skills add nicolasflores9/skills -s sppagebuilder-custom-addon
 ```
 
 ## Requirements
