@@ -1,0 +1,26 @@
+{
+  "name": "mod_testimonios",
+  "version": "1.0.0",
+  "license": "GPL-2.0+",
+  "description": "Módulo de testimonios con carousel personalizado",
+  "assets": [
+    {
+      "name": "mod_testimonios.carousel",
+      "type": "script",
+      "uri": "js/carousel.js",
+      "dependencies": ["jquery"],
+      "attributes": {
+        "defer": true,
+        "async": false
+      },
+      "version": "auto"
+    },
+    {
+      "name": "mod_testimonios.style",
+      "type": "style",
+      "uri": "css/testimonios.css",
+      "dependencies": [],
+      "version": "auto"
+    }
+  ]
+}

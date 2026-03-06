@@ -1,0 +1,372 @@
+/**
+ * Archivo: /template/css/custom.css
+ * Template Helix Personalizado
+ * Joomla 5/6 + Helix Framework
+ *
+ * IMPORTANTE: Este archivo es SEGURO de editar
+ * NUNCA editar: template.css, bootstrap.css, template.js
+ *
+ * Este archivo se carga al final, sobreescribe estilos base
+ */
+
+:root {
+  /* Custom properties para tema */
+  --primary-color: #667eea;
+  --secondary-color: #764ba2;
+  --accent-color: #f093fb;
+  --success-color: #48c774;
+  --warning-color: #ffdd57;
+  --danger-color: #f14668;
+  --dark: #1a1a1a;
+  --light: #f5f5f5;
+  --border-radius: 8px;
+  --transition-speed: 0.3s;
+}
+
+/* ============================================================================
+   TIPOGRAFÍA GLOBAL
+   ============================================================================ */
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.1rem; }
+h6 { font-size: 1rem; }
+
+/* ============================================================================
+   HEADER / NAVEGACIÓN PERSONALIZADO
+   ============================================================================ */
+
+.navbar-custom {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  padding: 1rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-custom .navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: white !important;
+}
+
+.navbar-custom .nav-link {
+  color: rgba(255, 255, 255, 0.9) !important;
+  transition: color var(--transition-speed) ease;
+  padding: 0.5rem 1rem;
+}
+
+.navbar-custom .nav-link:hover {
+  color: white !important;
+}
+
+.navbar-custom .nav-link.active {
+  color: white !important;
+  border-bottom: 2px solid var(--accent-color);
+}
+
+/* ============================================================================
+   BOTONES PERSONALIZADOS
+   ============================================================================ */
+
+.btn-custom {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: all var(--transition-speed) ease;
+}
+
+.btn-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  color: white;
+  text-decoration: none;
+}
+
+.btn-custom:active {
+  transform: translateY(0);
+}
+
+.btn-custom-secondary {
+  background: var(--accent-color);
+}
+
+.btn-custom-secondary:hover {
+  box-shadow: 0 4px 12px rgba(240, 147, 251, 0.4);
+}
+
+/* ============================================================================
+   TARJETAS (CARDS) PERSONALIZADAS
+   ============================================================================ */
+
+.card-custom {
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all var(--transition-speed) ease;
+  overflow: hidden;
+}
+
+.card-custom:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card-custom .card-header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: white;
+  border: none;
+  padding: 1.5rem;
+}
+
+.card-custom .card-title {
+  color: white;
+  margin: 0;
+}
+
+/* ============================================================================
+   SECCIONES / CONTENEDOR PRINCIPAL
+   ============================================================================ */
+
+.section-custom {
+  padding: 4rem 0;
+  position: relative;
+}
+
+.section-custom.section-light {
+  background: var(--light);
+}
+
+.section-custom.section-dark {
+  background: var(--dark);
+  color: white;
+}
+
+.section-custom h2 {
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.section-custom h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  border-radius: 2px;
+}
+
+/* ============================================================================
+   FORMULARIOS PERSONALIZADOS
+   ============================================================================ */
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.form-label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.input-group-text {
+  background: var(--light);
+  border: 1px solid #ddd;
+  color: #666;
+}
+
+/* ============================================================================
+   FOOTER PERSONALIZADO
+   ============================================================================ */
+
+.footer-custom {
+  background: linear-gradient(135deg, var(--dark) 0%, #2a2a2a 100%);
+  color: #e0e0e0;
+  padding: 3rem 0 1rem;
+  margin-top: 4rem;
+}
+
+.footer-custom h5 {
+  color: white;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.footer-custom a {
+  color: #b0b0b0;
+  transition: color var(--transition-speed) ease;
+  text-decoration: none;
+}
+
+.footer-custom a:hover {
+  color: var(--primary-color);
+}
+
+.footer-custom .footer-divider {
+  border-top: 1px solid #444;
+  margin-top: 2rem;
+  padding-top: 2rem;
+}
+
+/* ============================================================================
+   UTILIDADES RESPONSIVE
+   ============================================================================ */
+
+/* Espaciado */
+.mt-custom { margin-top: 3rem; }
+.mb-custom { margin-bottom: 3rem; }
+.py-custom { padding: 3rem 0; }
+
+/* Texto */
+.text-gradient {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-shadow {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================================================
+   MEDIA QUERIES - RESPONSIVE
+   ============================================================================ */
+
+/* Tablets (768px - 991px) */
+@media (min-width: 768px) {
+  h1 { font-size: 3rem; }
+  h2 { font-size: 2.5rem; }
+
+  .section-custom {
+    padding: 5rem 0;
+  }
+
+  .navbar-custom {
+    padding: 1.5rem 0;
+  }
+}
+
+/* Desktops (992px - 1199px) */
+@media (min-width: 992px) {
+  h1 { font-size: 3.5rem; }
+  h2 { font-size: 3rem; }
+
+  .section-custom {
+    padding: 6rem 0;
+  }
+}
+
+/* Extra Large (1200px+) */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1200px;
+  }
+
+  .section-custom {
+    padding: 7rem 0;
+  }
+}
+
+/* Mobile (menos de 576px) */
+@media (max-width: 575px) {
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+
+  .btn-custom {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+
+  .section-custom {
+    padding: 2rem 0;
+  }
+
+  .section-custom h2 {
+    margin-bottom: 2rem;
+  }
+}
+
+/* ============================================================================
+   ACCESIBILIDAD
+   ============================================================================ */
+
+/* Reducir movimiento para usuarios con preferencia */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Tema oscuro */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #1a1a1a;
+    color: #e0e0e0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: white;
+  }
+
+  .card-custom {
+    background: #2a2a2a;
+    color: #e0e0e0;
+  }
+
+  .form-control {
+    background: #2a2a2a;
+    border-color: #444;
+    color: #e0e0e0;
+  }
+
+  .form-control:focus {
+    background: #3a3a3a;
+  }
+}
+
+/* ============================================================================
+   IMPRESIÓN
+   ============================================================================ */
+
+@media print {
+  .navbar-custom,
+  .footer-custom,
+  .btn-custom {
+    display: none;
+  }
+
+  body {
+    font-size: 12pt;
+    color: black;
+  }
+
+  .section-custom {
+    page-break-inside: avoid;
+  }
+}

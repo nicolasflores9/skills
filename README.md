@@ -30,6 +30,21 @@ npx skills add nicolasflores9/skills -g
 
 ## Available Skills
 
+### Joomla 5/6
+
+Skills for Joomla 5/6 CMS development and customization.
+
+| Skill | Description |
+|---|---|
+| [`helix-child-template`](skills/joomla/helix-child-template/) | Create and customize child templates with Helix Ultimate for Joomla 5/6 |
+| [`joomla-custom-fields`](skills/joomla/joomla-custom-fields/) | Create, manage, and render Custom Fields with FieldsHelper and template overrides |
+| [`joomla-database-queries`](skills/joomla/joomla-database-queries/) | Database queries in Joomla 5/6: SELECT, INSERT, UPDATE, DELETE, JOINs, Prepared Statements |
+| [`joomla-frontend-integration`](skills/joomla/joomla-frontend-integration/) | Frontend integration (CSS/JS) with WebAssetManager, Bootstrap 5, and responsive design |
+| [`joomla-module-development`](skills/joomla/joomla-module-development/) | Build custom modules with PSR-4, dependency injection, and modern architecture |
+| [`joomla-plugin-development`](skills/joomla/joomla-plugin-development/) | Develop modern plugins using SubscriberInterface, Event Classes, and dependency injection |
+| [`joomla-template-overrides`](skills/joomla/joomla-template-overrides/) | Customize component, module, and plugin output with template overrides and JLayout |
+| [`sppagebuilder-custom-addon`](skills/joomla/sppagebuilder-custom-addon/) | Create custom addons for SP Page Builder v5/6 |
+
 ### Moodle 5
 
 Skills for Moodle 5.x LMS development and customization.

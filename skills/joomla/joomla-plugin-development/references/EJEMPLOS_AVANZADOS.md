@@ -1,0 +1,540 @@
+# Ejemplos Avanzados de Plugins Joomla 5/6
+
+## 1. Plugin Sistema con Logger y Persistencia
+
+### Caso: Plugin de Logging de Eventos
+
+Este plugin registra todos los eventos de usuario que ocurren en el sitio.
+
+**Estructura:**
+```
+plg_system_eventlogger/
+├── manifest.xml
+├── services/
+│   └── provider.php
+├── src/
+│   ├── Extension/
+│   │   └── Eventlogger.php
+│   └── Helper/
+│       └── LoggerHelper.php
+└── language/
+    └── en-GB/
+        ├── plg_system_eventlogger.ini
+        └── plg_system_eventlogger.sys.ini
+```
+
+**manifest.xml:**
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="system">
+    <name>PLG_SYSTEM_EVENTLOGGER</name>
+    <author>Tu Nombre</author>
+    <creationDate>2025-03-06</creationDate>
+    <copyright>Copyright 2025</copyright>
+    <license>GNU General Public License version 2 or later</license>
+    <version>1.0.0</version>
+    <description>PLG_SYSTEM_EVENTLOGGER_DESCRIPTION</description>
+    <targetPlatform version="5.0" />
+
+    <namespace path="src">MyCompany\Plugin\System\Eventlogger</namespace>
+
+    <files>
+        <file>manifest.xml</file>
+        <folder plugin="eventlogger">services</folder>
+        <folder>src</folder>
+        <folder>language</folder>
+    </files>
+
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field
+                    name="log_logins"
+                    type="checkbox"
+                    label="Log User Logins"
+                    default="1"
+                />
+                <field
+                    name="log_logouts"
+                    type="checkbox"
+                    label="Log User Logouts"
+                    default="1"
+                />
+                <field
+                    name="log_save_events"
+                    type="checkbox"
+                    label="Log Content Save Events"
+                    default="0"
+                />
+            </fieldset>
+        </fields>
+    </config>
+</extension>
+```
+
+**src/Extension/Eventlogger.php:**
+```php
+<?php
+namespace MyCompany\Plugin\System\Eventlogger;
+
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Event\SubscriberInterface;
+use Joomla\CMS\Event\User\UserLoginEvent;
+use Joomla\CMS\Event\User\UserLogoutEvent;
+use Joomla\CMS\Event\Content\ContentAfterSaveEvent;
+use MyCompany\Plugin\System\Eventlogger\Helper\LoggerHelper;
+
+class Extension extends CMSPlugin implements SubscriberInterface
+{
+    protected $autoloadLanguage = true;
+    protected $allowLegacyListeners = false;
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            'onUserLogin' => 'onUserLogin',
+            'onUserLogout' => 'onUserLogout',
+            'onContentAfterSave' => 'onContentAfterSave',
+        ];
+    }
+
+    public function onUserLogin(UserLoginEvent $event)
+    {
+        if (!$this->params->get('log_logins')) {
+            return;
+        }
+
+        $response = $event->getArgument('response');
+        $logger = new LoggerHelper();
+
+        $logger->write(
+            'USER_LOGIN',
+            'El usuario ' . $response['username'] . ' inició sesión'
+        );
+    }
+
+    public function onUserLogout(UserLogoutEvent $event)
+    {
+        if (!$this->params->get('log_logouts')) {
+            return;
+        }
+
+        $logger = new LoggerHelper();
+        $logger->write('USER_LOGOUT', 'Un usuario cerró sesión');
+    }
+
+    public function onContentAfterSave(ContentAfterSaveEvent $event)
+    {
+        if (!$this->params->get('log_save_events')) {
+            return;
+        }
+
+        $context = $event->getArgument('0');
+        $article = $event->getArgument('1');
+        $isNew = $event->getArgument('2');
+
+        $logger = new LoggerHelper();
+        $action = $isNew ? 'CREÓ' : 'MODIFICÓ';
+
+        $logger->write(
+            'CONTENT_SAVE',
+            'Un usuario ' . $action . ' artículo: ' . $article->title
+        );
+    }
+}
+```
+
+**src/Helper/LoggerHelper.php:**
+```php
+<?php
+namespace MyCompany\Plugin\System\Eventlogger\Helper;
+
+use Joomla\CMS\Factory;
+
+class LoggerHelper
+{
+    /**
+     * Escribir en el archivo de log del evento
+     */
+    public function write($eventType, $message)
+    {
+        $app = Factory::getApplication();
+        $logFile = JPATH_ADMINISTRATOR . '/logs/eventlogger.log';
+
+        $timestamp = date('Y-m-d H:i:s');
+        $user = Factory::getUser();
+        $userId = $user->id ?: 'GUEST';
+
+        $logEntry = sprintf(
+            "[%s] [USER: %d] [EVENT: %s] %s\n",
+            $timestamp,
+            $userId,
+            $eventType,
+            $message
+        );
+
+        file_put_contents($logFile, $logEntry, FILE_APPEND);
+    }
+}
+```
+
+## 2. Plugin de Usuario con Envío de Email
+
+**src/Extension/Useremail.php:**
+```php
+<?php
+namespace MyCompany\Plugin\User\Useremail;
+
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Event\SubscriberInterface;
+use Joomla\CMS\Event\User\UserAfterSaveEvent;
+use Joomla\CMS\Mail\Mail;
+use Joomla\CMS\Factory;
+
+class Extension extends CMSPlugin implements SubscriberInterface
+{
+    protected $autoloadLanguage = true;
+    protected $allowLegacyListeners = false;
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            'onUserAfterSave' => 'onUserAfterSave',
+        ];
+    }
+
+    public function onUserAfterSave(UserAfterSaveEvent $event)
+    {
+        $user = $event->getArgument('0');
+        $isNew = $event->getArgument('1');
+
+        if (!$isNew) {
+            return;
+        }
+
+        // Enviar email al nuevo usuario
+        $this->sendWelcomeEmail($user);
+    }
+
+    private function sendWelcomeEmail($user)
+    {
+        try {
+            $app = Factory::getApplication();
+            $config = Factory::getConfig();
+
+            $mail = new Mail();
+            $mail->setSubject($this->params->get('welcome_subject', 'Bienvenido'));
+            $mail->addRecipient($user->email);
+            $mail->setFrom([
+                $config->get('mailfrom') => $config->get('fromname')
+            ]);
+
+            $body = $this->params->get('welcome_message', 'Hola {NAME}');
+            $body = str_replace('{NAME}', $user->name, $body);
+
+            $mail->setBody($body);
+            $mail->isHtml(true);
+            $mail->Send();
+
+        } catch (\Exception $e) {
+            $app->enqueueMessage(
+                'Error enviando email de bienvenida: ' . $e->getMessage(),
+                'error'
+            );
+        }
+    }
+}
+```
+
+## 3. Plugin con Inyección de Dependencias Avanzada
+
+**services/provider.php:**
+```php
+<?php
+namespace MyCompany\Plugin\Content\Advanced;
+
+use Joomla\CMS\Extension\PluginInterface;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\DI\Container;
+use Joomla\DI\ServiceProviderInterface;
+use Joomla\Database\DatabaseInterface;
+
+class ServiceProvider implements ServiceProviderInterface
+{
+    public function register(Container $container)
+    {
+        // Registrar servicio personalizado
+        $container->set(
+            'plugin.content.advanced.cache',
+            function (Container $c) {
+                return new \Joomla\CMS\Cache\CacheFactory::getCache(
+                    '_system'
+                );
+            }
+        );
+
+        // Registrar el plugin con servicios inyectados
+        $container->set(
+            PluginInterface::class,
+            function (Container $c) {
+                $plugin = new Extension(
+                    $c->get('dispatcher'),
+                    (array) PluginHelper::getPlugin('content', 'advanced')
+                );
+
+                // Inyectar el contenedor completo
+                $plugin->setContainer($c);
+
+                return $plugin;
+            }
+        );
+    }
+}
+```
+
+**src/Extension/Advanced.php:**
+```php
+<?php
+namespace MyCompany\Plugin\Content\Advanced;
+
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Event\SubscriberInterface;
+use Joomla\CMS\Event\Content\ContentPrepareEvent;
+use Joomla\DI\Traits\ContainerAwareTrait;
+use Joomla\Database\DatabaseInterface;
+
+class Extension extends CMSPlugin implements SubscriberInterface
+{
+    use ContainerAwareTrait;
+
+    protected $autoloadLanguage = true;
+    protected $allowLegacyListeners = false;
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            'onContentPrepare' => ['onContentPrepare', 5],
+        ];
+    }
+
+    public function onContentPrepare(ContentPrepareEvent $event)
+    {
+        $article = $event->getArgument('0');
+
+        // Acceder a servicios del contenedor
+        $db = $this->getContainer()->get(DatabaseInterface::class);
+        $cache = $this->getContainer()->get('plugin.content.advanced.cache');
+
+        // Usar servicios
+        $query = $db->getQuery(true)
+            ->select('COUNT(*)')
+            ->from($db->quoteName('#__articles'));
+
+        $db->setQuery($query);
+        $count = $db->loadResult();
+
+        // Procesar
+        $article->text = '<!-- Articles: ' . $count . ' -->' . $article->text;
+    }
+}
+```
+
+## 4. Plugin de Contenido con Event Classes Tipadas
+
+**src/Extension/ContentprocessorPlus.php:**
+```php
+<?php
+namespace MyCompany\Plugin\Content\ContentprocessorPlus;
+
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Event\SubscriberInterface;
+use Joomla\CMS\Event\Content\ContentPrepareEvent;
+use Joomla\CMS\Event\Content\ContentAfterTitleEvent;
+
+class Extension extends CMSPlugin implements SubscriberInterface
+{
+    protected $autoloadLanguage = true;
+    protected $allowLegacyListeners = false;
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            'onContentPrepare' => ['onContentPrepare', 0],
+            'onContentAfterTitle' => ['onContentAfterTitle', 10],
+        ];
+    }
+
+    /**
+     * Procesar contenido principal
+     */
+    public function onContentPrepare(ContentPrepareEvent $event): void
+    {
+        $article = $event->getArgument('0');
+
+        if (!$article || !property_exists($article, 'text')) {
+            return;
+        }
+
+        // Aplicar filtros de seguridad
+        $article->text = $this->sanitizeContent($article->text);
+
+        // Actualizar el evento con el contenido procesado
+        $event->setArgument('0', $article);
+    }
+
+    /**
+     * Agregar contenido después del título
+     */
+    public function onContentAfterTitle(ContentAfterTitleEvent $event): void
+    {
+        $context = $event->getArgument('0');
+        $article = $event->getArgument('1');
+
+        // Solo para artículos publicados
+        if ($article->state != 1) {
+            return;
+        }
+
+        $output = '<div class="article-meta">';
+        $output .= 'Por: <span class="author">' . $article->author . '</span>';
+        $output .= '</div>';
+
+        $event->setArgument('2', $output);
+    }
+
+    private function sanitizeContent($content)
+    {
+        // Aplicar sanitización personalizada
+        $content = strip_tags($content, '<p><br><strong><em><a><ul><li>');
+        return $content;
+    }
+}
+```
+
+## 5. Plugin con Validación y Manejo de Errores
+
+**src/Extension/Validating.php:**
+```php
+<?php
+namespace MyCompany\Plugin\Content\Validating;
+
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Event\SubscriberInterface;
+use Joomla\CMS\Event\Content\ContentBeforeSaveEvent;
+use Joomla\CMS\Factory;
+
+class Extension extends CMSPlugin implements SubscriberInterface
+{
+    protected $autoloadLanguage = true;
+    protected $allowLegacyListeners = false;
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            'onContentBeforeSave' => 'onContentBeforeSave',
+        ];
+    }
+
+    public function onContentBeforeSave(ContentBeforeSaveEvent $event)
+    {
+        $context = $event->getArgument('0');
+        $article = $event->getArgument('1');
+        $isNew = $event->getArgument('2');
+
+        // Validar que el título no esté vacío
+        if (empty($article->title)) {
+            $app = Factory::getApplication();
+            $app->enqueueMessage(
+                'El título del artículo es obligatorio',
+                'error'
+            );
+            return false;
+        }
+
+        // Validar longitud mínima de contenido
+        if (strlen($article->text) < 50) {
+            $app = Factory::getApplication();
+            $app->enqueueMessage(
+                'El contenido debe tener al menos 50 caracteres',
+                'error'
+            );
+            return false;
+        }
+
+        // Agregar metadatos automáticos
+        if ($isNew) {
+            $user = Factory::getUser();
+            $article->created_by = $user->id;
+            $article->created_by_alias = $user->username;
+        }
+
+        return true;
+    }
+}
+```
+
+## 6. Plugin Sistema con Múltiples Eventos y Prioridades
+
+**src/Extension/Multihandler.php:**
+```php
+<?php
+namespace MyCompany\Plugin\System\Multihandler;
+
+use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Event\SubscriberInterface;
+use Joomla\CMS\Event\System\AfterInitialiseEvent;
+use Joomla\CMS\Event\System\AfterRouteEvent;
+use Joomla\CMS\Event\System\AfterDispatchEvent;
+use Joomla\CMS\Event\System\BeforeRenderEvent;
+use Joomla\CMS\Event\System\AfterRenderEvent;
+
+class Extension extends CMSPlugin implements SubscriberInterface
+{
+    protected $autoloadLanguage = true;
+    protected $allowLegacyListeners = false;
+
+    /**
+     * Eventos con diferentes prioridades
+     * Prioridad baja (0) = ejecuta primero
+     * Prioridad alta (10) = ejecuta último
+     */
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            'onAfterInitialise' => ['onAfterInitialise', 0],
+            'onAfterRoute' => ['onAfterRoute', 5],
+            'onAfterDispatch' => ['onAfterDispatch', 10],
+            'onBeforeRender' => 'onBeforeRender',
+            'onAfterRender' => 'onAfterRender',
+        ];
+    }
+
+    public function onAfterInitialise(AfterInitialiseEvent $event): void
+    {
+        // Prioridad 0: ejecuta primero
+        // Inicializar configuración global
+    }
+
+    public function onAfterRoute(AfterRouteEvent $event): void
+    {
+        // Prioridad 5: ejecuta en medio
+        // Procesar ruta resuelta
+    }
+
+    public function onAfterDispatch(AfterDispatchEvent $event): void
+    {
+        // Prioridad 10: ejecuta último
+        // Post-procesar despacho
+    }
+
+    public function onBeforeRender(BeforeRenderEvent $event): void
+    {
+        // Sin prioridad especificada = normal
+    }
+
+    public function onAfterRender(AfterRenderEvent $event): void
+    {
+        // Sin prioridad especificada = normal
+    }
+}
+```

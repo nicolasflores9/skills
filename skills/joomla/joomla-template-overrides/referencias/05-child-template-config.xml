@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    EJEMPLO COMPLETO: Child Template - Configuración completa
+
+    Ubicación en template: /templates/cassiopeia-child/templateDetails.xml
+
+    Este archivo define un child template que hereda de cassiopeia.
+    Solo necesita almacenar archivos MODIFICADOS de la estructura.
+
+    ESTRUCTURA DEL CHILD:
+    /templates/cassiopeia-child/
+    ├── html/                          (solo overrides personalizados)
+    │   └── com_content/
+    │       └── article/
+    │           └── default.php        (override personalizado)
+    ├── css/
+    │   └── custom.css                 (CSS personalizado)
+    ├── templateDetails.xml            (este archivo)
+    └── index.php                      (opcional)
+
+    VENTAJAS:
+    - Hereda automáticamente archivos no personalizados
+    - Actualizaciones del padre se aplican automáticamente
+    - Fácil mantenimiento: solo cambios visibles
+    - Múltiples child templates del mismo padre
+
+    JOOMLA: 5.x, 6.x
+    FECHA: 2024-03-06
+-->
+
+<extension type="template" client="site" method="upgrade">
+
+    <!-- ============================================
+         INFORMACIÓN BÁSICA DEL TEMPLATE
+         ============================================ -->
+
+    <name>Cassiopeia - Child Custom</name>
+    <version>1.0.0</version>
+    <description>Child template personalizado basado en Cassiopeia</description>
+
+    <!-- INFORMACIÓN DEL AUTOR -->
+    <author>Tu Nombre</author>
+    <authorEmail>tu@email.com</authorEmail>
+    <authorUrl>https://tudominio.com</authorUrl>
+
+    <!-- COPYRIGHT Y LICENCIA -->
+    <copyright>Copyright 2024 Tu Nombre. Todos los derechos reservados.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+
+    <!-- URL DE DOCUMENTACIÓN -->
+    <url>https://tudominio.com/documentacion</url>
+
+    <!-- ============================================
+         CONFIGURACIÓN DE PARENT TEMPLATE
+         ============================================ -->
+
+    <!-- PARENT TEMPLATE: template del que hereda -->
+    <parent>cassiopeia</parent>
+
+    <!-- ============================================
+         ARCHIVOS DEL CHILD TEMPLATE
+         ============================================ -->
+
+    <files>
+        <!-- CARPETAS: incluir solo si contienen modificaciones -->
+        <folder>html</folder>
+        <folder>css</folder>
+
+        <!-- ARCHIVOS -->
+        <filename>templateDetails.xml</filename>
+        <filename>index.php</filename>
+        <filename>README.md</filename>
+    </files>
+
+    <!-- ============================================
+         MEDIA (RECURSOS: IMÁGENES, FUENTES, ETC.)
+         ============================================ -->
+
+    <media destination="templates/cassiopeia-child" folder="media">
+        <folder>images</folder>
+        <folder>fonts</folder>
+    </media>
+
+    <!-- ============================================
+         POSICIONES DE MÓDULOS
+         ============================================ -->
+
+    <positions>
+        <!-- Heredadas del parent: no necesitas redefirlas -->
+        <!-- Pero si lo haces, REEMPLAZAS la configuración del parent -->
+
+        <position>header</position>
+        <position>nav</position>
+        <position>sidebar-left</position>
+        <position>sidebar-right</position>
+        <position>main</position>
+        <position>footer</position>
+    </positions>
+
+    <!-- ============================================
+         PARÁMETROS CONFIGURABLES
+         ============================================ -->
+
+    <config>
+        <fields name="params">
+            <!-- FIELDSET: BÁSICO -->
+            <fieldset name="basic" label="Configuración Básica">
+
+                <!-- Logo -->
+                <field name="logo" type="media" label="Logo"
+                       description="Seleccionar archivo de logo">
+                </field>
+
+                <!-- Logo en texto -->
+                <field name="logo_text" type="text" label="Texto Logo"
+                       default="Mi Sitio">
+                </field>
+
+                <!-- Colores -->
+                <field name="primary_color" type="color" label="Color Principal"
+                       default="#007bff">
+                </field>
+
+                <!-- Tipografía -->
+                <field name="font_family" type="list" label="Familia de Fuentes"
+                       default="sans-serif">
+                    <option value="sans-serif">Sans Serif</option>
+                    <option value="serif">Serif</option>
+                    <option value="monospace">Monospace</option>
+                </field>
+
+            </fieldset>
+
+            <!-- FIELDSET: LAYOUT -->
+            <fieldset name="layout" label="Layout">
+
+                <!-- Ancho del sitio -->
+                <field name="site_width" type="list" label="Ancho del Sitio"
+                       default="wide">
+                    <option value="narrow">Estrecho (900px)</option>
+                    <option value="standard">Estándar (1200px)</option>
+                    <option value="wide">Ancho (1400px)</option>
+                </field>
+
+                <!-- Barra lateral -->
+                <field name="show_sidebar" type="radio" label="Mostrar Barra Lateral"
+                       default="1" class="btn-group btn-group-yesno">
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </field>
+
+            </fieldset>
+
+            <!-- FIELDSET: COMPONENTES -->
+            <fieldset name="components" label="Componentes">
+
+                <!-- Mostrar breadcrumbs -->
+                <field name="show_breadcrumbs" type="radio" label="Mostrar Breadcrumbs"
+                       default="1" class="btn-group btn-group-yesno">
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </field>
+
+                <!-- Mostrar título de página -->
+                <field name="show_page_title" type="radio" label="Mostrar Título de Página"
+                       default="1" class="btn-group btn-group-yesno">
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </field>
+
+            </fieldset>
+
+            <!-- FIELDSET: ADVANCED -->
+            <fieldset name="advanced" label="Avanzado">
+
+                <!-- Habilitar caché -->
+                <field name="enable_cache" type="radio" label="Habilitar Caché"
+                       default="1" class="btn-group btn-group-yesno">
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </field>
+
+                <!-- Habilitar compresión CSS -->
+                <field name="compress_css" type="radio" label="Comprimir CSS"
+                       default="0" class="btn-group btn-group-yesno">
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </field>
+
+                <!-- Habilitar compresión JS -->
+                <field name="compress_js" type="radio" label="Comprimir JavaScript"
+                       default="0" class="btn-group btn-group-yesno">
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </field>
+
+            </fieldset>
+
+        </fields>
+    </config>
+
+    <!-- ============================================
+         VARIABLES CSS
+         ============================================ -->
+
+    <variable name="primary_color">
+        <value>#007bff</value>
+    </variable>
+
+    <variable name="secondary_color">
+        <value>#6c757d</value>
+    </variable>
+
+</extension>
+
+<!--
+    ============================================
+    NOTAS DE IMPLEMENTACIÓN
+    ============================================
+
+    1. PARENT: Especifica 'cassiopeia' como parent
+       Joomla automáticamente hereda sus archivos
+
+    2. ARCHIVOS: Solo incluir carpetas con cambios
+       html/    → solo si hay overrides
+       css/     → solo si hay CSS personalizado
+
+    3. POSICIONES: Heredadas del parent
+       Redefine solo si cambias la estructura
+
+    4. PARÁMETROS: Configurables desde el backend
+       Usuarios pueden personalizar sin tocar código
+
+    5. MEDIA: Recursos como imágenes, fuentes, etc.
+       destination: donde se copian en la instalación
+
+    6. VARIABLES CSS: Para temas dinámicos
+       Usar en less/scss del parent
+
+    ============================================
+    ESTRUCTURA MÍNIMA CHILD TEMPLATE
+    ============================================
+
+    Si SOLO personalizas un archivo:
+
+    /templates/cassiopeia-child/
+    ├── html/
+    │   └── com_content/
+    │       └── article/
+    │           └── default.php     (tu override)
+    └── templateDetails.xml
+
+    Eso es suficiente. Todo lo demás se hereda de parent.
+
+    ============================================
+    HERENCIA AUTOMÁTICA
+    ============================================
+
+    Joomla busca archivos en este orden:
+    1. /templates/cassiopeia-child/html/...     (child)
+    2. /templates/cassiopeia/html/...           (parent)
+    3. /components/.../views/.../tmpl/...       (core)
+
+    Si no está en child, usa parent.
+    Si no está en parent, usa core.
+
+    ============================================
+    ACTUALIZAR PARENT TEMPLATE
+    ============================================
+
+    Si el parent cassiopeia se actualiza:
+    - Child template hereda cambios automáticamente
+    - Overrides de child no se afectan
+    - Archivos nuevos en parent se heredan
+
+    Para verificar cambios:
+    1. Ir a Extensions > Templates
+    2. Click en child template
+    3. Buscar "Inherited Files" (si existe)
+
+    ============================================
+    CREAR MÚLTIPLES CHILD TEMPLATES
+    ============================================
+
+    Puedes crear varios child templates del mismo parent:
+
+    /templates/cassiopeia-child-1/     (tema claro)
+    /templates/cassiopeia-child-2/     (tema oscuro)
+    /templates/cassiopeia-child-3/     (diseño especial)
+
+    Cada uno es independiente:
+    - Mismos overrides heredados del parent
+    - CSS personalizado diferente en cada uno
+    - Asignar a diferentes menús
+
+    ============================================
+    MANTENIMIENTO DEL CHILD TEMPLATE
+    ============================================
+
+    Control de versiones (GIT):
+    .gitignore debería ignorar:
+    - cache/
+    - tmp/
+    - logs/
+
+    Cambios a trackear:
+    - html/           (todos los overrides)
+    - css/            (todo CSS personalizado)
+    - templateDetails.xml
+    - index.php (si modificas)
+
+    ============================================
+-->
