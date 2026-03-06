@@ -1,6 +1,6 @@
 ---
 name: joomla-module-development
-description: Aprende a crear módulos personalizados en Joomla 5 y 6 con arquitectura moderna, PSR-4, inyección de dependencias y manifest.xml. Incluye ejemplos completos Hello World y acceso a base de datos. Triggers: módulo joomla, crear módulo, module joomla, mod_custom, ModuleDispatcherFactory, HelperFactory, tmpl joomla, manifest.xml
+description: Build custom Joomla 5/6 modules with modern PSR-4 architecture, dependency injection, and manifest.xml. Includes Hello World and database access examples.
 ---
 
 # Desarrollo de Módulos Personalizados en Joomla 5/6

@@ -1,6 +1,6 @@
 ---
 name: joomla-frontend-integration
-description: Domina integración frontend en Joomla 5/6 con Helix Framework.
+description: Frontend integration (CSS/JS) in Joomla 5/6 with Helix Framework. WebAssetManager, Bootstrap 5, SP Page Builder, responsive design, and Web Components.
 ---
 
 # Integración Frontend en Joomla 5/6 con Helix Framework
