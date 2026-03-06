@@ -10,21 +10,3 @@ Guía completa para dominar CSS/JavaScript, WebAssetManager y diseño responsive
 ---
 
 ## 1. WebAssetManager: El Sistema Moderno
-
-El **WebAssetManager** (`\Joomla\CMS\WebAsset\WebAssetManager`) es la forma oficial de gestionar assets en Joomla 5/6. Reemplaza HTMLHelper y Document API (deprecados en 5.3+).
-
-### Ciclo de vida
-1. **Registered**: Asset declarado en `joomla.asset.json`
-2. **Used**: Activado con `$wa->useScript()` o `$wa->useStyle()`
-3. **Rendered**: Insertado en HTML por `<jdoc:include type="head" />`
-4. **Loaded**: Descargado por navegador con versionado automático
-
-### Obtener instancia
-```php
-$wa = \Joomla\CMS\Factory::getApplication()
-      ->getDocument()
-      ->getWebAssetManager();
-
-// Cargar assets
-$wa->useScript('jquery');
-$wa->useStyle('bootstrap');
